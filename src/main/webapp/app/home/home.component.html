@@ -3,10 +3,10 @@
         <span class="hipster img-fluid rounded"></span>
     </div>
 
-    <div class="col-md-10 pl-5">
+    <div class="col-md-10 pl-5" [ngSwitch]="isAuthenticated()">
         <h1 class="display-4 mb-5" jhiTranslate="home.title">Welcome!</h1>
 
-        <div [ngSwitch]="isAuthenticated()">
+        <div>
             <div class="alert alert-success" *ngSwitchCase="true">
                 <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message"
                     [translateValues]="{ username: account.login }">You are logged in as user "{{ account.login }}".</span>
@@ -23,7 +23,11 @@
             </div>
         </div>
         
-        <p class="lead" jhiTranslate="home.subtitle">This is your homepage</p>
+        <p class="lead mt-5" jhiTranslate="home.subtitle">This is your homepage</p>
+
+        <button type="button" class="btn btn-primary mt-3" jhiTranslate="home.play" routerLink="applications/basic" *ngSwitchCase="true">
+            Play
+        </button>
 
     </div>
 </div>
