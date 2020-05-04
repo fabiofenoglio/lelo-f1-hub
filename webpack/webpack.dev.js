@@ -120,7 +120,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         ]),
         new WebpackNotifierPlugin({
             title: 'LeloHUB',
-            contentImage: path.join(__dirname, 'logo-jhipster.png')
+            contentImage: path.join(__dirname, 'logo-notification.png')
         })
     ].filter(Boolean),
     mode: 'development'
