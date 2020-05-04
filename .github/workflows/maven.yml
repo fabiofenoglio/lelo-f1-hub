@@ -33,7 +33,7 @@ jobs:
 #        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
 #        restore-keys: ${{ runner.os }}-m2
     - name: Merge content of private repository
-      run: rsync --archive ./private_mirror ./
+      run: rsync --archive ./private_mirror/ ./
     - name: List content
       run: ls -R ./
 #    - name: Build with Maven
