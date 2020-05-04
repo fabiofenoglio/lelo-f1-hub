@@ -1,0 +1,16 @@
+{
+  "name": "LeloHub",
+  "short_name": "LeloHub",
+  "icons": [
+    {
+      "src": "./content/images/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#e0e0e0",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait"
+}

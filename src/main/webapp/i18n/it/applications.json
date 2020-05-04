@@ -1,0 +1,10 @@
+{   
+    "applications": {
+        "common": {
+
+        },
+        "basic": {
+            "pageTitle": "Controller di base"
+        }
+    }
+}

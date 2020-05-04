@@ -1,0 +1,231 @@
+<div role="main" class="container">
+    <div class="row" *ngIf="!isConnected()">
+        <div class="col-12">
+            <h1></h1>
+            <p class="lead">
+                Press on the 'CONNECT' button to run the demo.
+                <br/><br/>
+                If you have trouble connecting the device, turn it off, refresh the page, turn it on and press the button immediately after.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <p class="alert alert-warning" *ngIf="!isConnected()">
+                <fa-icon icon="eye-slash"></fa-icon> No device connected
+            </p>
+            <p class="alert alert-{{ authorized ? 'success' : 'warning' }}" *ngIf="isConnected()">
+                Connected to {{ manufacturerName }} {{ modelNumber }}
+            </p>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="isConnected() && !authorized">
+        <div class="col-12">
+            <p class="alert alert-warning">
+                <fa-icon icon="shield-alt"></fa-icon> Connection is not authorized. Limited functionalities.
+                <br/>
+                <small> Please press the central button to confirm connection. </small>
+            </p>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="errors && errors.length">
+        <div class="col-12">
+            <p class="alert alert-danger" *ngFor="let error of errors"> {{ error }} </p>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="batterySaving">
+        <div class="col-12">
+            <p class="alert alert-warning">
+                <fa-icon icon="charging-station"></fa-icon> Battery is low!
+                <br/>
+                <small>Real time sensor data streaming has been disabled to save power.</small>
+            </p>
+        </div>
+    </div>
+
+    <div class="row mt-3" *ngIf="!isConnected()">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary btn-block" (click)="connect()" [disabled]="pending || isConnected() ">CONNECT TO DEVICE</button>
+        </div>
+    </div>
+
+    <div class="row mt-3" *ngIf="isConnected()">
+        <div class="col-6">
+            <button type="button" class="btn btn-warning btn-block" (click)="disconnect()" [disabled]="pending || !isConnected()">DISCONNECT</button>
+        </div>
+        <div class="col-6">
+            <button type="button" class="btn btn-danger btn-block" (click)="shutdown()" [disabled]="pending || !authorized || !isConnected()">SHUTDOWN</button>
+        </div>
+    </div>
+
+    <hr/>
+
+    <div class="card-deck mt-3" *ngIf="isConnected()">
+
+        <div class="card border-{{ buttonsStatus?.any ? 'primary' : 'secondary' }} text-center">
+            <div class="card-body">
+                <fa-stack size="2x" class="button-icon {{ buttonsStatus?.plus ? 'active' : '' }}"
+                    [class.disabled]="!isConnected() || !authorized || cruiseControlStatus" 
+                    (click)="plusButtonPressed()"
+                >
+                    <fa-icon icon="circle" stackItemSize="2x" class="button-icon-part-background"></fa-icon>
+                    <fa-icon icon="plus" [inverse]="true" stackItemSize="1x" class="button-icon-part-icon"></fa-icon>
+                </fa-stack>
+
+                <fa-stack size="3x" class="button-icon {{ buttonsStatus?.central ? 'active' : '' }}"
+                    [class.disabled]="!isConnected() || cruiseControlStatus" 
+                    (click)="centralButtonPressed()"
+                >
+                    <fa-icon icon="circle" stackItemSize="2x" class="button-icon-part-background"></fa-icon>
+                    <fa-icon icon="power-off" [inverse]="true" stackItemSize="1x" class="button-icon-part-icon"></fa-icon>
+                </fa-stack>
+
+                <fa-stack size="2x" class="button-icon {{ buttonsStatus?.minus ? 'active' : '' }}"
+                    [class.disabled]="!isConnected() || !authorized || cruiseControlStatus" 
+                    (click)="minusButtonPressed()"
+                >
+                    <fa-icon icon="circle" stackItemSize="2x" class="button-icon-part-background"></fa-icon>
+                    <fa-icon icon="minus" [inverse]="true" stackItemSize="1x" class="button-icon-part-icon"></fa-icon>
+                </fa-stack>
+            </div>
+            <div class="card-footer" *ngIf="isConnected() && authorized && !cruiseControlStatus">
+                Controlling
+                <span>
+                    <strong>  
+                        <fa-icon [icon]="buttonsAssignment === BUTTONS_ASSIGNMENT_VIBE_MOTOR ? 'angle-down' : buttonsAssignment === BUTTONS_ASSIGNMENT_MAIN_MOTOR ? 'angle-up' : 'arrows-alt-v'"></fa-icon>
+                        {{ buttonsAssignment === BUTTONS_ASSIGNMENT_VIBE_MOTOR ? 'the vibrator.' : buttonsAssignment === BUTTONS_ASSIGNMENT_MAIN_MOTOR ? 'the main motor.' : 'both motors together.' }}
+                    </strong>
+                </span>
+                <br/>
+                Click central button to toggle.
+            </div>
+            <div class="card-footer" *ngIf="isConnected() && !authorized">
+                Connection is not authorized.
+                <span>
+                    <strong>  
+                        Press central button to authorize.
+                    </strong>
+                </span>
+            </div>
+        </div>
+        
+        <div class="card border-{{ buttonsAssignment === BUTTONS_ASSIGNMENT_MAIN_MOTOR || buttonsAssignment === BUTTONS_ASSIGNMENT_BOTH_MOTORS ? 'dark' : 'secondary' }} motor-card text-center">
+            <div class="card-body">
+                <div>
+                    <h5 class="card-title">
+                        Main motor {{ mainMotorLevel || '--' }} %
+                        <span *ngIf="!batterySaving"> - {{ rotationSpeed }} rpm </span>
+                    </h5>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ mainMotorLevel || 0 }}%"></div>
+                </div>
+            </div>
+            <div class="card-footer" *ngIf="!cruiseControlStatus">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-danger" [disabled]="!authorized || !(mainMotorLevel && mainMotorLevel > 0)" (click)="stopMainMotor()">
+                        <fa-icon icon="power-off"></fa-icon>
+                    </button>
+                    <button type="button" class="btn btn-dark" [disabled]="!authorized || !(mainMotorLevel && mainMotorLevel > 0)" (click)="decrementMainMotor()">
+                        <fa-icon icon="minus"></fa-icon>
+                    </button>
+                    <button type="button" class="btn btn-primary" [disabled]="!authorized || (mainMotorLevel && mainMotorLevel >= 100)" (click)="incrementMainMotor()">
+                        <fa-icon icon="plus"></fa-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-{{ buttonsAssignment === BUTTONS_ASSIGNMENT_VIBE_MOTOR || buttonsAssignment === BUTTONS_ASSIGNMENT_BOTH_MOTORS ? 'dark' : 'secondary' }} motor-card text-center">
+            <div class="card-body">
+                <div>
+                    <h5 class="card-title">Vibrator {{ vibeMotorLevel || '--' }} %</h5>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ vibeMotorLevel || 0 }}%" ></div>
+                </div>
+            </div>
+            <div class="card-footer" *ngIf="!cruiseControlStatus">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-danger" [disabled]="!authorized || !(vibeMotorLevel && vibeMotorLevel > 0)" (click)="stopVibeMotor()">
+                        <fa-icon icon="power-off"></fa-icon>
+                    </button>
+                    <button type="button" class="btn btn-dark" [disabled]="!authorized || !(vibeMotorLevel && vibeMotorLevel > 0)" (click)="decrementVibeMotor()">
+                        <fa-icon icon="minus"></fa-icon>
+                    </button>
+                    <button type="button" class="btn btn-primary" [disabled]="!authorized || (vibeMotorLevel && vibeMotorLevel >= 100)" (click)="incrementVibeMotor()">
+                        <fa-icon icon="plus"></fa-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3" *ngIf="isConnected() && batteryLevel">
+        <div class="col-12">
+            <div>
+                <span>
+                    <fa-icon [icon]="batteryLevel >= 85 ? 'battery-full' :
+                        batteryLevel >= 50 ? 'battery-three-quarters' : 
+                        batteryLevel >= 30 ? 'battery-half' : 
+                        batteryLevel >= 15 ? 'battery-quarter' : 
+                        'battery-empty'"></fa-icon>
+                </span>
+                <span>{{ batteryLevel }} %</span>
+            </div>
+            <div class="progress">
+                <div class="progress-bar bg-{{ batteryLevel >= 60 ? 'success' :
+                    batteryLevel >= 30 ? 'warning' : 'danger' }}" 
+                    role="progressbar" 
+                    style="width: {{ batteryLevel }}%; height: 20px;" >
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-3" *ngIf="isConnected() && (temperature || pressure || depth) && !batterySaving">
+        <div class="col-6">
+            <div class="text-left" *ngIf="temperature">
+                <span>
+                    <fa-icon icon="temperature-high"></fa-icon> 
+                </span>
+                <span>{{ temperature || '--' }} &deg;C</span>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="text-right" *ngIf="pressure">
+                <span>
+                    <fa-icon icon="tachometer-alt"></fa-icon>
+                </span>
+                <span>{{ pressure || '--' }} mBar</span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="text-left" *ngIf="depth !== null">
+                <span>
+                    <fa-icon icon="ring"></fa-icon>
+                    {{ depth || '--' }} %
+                </span>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="text-right" *ngIf="acceleration">
+                <fa-icon icon="compass"></fa-icon>
+                X {{ acceleration[0] || '--' }},
+                Y {{ acceleration[1] || '--' }},
+                Z {{ acceleration[2] || '--' }}
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" *ngIf="pending">
+        <div class="overlay-text">
+            <fa-icon icon="circle-notch" size="2x" [spin]="true"></fa-icon>
+        </div>
+    </div>
+    
+</div>

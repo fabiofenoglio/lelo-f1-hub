@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-2">
+        <span class="hipster img-fluid rounded"></span>
+    </div>
+
+    <div class="col-md-10 pl-5">
+        <h1 class="display-4 mb-5" jhiTranslate="home.title">Welcome!</h1>
+
+        <div [ngSwitch]="isAuthenticated()">
+            <div class="alert alert-success" *ngSwitchCase="true">
+                <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message"
+                    [translateValues]="{ username: account.login }">You are logged in as user "{{ account.login }}".</span>
+            </div>
+
+            <div class="alert alert-warning" *ngSwitchCase="false">
+                <span jhiTranslate="global.messages.info.authenticated.prefix">Please </span>
+                <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">LOGIN</a>
+            </div>
+
+            <div class="alert alert-warning" *ngSwitchCase="false">
+                <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>&nbsp;
+                <a class="alert-link" routerLink="account/register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
+            </div>
+        </div>
+        
+        <p class="lead" jhiTranslate="home.subtitle">This is your homepage</p>
+
+    </div>
+</div>

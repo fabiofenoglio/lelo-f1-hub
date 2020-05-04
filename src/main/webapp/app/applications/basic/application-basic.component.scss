@@ -1,0 +1,121 @@
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+.overlay-text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 50px;
+    color: #aaaaaa;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+
+.console {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    resize: none;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+main {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.motor-card .btn {
+    min-width: 6em;
+}
+
+.motor-card .card-body {
+    padding-top: 1em;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.motor-card .progress {
+    margin-top: 2em;
+    height: 30px;
+}
+
+.motor-card .progress-bar {
+    height: 30px;
+}
+
+.motor-card .icon-container {
+    height: 9em;
+}
+
+.motor-card .card-footer .btn-group {
+    width: 100%;
+}
+
+.button-icon {
+    cursor: pointer;
+}
+
+.button-icon[disabled] {
+    cursor: not-allowed;
+}
+
+.button-icon.active .button-icon-part-background {
+    color: #a50000;
+}
+
+.button-icon[disabled] .button-icon-part-background {
+    color: #777777;
+}
+
+.slidecontainer {
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #333333;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #333333;
+    cursor: pointer;
+}
+
+.table-xs td {
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
