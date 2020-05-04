@@ -32,7 +32,13 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
+    - name: Cache node_modules
+      uses: actions/cache@v1
+      with:
+        path: ./node_modules
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: ${{ runner.os }}-node_modules
     - name: Merge content of private repository
       run: rsync --archive ./private_mirror/ ./
     - name: Build and deploy with Maven
-      run: mvn -Pprod clean package tomcat7:redeploy --file pom.xml
+      run: mvn -Pprod -Dmaven.test.skip=true -DskipTests clean package tomcat7:redeploy --file pom.xml
