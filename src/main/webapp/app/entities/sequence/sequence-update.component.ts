@@ -322,14 +322,37 @@ export class SequenceUpdateComponent implements OnInit {
       paramsDTO.forEach(paramDTO => {
         const parameterFormGroup = this.fb.group({
           id: [paramDTO?.id],
-          valueString: [paramDTO.valueString, (paramDTO.definition?.type === SequenceStepConditionDefinitionParameterType.STRING ? Validators.required : undefined)],
-          valueNumber: [paramDTO.valueNumber, (paramDTO.definition?.type === SequenceStepConditionDefinitionParameterType.NUMBER ? Validators.required : undefined)],
+          valueString: [paramDTO.valueString],
+          valueNumber: [paramDTO.valueNumber],
           valueBoolean: [paramDTO.valueBoolean, (paramDTO.definition?.type === SequenceStepConditionDefinitionParameterType.BOOLEAN ? Validators.required : undefined)],
           valueVariable: [paramDTO.valueVariable, (paramDTO.definition?.type === SequenceStepConditionDefinitionParameterType.VARIABLE ? Validators.required : undefined)],
           valueOperator: [paramDTO.valueOperator, (paramDTO.definition?.type === SequenceStepConditionDefinitionParameterType.OPERATOR ? Validators.required : undefined)],
           definitionId: [paramDTO.definition?.id, Validators.required],
           definition: [paramDTO.definition]
         });
+          
+        if (paramDTO.definition?.type === SequenceStepConditionDefinitionParameterType.NUMBER) {
+          const targetValueControl = parameterFormGroup.get('valueNumber') as FormControl;
+          const validators = [Validators.required];
+          if (paramDTO.definition?.minLength !== null && typeof paramDTO.definition?.minLength !== 'undefined') {
+            validators.push(Validators.minLength(paramDTO.definition?.minLength));
+          }
+          if (paramDTO.definition?.maxLength !== null && typeof paramDTO.definition?.maxLength !== 'undefined') {
+            validators.push(Validators.maxLength(paramDTO.definition?.maxLength));
+          }
+          targetValueControl.setValidators(validators);
+
+        } else if (paramDTO.definition?.type === SequenceStepConditionDefinitionParameterType.STRING) {
+          const targetValueControl = parameterFormGroup.get('valueString') as FormControl;
+          const validators = [Validators.required];
+          if (paramDTO.definition?.minValue !== null && typeof paramDTO.definition?.minValue !== 'undefined') {
+            validators.push(Validators.min(paramDTO.definition?.minValue));
+          }
+          if (paramDTO.definition?.maxValue !== null && typeof paramDTO.definition?.maxValue !== 'undefined') {
+            validators.push(Validators.max(paramDTO.definition?.maxValue));
+          }
+          targetValueControl.setValidators(validators);
+        }
   
         parameterFormGroup.setParent(parametersArray);
         parametersArray.controls.push(parameterFormGroup);
@@ -337,14 +360,37 @@ export class SequenceUpdateComponent implements OnInit {
     } else {
       definition?.parameters?.forEach(parameterDefinition => {
         const parameterFormGroup = this.fb.group({
-          valueString: [null, (parameterDefinition.type === SequenceStepConditionDefinitionParameterType.STRING ? Validators.required : undefined)],
-          valueNumber: [null, (parameterDefinition.type === SequenceStepConditionDefinitionParameterType.NUMBER ? Validators.required : undefined)],
+          valueString: [null],
+          valueNumber: [null],
           valueBoolean: [null, (parameterDefinition.type === SequenceStepConditionDefinitionParameterType.BOOLEAN ? Validators.required : undefined)],
           valueVariable: [null, (parameterDefinition.type === SequenceStepConditionDefinitionParameterType.VARIABLE ? Validators.required : undefined)],
           valueOperator: [null, (parameterDefinition.type === SequenceStepConditionDefinitionParameterType.OPERATOR ? Validators.required : undefined)],
           definitionId: [parameterDefinition.id, Validators.required],
           definition: [parameterDefinition]
         });
+  
+        if (parameterDefinition?.type === SequenceStepConditionDefinitionParameterType.STRING) {
+          const targetValueControl = parameterFormGroup.get('valueString') as FormControl;
+          const validators = [Validators.required];
+          if (parameterDefinition?.minLength !== null && typeof parameterDefinition?.minLength !== 'undefined') {
+            validators.push(Validators.minLength(parameterDefinition?.minLength));
+          }
+          if (parameterDefinition?.maxLength !== null && typeof parameterDefinition?.maxLength !== 'undefined') {
+            validators.push(Validators.maxLength(parameterDefinition?.maxLength));
+          }
+          targetValueControl.setValidators(validators);
+
+        } else if (parameterDefinition?.type === SequenceStepConditionDefinitionParameterType.NUMBER) {
+          const targetValueControl = parameterFormGroup.get('valueNumber') as FormControl;
+          const validators = [Validators.required];
+          if (parameterDefinition?.minValue !== null && typeof parameterDefinition?.minValue !== 'undefined') {
+            validators.push(Validators.min(parameterDefinition?.minValue));
+          }
+          if (parameterDefinition?.maxValue !== null && typeof parameterDefinition?.maxValue !== 'undefined') {
+            validators.push(Validators.max(parameterDefinition?.maxValue));
+          }
+          targetValueControl.setValidators(validators);
+        }
   
         parameterFormGroup.setParent(parametersArray);
         parametersArray.controls.push(parameterFormGroup);
@@ -426,13 +472,36 @@ export class SequenceUpdateComponent implements OnInit {
       paramsDTO.forEach(paramDTO => {
         const parameterFormGroup = this.fb.group({
           id: [paramDTO?.id],
-          valueString: [paramDTO.valueString, (paramDTO.definition?.type === SequenceStepActionDefinitionParameterType.STRING ? Validators.required : undefined)],
-          valueNumber: [paramDTO.valueNumber, (paramDTO.definition?.type === SequenceStepActionDefinitionParameterType.NUMBER ? Validators.required : undefined)],
+          valueString: [paramDTO.valueString],
+          valueNumber: [paramDTO.valueNumber],
           valueBoolean: [paramDTO.valueBoolean, (paramDTO.definition?.type === SequenceStepActionDefinitionParameterType.BOOLEAN ? Validators.required : undefined)],
           valueVariable: [paramDTO.valueVariable, (paramDTO.definition?.type === SequenceStepActionDefinitionParameterType.VARIABLE ? Validators.required : undefined)],
           definitionId: [paramDTO.definition?.id, Validators.required],
           definition: [paramDTO.definition]
         });
+
+        if (paramDTO.definition?.type === SequenceStepActionDefinitionParameterType.STRING) {
+          const targetValueControl = parameterFormGroup.get('valueString') as FormControl;
+          const validators = [Validators.required];
+          if (paramDTO.definition?.minLength !== null && typeof paramDTO.definition?.minLength !== 'undefined') {
+            validators.push(Validators.minLength(paramDTO.definition?.minLength));
+          }
+          if (paramDTO.definition?.maxLength !== null && typeof paramDTO.definition?.maxLength !== 'undefined') {
+            validators.push(Validators.maxLength(paramDTO.definition?.maxLength));
+          }
+          targetValueControl.setValidators(validators);
+
+        } else if (paramDTO.definition?.type === SequenceStepActionDefinitionParameterType.NUMBER) {
+          const targetValueControl = parameterFormGroup.get('valueNumber') as FormControl;
+          const validators = [Validators.required];
+          if (paramDTO.definition?.minValue !== null && typeof paramDTO.definition?.minValue !== 'undefined') {
+            validators.push(Validators.min(paramDTO.definition?.minValue));
+          }
+          if (paramDTO.definition?.maxValue !== null && typeof paramDTO.definition?.maxValue !== 'undefined') {
+            validators.push(Validators.max(paramDTO.definition?.maxValue));
+          }
+          targetValueControl.setValidators(validators);
+        }
   
         parameterFormGroup.setParent(parametersArray);
         parametersArray.controls.push(parameterFormGroup);

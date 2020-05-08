@@ -156,6 +156,14 @@
                                                                                                         *ngIf="param.get('valueString')?.errors?.required" jhiTranslate="entity.validation.required">
                                                                                                         This field is required.
                                                                                                     </small>
+                                                                                                    <small class="form-text text-danger"
+                                                                                                        *ngIf="param.get('valueString')?.errors?.minLength">
+                                                                                                        This field should be at least {{ param.get('definition').value.minLength }} chars long.
+                                                                                                    </small>
+                                                                                                    <small class="form-text text-danger"
+                                                                                                        *ngIf="param.get('valueString')?.errors?.maxLength">
+                                                                                                        This field should be at most {{ param.get('definition').value.maxLength }} chars long.
+                                                                                                    </small>
                                                                                                 </div>
                                                                                             </ng-container>
                                                                                             <ng-container *ngSwitchCase="'NUMBER'">
@@ -171,6 +179,14 @@
                                                                                                     <small class="form-text text-danger"
                                                                                                         *ngIf="param.get('valueNumber')?.errors?.required" jhiTranslate="entity.validation.required">
                                                                                                         This field is required.
+                                                                                                    </small>
+                                                                                                    <small class="form-text text-danger"
+                                                                                                        *ngIf="param.get('valueNumber')?.errors?.min">
+                                                                                                        This field should be greater than or equal to {{ param.get('definition').value.minValue }}
+                                                                                                    </small>
+                                                                                                    <small class="form-text text-danger"
+                                                                                                        *ngIf="param.get('valueNumber')?.errors?.max">
+                                                                                                        This field should be less than or equal to {{ param.get('definition').value.maxValue }}
                                                                                                     </small>
                                                                                                 </div>
                                                                                             </ng-container>
@@ -323,6 +339,14 @@
                                                                                         *ngIf="param.get('valueString')?.errors?.required" jhiTranslate="entity.validation.required">
                                                                                         This field is required.
                                                                                     </small>
+                                                                                    <small class="form-text text-danger"
+                                                                                        *ngIf="param.get('valueString')?.errors?.minLength">
+                                                                                        This field should be at least {{ param.get('definition').value.minLength }} chars long.
+                                                                                    </small>
+                                                                                    <small class="form-text text-danger"
+                                                                                        *ngIf="param.get('valueString')?.errors?.maxLength">
+                                                                                        This field should be at most {{ param.get('definition').value.maxLength }} chars long.
+                                                                                    </small>
                                                                                 </div>
                                                                             </ng-container>
                                                                             <ng-container *ngSwitchCase="'NUMBER'">
@@ -338,6 +362,14 @@
                                                                                     <small class="form-text text-danger"
                                                                                         *ngIf="param.get('valueNumber')?.errors?.required" jhiTranslate="entity.validation.required">
                                                                                         This field is required.
+                                                                                    </small>
+                                                                                    <small class="form-text text-danger"
+                                                                                        *ngIf="param.get('valueNumber')?.errors?.min">
+                                                                                        This field should be greater than or equal to {{ param.get('definition').value.minValue }}
+                                                                                    </small>
+                                                                                    <small class="form-text text-danger"
+                                                                                        *ngIf="param.get('valueNumber')?.errors?.max">
+                                                                                        This field should be less than or equal to {{ param.get('definition').value.maxValue }}
                                                                                     </small>
                                                                                 </div>
                                                                             </ng-container>
