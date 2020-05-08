@@ -7,11 +7,6 @@
         <h1 class="display-4 mb-5" jhiTranslate="home.title">Welcome!</h1>
 
         <div>
-            <div class="alert alert-success" *ngSwitchCase="true">
-                <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message"
-                    [translateValues]="{ username: account.login }">You are logged in as user "{{ account.login }}".</span>
-            </div>
-
             <div class="alert alert-warning" *ngSwitchCase="false">
                 <span jhiTranslate="global.messages.info.authenticated.prefix">Please </span>
                 <a class="alert-link" (click)="login()" jhiTranslate="global.messages.info.authenticated.link">LOGIN</a>
@@ -28,6 +23,26 @@
         <button type="button" class="btn btn-primary mt-3" jhiTranslate="home.play" routerLink="applications/basic" *ngSwitchCase="true">
             Play
         </button>
+
+        <div class="mt-5" *ngSwitchCase="true">
+            <p class="alert alert-success">
+                <strong><fa-icon icon="gift"></fa-icon> New feature: SEQUENCES !</strong>
+                <br/>
+                <small>08/05/2020</small>
+                <br/><br/>
+
+                <span>
+                    With sequences you can program your device to do what you want, 
+                    ranging from the simples things to really complex schemes.
+                    <br/>
+                    Take advantage of the community features and play, copy and personalize other users' shared sequences!
+                </span>
+                <br/><br/>
+
+                <a routerLink="sequence" >start building your sequences</a> 
+                or play them on your device using the <a routerLink="applications/basic" >basic controller</a>.
+            </p>
+        </div>
 
     </div>
 </div>

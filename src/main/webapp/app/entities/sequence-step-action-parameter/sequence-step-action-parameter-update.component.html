@@ -1,0 +1,163 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-sequence-step-action-parameter-heading" jhiTranslate="leloHubApp.sequenceStepActionParameter.home.createOrEditLabel">Create or edit a Sequence Step Action Parameter</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.generation" for="field_generation">Generation</label>
+                    <select class="form-control" name="generation" formControlName="generation" id="field_generation">
+                        <option value="GEN1">{{ 'leloHubApp.SequenceStepActionGeneration.GEN1' | translate }}</option>
+                    </select>
+                    <div *ngIf="editForm.get('generation')!.invalid && (editForm.get('generation')!.dirty || editForm.get('generation')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('generation')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.valueString" for="field_valueString">Value String</label>
+                    <input type="text" class="form-control" name="valueString" id="field_valueString"
+                           formControlName="valueString"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.valueNumber" for="field_valueNumber">Value Number</label>
+                    <input type="number" class="form-control" name="valueNumber" id="field_valueNumber"
+                           formControlName="valueNumber"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.valueBoolean" for="field_valueBoolean">Value Boolean</label>
+                    <input type="checkbox" class="form-control" name="valueBoolean" id="field_valueBoolean"
+                           formControlName="valueBoolean"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.valueVariable" for="field_valueVariable">Value Variable</label>
+                    <select class="form-control" name="valueVariable" formControlName="valueVariable" id="field_valueVariable">
+                        <option value="USER_VARIABLE">{{ 'leloHubApp.SequenceVariable.USER_VARIABLE' | translate }}</option>
+                        <option value="MOTOR_SPEED">{{ 'leloHubApp.SequenceVariable.MOTOR_SPEED' | translate }}</option>
+                        <option value="VIBE_SPEED">{{ 'leloHubApp.SequenceVariable.VIBE_SPEED' | translate }}</option>
+                        <option value="CENTRAL_BUTTON_PRESSED">{{ 'leloHubApp.SequenceVariable.CENTRAL_BUTTON_PRESSED' | translate }}</option>
+                        <option value="PLUS_BUTTON_PRESSED">{{ 'leloHubApp.SequenceVariable.PLUS_BUTTON_PRESSED' | translate }}</option>
+                        <option value="MINUS_BUTTON_PRESSED">{{ 'leloHubApp.SequenceVariable.MINUS_BUTTON_PRESSED' | translate }}</option>
+                        <option value="TEMPERATURE">{{ 'leloHubApp.SequenceVariable.TEMPERATURE' | translate }}</option>
+                        <option value="PRESSURE">{{ 'leloHubApp.SequenceVariable.PRESSURE' | translate }}</option>
+                        <option value="INSERTION_DEPTH">{{ 'leloHubApp.SequenceVariable.INSERTION_DEPTH' | translate }}</option>
+                        <option value="ACCELERATION_X">{{ 'leloHubApp.SequenceVariable.ACCELERATION_X' | translate }}</option>
+                        <option value="ACCELERATION_Y">{{ 'leloHubApp.SequenceVariable.ACCELERATION_Y' | translate }}</option>
+                        <option value="ACCELERATION_Z">{{ 'leloHubApp.SequenceVariable.ACCELERATION_Z' | translate }}</option>
+                        <option value="RUN_TIME">{{ 'leloHubApp.SequenceVariable.RUN_TIME' | translate }}</option>
+                        <option value="RANDOM">{{ 'leloHubApp.SequenceVariable.RANDOM' | translate }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.createdDate" for="field_createdDate">Created At</label>
+                    <div class="d-flex">
+                        <input id="field_createdDate" type="datetime-local" class="form-control" name="createdDate" formControlName="createdDate" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('createdDate')!.invalid && (editForm.get('createdDate')!.dirty || editForm.get('createdDate')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('createdDate')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('createdDate')?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.createdBy" for="field_createdBy">Created By</label>
+                    <input type="text" class="form-control" name="createdBy" id="field_createdBy"
+                           formControlName="createdBy"/>
+                    <div *ngIf="editForm.get('createdBy')!.invalid && (editForm.get('createdBy')!.dirty || editForm.get('createdBy')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('createdBy')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.lastModifiedDate" for="field_lastModifiedDate">Modified At</label>
+                    <div class="d-flex">
+                        <input id="field_lastModifiedDate" type="datetime-local" class="form-control" name="lastModifiedDate" formControlName="lastModifiedDate" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('lastModifiedDate')!.invalid && (editForm.get('lastModifiedDate')!.dirty || editForm.get('lastModifiedDate')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('lastModifiedDate')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('lastModifiedDate')?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.lastModifiedBy" for="field_lastModifiedBy">Modified By</label>
+                    <input type="text" class="form-control" name="lastModifiedBy" id="field_lastModifiedBy"
+                           formControlName="lastModifiedBy"/>
+                    <div *ngIf="editForm.get('lastModifiedBy')!.invalid && (editForm.get('lastModifiedBy')!.dirty || editForm.get('lastModifiedBy')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('lastModifiedBy')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.definition" for="field_definition">Definition</label>
+                    <select class="form-control" id="field_definition" name="definition" formControlName="definitionId">
+                        <option *ngIf="!editForm.get('definitionId')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="sequenceStepActionDefinitionParameterOption.id" *ngFor="let sequenceStepActionDefinitionParameterOption of sequencestepactiondefinitionparameters; trackBy: trackById">{{ sequenceStepActionDefinitionParameterOption.name }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('definitionId')!.invalid && (editForm.get('definitionId')!.dirty || editForm.get('definitionId')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('definitionId')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionParameter.action" for="field_action">Action</label>
+                    <select class="form-control" id="field_action" name="action" formControlName="actionId">
+                        <option *ngIf="!editForm.get('actionId')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="sequenceStepActionOption.id" *ngFor="let sequenceStepActionOption of sequencestepactions; trackBy: trackById">{{ sequenceStepActionOption.id }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('actionId')!.invalid && (editForm.get('actionId')!.dirty || editForm.get('actionId')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('actionId')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,463 @@
+<div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-sequence-heading" jhiTranslate="leloHubApp.sequence.home.createOrEditLabel">Create or edit a Sequence</h2>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <p *ngIf="isMobile" class="alert alert-warning">
+                Warning! This page is UI-intensive and has not been optimized for mobile use.
+                <br/>
+                Please try to work on this page on a desktop device.
+            </p>
+
+            <!-- anagraphics -->
+            <div>
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-8">
+                        <div class="form-group">
+                            <label class="form-control-label" jhiTranslate="leloHubApp.sequence.name" for="field_name">Name</label>
+                            <input type="text" class="form-control" name="name" id="field_name"
+                                   formControlName="name"/>
+                            <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+                                <small class="form-text text-danger"
+                                       *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                                </small>
+                                <small class="form-text text-danger"
+                                       *ngIf="editForm.get('name')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 250 }">
+                                This field cannot be longer than 250 characters.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="form-group">
+                            <label class="form-control-label" jhiTranslate="leloHubApp.sequence.visibility" for="field_visibility">Visibility</label>
+                            <select class="form-control" name="visibility" formControlName="visibility" id="field_visibility">
+                                <option value="PRIVATE">
+                                    {{ 'leloHubApp.SequenceVisibility.PRIVATE' | translate }} - only you can see
+                                </option>
+                                <!--<option value="REMOTE">{{ 'leloHubApp.SequenceVisibility.REMOTE' | translate }} - your remote friends</option>-->
+                                <option value="PUBLIC">{{ 'leloHubApp.SequenceVisibility.PUBLIC' | translate }} - other users can use</option>
+                            </select>
+                            <div *ngIf="editForm.get('visibility')!.invalid && (editForm.get('visibility')!.dirty || editForm.get('visibility')!.touched)">
+                                <small class="form-text text-danger"
+                                       *ngIf="editForm.get('visibility')?.errors?.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequence.description" for="field_description">Description</label>
+                    <textarea rows="3" type="text" class="form-control" name="description" id="field_description"
+                           formControlName="description"></textarea>
+                    <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('description')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 2000 }">
+                        This field cannot be longer than 2000 characters.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steps -->
+            <div class="mt-5">
+                <div class="row mb-3">
+                    <div class="col-12 col-md-6">
+                        <h3>Sequence steps</h3>
+                    </div>
+                </div>
+
+                <ng-container *ngFor="let step of steps.controls; let i = index" formArrayName="steps">
+                    <ng-container [formGroupName]="i">
+
+                        <div class="row mb-3">
+                            <div class="col-2 col-md-1 text-center">
+                                <span class="badge badge-primary" style="font-size: 1.1em;">
+                                    # {{ step.get('ordinal').value }}
+                                </span>
+
+                                <button *ngIf="!readOnly" [disabled]="hasConditionalExecution(step)" type="button" 
+                                    class="btn btn-sm btn-block mt-2 px-0 btn-outline-{{ hasConditionalExecution(step) ? 'warning' : 'primary' }}" 
+                                    title="conditional execution"
+                                    (click)="addConditionalExecution(step)">
+                                    <span><fa-icon icon="question-circle"></fa-icon></span>
+                                </button>
+
+                                <button *ngIf="!readOnly" [disabled]="!(steps.controls.length > 1)" type="button" 
+                                    title="delete this step"
+                                    class="btn btn-sm btn-block mt-2 px-0 btn-outline-danger" (click)="deleteStep(i)">
+                                    <fa-icon icon="trash-alt"></fa-icon>
+                                </button>
+                            </div>
+                            <div class="col-10 col-md-11">
+                                
+                                <!-- conditions row -->
+                                <div class="row" *ngIf="hasConditionalExecution(step)">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label class="form-control-label">When</label>
+
+                                                <!-- recursive conditions list -->
+                                                <!-- generic template for conditions list -->
+                                                <ng-template #recursiveConditionList let-element let-container="container" let-firstlevel="firstLevel">
+                                                    <ng-container *ngFor="let condition of element.controls; let condIndex = index">
+                                                        <div [formGroup]="container.controls[condIndex]">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-12">
+                                                                            <div class="input-group">
+                                                                                <select class="form-control" id="field_definition" name="definition" formControlName="definitionId">
+                                                                                    <option *ngIf="!condition.get('definitionId')!.value" [ngValue]="null" selected></option>
+                                                                                    <option [ngValue]="sequenceStepConditionDefinitionOption.id" *ngFor="let sequenceStepConditionDefinitionOption of sequencestepconditiondefinitions; trackBy: trackById">{{ sequenceStepConditionDefinitionOption.description }}</option>
+                                                                                </select>
+                                                                                <div class="input-group-append">
+                                                                                    <button *ngIf="!readOnly" type="button" class="btn btn-sm btn-outline-primary" (click)="addConditionAND(condition)">
+                                                                                        <span>AND</span>
+                                                                                    </button>
+                                                                                    <button *ngIf="!readOnly" type="button" class="btn btn-sm btn-outline-primary" (click)="addConditionOR(condition)">
+                                                                                        <span>OR</span>
+                                                                                    </button>
+                                                                                    <button *ngIf="!readOnly" type="button" class="btn btn-sm btn-outline-danger" (click)="deleteCondition(condition, element, condIndex)">
+                                                                                        <fa-icon icon="trash-alt"></fa-icon>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-1 p-0"></div>
+                                                                        <div class="col-11 p-0">
+                                                                            <table class="table table-borderless table-sm w-100">
+                                                                                
+                                                                                <ng-container formArrayName="parameters">
+                                                                                <ng-container *ngFor="let param of condition.get('parameters').controls; let paramIndex = index">
+                                                                                <tr [formGroupName]="paramIndex">
+                                                                                    <td class="pb-0" style="width: 1px;">
+                                                                                        <label class="form-control-label">
+                                                                                            {{ param.get('definition').value.name }}
+                                                                                        </label>
+                                                                                    </td>
+                                                                                    <td class="pb-0 pr-0">
+                                                                                        <ng-container [ngSwitch]="param.get('definition').value.type">
+                                                                                            <ng-container *ngSwitchCase="'STRING'">
+                                                                                                <input type="text" class="form-control" 
+                                                                                                    [placeholder]="param.get('definition').value.description"
+                                                                                                    formControlName="valueString" />
+                                                                                                <div *ngIf="param.get('valueString')!.invalid 
+                                                                                                    && (param.get('valueString')!.dirty 
+                                                                                                    || param.get('valueString')!.touched)">
+                                                                                                    <small class="form-text text-danger"
+                                                                                                        *ngIf="param.get('valueString')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                                                        This field is required.
+                                                                                                    </small>
+                                                                                                </div>
+                                                                                            </ng-container>
+                                                                                            <ng-container *ngSwitchCase="'NUMBER'">
+                                                                                                <input type="number" class="form-control" 
+                                                                                                    [min]="param.get('definition').value.minValue === 0 ? 0: (param.get('definition').value.minValue || -100000)"
+                                                                                                    [max]="param.get('definition').value.maxValue || 100000"
+                                                                                                    [step]="param.get('definition').value.stepValue || 0.01"
+                                                                                                    [placeholder]="param.get('definition').value.description"
+                                                                                                    formControlName="valueNumber" />
+                                                                                                <div *ngIf="param.get('valueNumber')!.invalid 
+                                                                                                    && (param.get('valueNumber')!.dirty 
+                                                                                                    || param.get('valueNumber')!.touched)">
+                                                                                                    <small class="form-text text-danger"
+                                                                                                        *ngIf="param.get('valueNumber')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                                                        This field is required.
+                                                                                                    </small>
+                                                                                                </div>
+                                                                                            </ng-container>
+                                                                                            <ng-container *ngSwitchCase="'BOOLEAN'">
+                                                                                                <select class="form-control" formControlName="valueBoolean">
+                                                                                                    <option [value]="true">YES</option>
+                                                                                                    <option [value]="false">NO</option>
+                                                                                                </select>
+                                                                                                <div *ngIf="param.get('valueBoolean')!.invalid 
+                                                                                                    && (param.get('valueBoolean')!.dirty 
+                                                                                                    || param.get('valueBoolean')!.touched)">
+                                                                                                    <small class="form-text text-danger"
+                                                                                                        *ngIf="param.get('valueBoolean')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                                                        This field is required.
+                                                                                                    </small>
+                                                                                                </div>
+                                                                                            </ng-container>
+                                                                                            <ng-container *ngSwitchCase="'OPERATOR'">
+                                                                                                <select class="form-control" formControlName="valueOperator">
+                                                                                                    <option value="DIFFERS">{{ 'leloHubApp.SequenceOperator.DIFFERS' | translate }}</option>
+                                                                                                    <option value="EQUALS">{{ 'leloHubApp.SequenceOperator.EQUALS' | translate }}</option>
+                                                                                                    <option value="GREATER_THAN">{{ 'leloHubApp.SequenceOperator.GREATER_THAN' | translate }}</option>
+                                                                                                    <option value="GREATER_THAN_OR_EQUAL_TO">{{ 'leloHubApp.SequenceOperator.GREATER_THAN_OR_EQUAL_TO' | translate }}</option>
+                                                                                                    <option value="LESS_THAN">{{ 'leloHubApp.SequenceOperator.LESS_THAN' | translate }}</option>
+                                                                                                    <option value="LESS_THAN_OR_EQUAL_TO">{{ 'leloHubApp.SequenceOperator.LESS_THAN_OR_EQUAL_TO' | translate }}</option>
+                                                                                                </select>
+                                                                                                <div *ngIf="param.get('valueOperator')!.invalid 
+                                                                                                    && (param.get('valueOperator')!.dirty 
+                                                                                                    || param.get('valueOperator')!.touched)">
+                                                                                                    <small class="form-text text-danger"
+                                                                                                        *ngIf="param.get('valueOperator')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                                                        This field is required.
+                                                                                                    </small>
+                                                                                                </div>
+                                                                                            </ng-container>
+                                                                                            <ng-container *ngSwitchCase="'VARIABLE'">
+                                                                                                <select class="form-control" formControlName="valueVariable">
+                                                                                                    <option value="ACCELERATION_X">{{ 'leloHubApp.SequenceVariable.ACCELERATION_X' | translate }}</option>
+                                                                                                    <option value="ACCELERATION_Y">{{ 'leloHubApp.SequenceVariable.ACCELERATION_Y' | translate }}</option>
+                                                                                                    <option value="ACCELERATION_Z">{{ 'leloHubApp.SequenceVariable.ACCELERATION_Z' | translate }}</option>
+                                                                                                    <option value="INSERTION_DEPTH">{{ 'leloHubApp.SequenceVariable.INSERTION_DEPTH' | translate }}</option>
+                                                                                                    <option value="MOTOR_SPEED">{{ 'leloHubApp.SequenceVariable.MOTOR_SPEED' | translate }}</option>
+                                                                                                    <option value="PRESSURE">{{ 'leloHubApp.SequenceVariable.PRESSURE' | translate }}</option>
+                                                                                                    <option value="TEMPERATURE">{{ 'leloHubApp.SequenceVariable.TEMPERATURE' | translate }}</option>
+                                                                                                    <option value="VIBE_SPEED">{{ 'leloHubApp.SequenceVariable.VIBE_SPEED' | translate }}</option>                                                                        
+                                                                                                </select>
+                                                                                                <div *ngIf="param.get('valueVariable')!.invalid 
+                                                                                                    && (param.get('valueVariable')!.dirty 
+                                                                                                    || param.get('valueVariable')!.touched)">
+                                                                                                    <small class="form-text text-danger"
+                                                                                                        *ngIf="param.get('valueVariable')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                                                        This field is required.
+                                                                                                    </small>
+                                                                                                </div>
+                                                                                            </ng-container>
+                                                                                        </ng-container>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                </ng-container>
+                                                                                </ng-container>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div *ngIf="condition.get('definitionId')!.invalid && (condition.get('definitionId')!.dirty || condition.get('definitionId')!.touched)">
+                                                                        <small class="form-text text-danger"
+                                                                            *ngIf="condition.get('definitionId')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                            This field is required.
+                                                                        </small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row" *ngIf="condition.get('andConditions')?.controls?.length > 0">
+                                                                <div class="col-1">
+                                                                </div>
+                                                                <div class="col-11">
+                                                                    AND
+                                                                    <ng-container *ngTemplateOutlet="recursiveConditionList; context:{ $implicit: condition.get('andConditions'), container: condition.get('andConditions'), firstLevel: false }"></ng-container>        
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row" *ngIf="condition.get('orConditions')?.controls?.length > 0">
+                                                                <div class="col-1">
+                                                                    OR
+                                                                </div>
+                                                                <div class="col-11">
+                                                                    <ng-container *ngTemplateOutlet="recursiveConditionList; context:{ $implicit: condition.get('orConditions'), container: condition.get('orConditions'), firstLevel: false }"></ng-container>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </ng-container>
+                                                </ng-template>
+                                                <ng-container *ngTemplateOutlet="recursiveConditionList; context:{ $implicit: step.get('conditions'), container: step.get('conditions'), firstLevel: true }"></ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- actions row -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div formGroupName="actions" *ngIf="hasActions(step)">
+                                            <ng-container *ngFor="let action of step.get('actions').controls; let actIndex = index">
+                                                <div [formGroupName]="actIndex">
+                                                    <div class="input-group">
+                                                        <select class="form-control" id="field_definition" name="definition" formControlName="definitionId">
+                                                            <option *ngIf="!action.get('definitionId')!.value" [ngValue]="null" selected></option>
+                                                            <option [ngValue]="sequenceStepActionDefinitionOption.id" *ngFor="let sequenceStepActionDefinitionOption of sequencestepactiondefinitions; trackBy: trackById">{{ sequenceStepActionDefinitionOption.description }}</option>
+                                                        </select>
+                                                        <div class="input-group-append">
+                                                            <button *ngIf="!readOnly" type="button" 
+                                                                class="btn btn-sm btn-outline-primary" 
+                                                                title="add action"
+                                                                (click)="addAction(step)">
+                                                                <span><fa-icon icon="plus"></fa-icon></span>
+                                                            </button>
+                                                            <button *ngIf="!readOnly" type="button" 
+                                                                class="btn btn-sm btn-outline-danger" 
+                                                                title="delete this action"
+                                                                [disabled]="!(step.get('actions').controls.length > 1)"
+                                                                (click)="deleteAction(step.get('actions'), actIndex)">
+                                                                <fa-icon icon="trash-alt"></fa-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row w-100" *ngIf="action.get('parameters').controls.length > 0">
+                                                        <div class="col-1 p-0"></div>
+                                                        <div class="col-11 p-0">
+                                                            <table class="table table-borderless table-sm w-100">
+                                                                <ng-container formArrayName="parameters">
+                                                                <ng-container *ngFor="let param of action.get('parameters').controls; let paramIndex = index">
+                                                                <tr [formGroupName]="paramIndex">
+                                                                    <td class="pb-0" style="width: 1px;">
+                                                                        <label class="form-control-label">
+                                                                            {{ param.get('definition').value.name }}
+                                                                        </label>
+                                                                    </td>
+                                                                    <td class="pb-0 pr-0">
+                                                                        <ng-container [ngSwitch]="param.get('definition').value.type">
+                                                                            <ng-container *ngSwitchCase="'STRING'">
+                                                                                <input type="text" class="form-control" 
+                                                                                    [placeholder]="param.get('definition').value.description"
+                                                                                    formControlName="valueString" />
+                                                                                <div *ngIf="param.get('valueString')!.invalid 
+                                                                                    && (param.get('valueString')!.dirty 
+                                                                                    || param.get('valueString')!.touched)">
+                                                                                    <small class="form-text text-danger"
+                                                                                        *ngIf="param.get('valueString')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                                        This field is required.
+                                                                                    </small>
+                                                                                </div>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="'NUMBER'">
+                                                                                <input type="number" class="form-control" 
+                                                                                    [min]="param.get('definition').value.minValue === 0 ? 0: (param.get('definition').value.minValue || -100000)"
+                                                                                    [max]="param.get('definition').value.maxValue || 100000"
+                                                                                    [step]="param.get('definition').value.stepValue || 0.01"
+                                                                                    [placeholder]="param.get('definition').value.description"
+                                                                                    formControlName="valueNumber" />
+                                                                                <div *ngIf="param.get('valueNumber')!.invalid 
+                                                                                    && (param.get('valueNumber')!.dirty 
+                                                                                    || param.get('valueNumber')!.touched)">
+                                                                                    <small class="form-text text-danger"
+                                                                                        *ngIf="param.get('valueNumber')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                                        This field is required.
+                                                                                    </small>
+                                                                                </div>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="'BOOLEAN'">
+                                                                                <select class="form-control" formControlName="valueBoolean">
+                                                                                    <option [value]="true">YES</option>
+                                                                                    <option [value]="false">NO</option>
+                                                                                </select>
+                                                                                <div *ngIf="param.get('valueBoolean')!.invalid 
+                                                                                    && (param.get('valueBoolean')!.dirty 
+                                                                                    || param.get('valueBoolean')!.touched)">
+                                                                                    <small class="form-text text-danger"
+                                                                                        *ngIf="param.get('valueBoolean')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                                        This field is required.
+                                                                                    </small>
+                                                                                </div>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="'OPERATOR'">
+                                                                                <select class="form-control" formControlName="valueOperator">
+                                                                                    <option value="DIFFERS">{{ 'leloHubApp.SequenceOperator.DIFFERS' | translate }}</option>
+                                                                                    <option value="EQUALS">{{ 'leloHubApp.SequenceOperator.EQUALS' | translate }}</option>
+                                                                                    <option value="GREATER_THAN">{{ 'leloHubApp.SequenceOperator.GREATER_THAN' | translate }}</option>
+                                                                                    <option value="GREATER_THAN_OR_EQUAL_TO">{{ 'leloHubApp.SequenceOperator.GREATER_THAN_OR_EQUAL_TO' | translate }}</option>
+                                                                                    <option value="LESS_THAN">{{ 'leloHubApp.SequenceOperator.LESS_THAN' | translate }}</option>
+                                                                                    <option value="LESS_THAN_OR_EQUAL_TO">{{ 'leloHubApp.SequenceOperator.LESS_THAN_OR_EQUAL_TO' | translate }}</option>
+                                                                                </select>
+                                                                                <div *ngIf="param.get('valueOperator')!.invalid 
+                                                                                    && (param.get('valueOperator')!.dirty 
+                                                                                    || param.get('valueOperator')!.touched)">
+                                                                                    <small class="form-text text-danger"
+                                                                                        *ngIf="param.get('valueOperator')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                                        This field is required.
+                                                                                    </small>
+                                                                                </div>
+                                                                            </ng-container>
+                                                                            <ng-container *ngSwitchCase="'VARIABLE'">
+                                                                                <select class="form-control" formControlName="valueVariable">
+                                                                                    <option value="ACCELERATION_X">{{ 'leloHubApp.SequenceVariable.ACCELERATION_X' | translate }}</option>
+                                                                                    <option value="ACCELERATION_Y">{{ 'leloHubApp.SequenceVariable.ACCELERATION_Y' | translate }}</option>
+                                                                                    <option value="ACCELERATION_Z">{{ 'leloHubApp.SequenceVariable.ACCELERATION_Z' | translate }}</option>
+                                                                                    <option value="INSERTION_DEPTH">{{ 'leloHubApp.SequenceVariable.INSERTION_DEPTH' | translate }}</option>
+                                                                                    <option value="MOTOR_SPEED">{{ 'leloHubApp.SequenceVariable.MOTOR_SPEED' | translate }}</option>
+                                                                                    <option value="PRESSURE">{{ 'leloHubApp.SequenceVariable.PRESSURE' | translate }}</option>
+                                                                                    <option value="RUN_TIME">{{ 'leloHubApp.SequenceVariable.RUN_TIME' | translate }}</option>
+                                                                                    <option value="TEMPERATURE">{{ 'leloHubApp.SequenceVariable.TEMPERATURE' | translate }}</option>
+                                                                                    <option value="VIBE_SPEED">{{ 'leloHubApp.SequenceVariable.VIBE_SPEED' | translate }}</option>                                                                        
+                                                                                </select>
+                                                                                <div *ngIf="param.get('valueVariable')!.invalid 
+                                                                                    && (param.get('valueVariable')!.dirty 
+                                                                                    || param.get('valueVariable')!.touched)">
+                                                                                    <small class="form-text text-danger"
+                                                                                        *ngIf="param.get('valueVariable')?.errors?.required" jhiTranslate="entity.validation.required">
+                                                                                        This field is required.
+                                                                                    </small>
+                                                                                </div>
+                                                                            </ng-container>
+                                                                        </ng-container>
+                                                                    </td>
+                                                                </tr>
+                                                                </ng-container>
+                                                                </ng-container>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+    
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </ng-container>
+                </ng-container>
+
+                <div class="row" *ngIf="!readOnly">
+                    <div class="col-12">
+                        <hr/>
+                        <button type="button" class="btn btn-block btn-outline-primary float-right" (click)="addStep()">
+                            <fa-icon icon="plus"></fa-icon> add step
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <hr/>
+
+                <button *ngIf="!readOnly" type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="arrow-left"></fa-icon> Return
+                </button>
+
+                <button *ngIf="!readOnly" type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" 
+                    class="btn btn-primary float-right ml-2">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+                
+                <button type="button" id="clone-entity" (click)="clone()" *ngIf="!!id && !readOnly"
+                    [disabled]="!readOnly && (editForm.invalid || isSaving)" class="btn btn-primary float-right ml-2">
+                    <fa-icon icon="clone"></fa-icon> Save as copy</span>
+                </button>
+                
+                <button type="button" (click)="delete()" *ngIf="!!id && !readOnly"
+                        class="btn btn-danger float-right ml-2">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                </button>
+
+                <button *ngIf="readOnly" type="button" id="return" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="arrow-left"></fa-icon> Return
+                </button>
+
+                <button type="button" id="clone-entity" (click)="clone()" *ngIf="!!id && readOnly"
+                    [disabled]="!readOnly && (editForm.invalid || isSaving)" class="btn btn-primary float-right">
+                    <fa-icon icon="clone"></fa-icon> Clone</span>
+                </button>
+                
+            </div>
+        </form>
+    </div>
+</div>

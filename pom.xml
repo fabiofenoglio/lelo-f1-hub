@@ -5,7 +5,7 @@
 
     <groupId>it.fabiofenoglio.lelohub</groupId>
     <artifactId>lelohub</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>war</packaging>
     <name>LeloHub</name>
 

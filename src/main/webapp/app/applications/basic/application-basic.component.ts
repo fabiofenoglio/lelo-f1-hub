@@ -2,6 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LeloF1SDKService } from 'app/core/lelo-f1-sdk/lelo-f1-sdk.service';
 import { LeloF1NotificationHandler, LeloF1ButtonsStatus } from 'app/core/lelo-f1-sdk/lelo-f1-sdk.constants';
 import { NGXLogger } from 'ngx-logger';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SequencePickerModalComponent } from './sequence-picker-modal/sequence-picker-modal.component';
+import { ISequence } from 'app/shared/model/sequence.model';
+import { SequencePlayerModalComponent } from './sequence-player-modal/sequence-player-modal.component';
+
 
 @Component({
   selector: 'jhi-application-basic',
@@ -41,6 +46,9 @@ export class ApplicationBasicComponent implements OnInit, OnDestroy {
 
   buttonsAssignment = this.BUTTONS_ASSIGNMENT_VIBE_MOTOR;
 
+  playingSequence = false;
+  activeSequenceController: SequencePlayerModalComponent | null = null;
+
   cruiseControlModal = {
       enabled: false,
       levels: [30, 40, 50, 60, 70, 80, 90, 100]
@@ -49,7 +57,9 @@ export class ApplicationBasicComponent implements OnInit, OnDestroy {
   private notifications: LeloF1NotificationHandler<any>[] = [];
   private sensorNotifications: LeloF1NotificationHandler<any>[] = [];
 
-  constructor( private logger: NGXLogger, protected client: LeloF1SDKService ) {
+  constructor( private logger: NGXLogger, 
+    private modalService: NgbModal,
+    private client: LeloF1SDKService ) {
   }
   
   ngOnInit(): void {
@@ -188,6 +198,14 @@ export class ApplicationBasicComponent implements OnInit, OnDestroy {
     });
   };
 
+  stopMotors(): Promise<void> {
+    return this.client.setMotorsSpeed(0, 0).then(() => {
+      this.mainMotorLevel = 0;
+      this.vibeMotorLevel = 0;
+      this.refresh();
+    });
+  };
+
   incrementBothMotors(): void {
       let toSetMain = (this.mainMotorLevel || 0) + this.SCALE_SPEED_STEP;
       if (toSetMain > 100) {
@@ -231,6 +249,10 @@ export class ApplicationBasicComponent implements OnInit, OnDestroy {
           return;
       }
 
+      if (this.playingSequence) {
+        return;
+      }
+      
       if (!this.cruiseControlStatus) {
           if (this.buttonsAssignment === this.BUTTONS_ASSIGNMENT_VIBE_MOTOR) {
             this.buttonsAssignment = this.BUTTONS_ASSIGNMENT_MAIN_MOTOR;
@@ -251,6 +273,10 @@ export class ApplicationBasicComponent implements OnInit, OnDestroy {
           return;
       }
       
+      if (this.playingSequence) {
+        return;
+      }
+      
       if (!this.cruiseControlStatus) {
           if (this.buttonsAssignment === this.BUTTONS_ASSIGNMENT_VIBE_MOTOR) {
             this.incrementVibeMotor();
@@ -268,7 +294,7 @@ export class ApplicationBasicComponent implements OnInit, OnDestroy {
       if (!this.isConnected() || !this.authorized) {
           return;
       }
-      
+
       if (!this.cruiseControlStatus) {
           if (this.buttonsAssignment === this.BUTTONS_ASSIGNMENT_VIBE_MOTOR) {
             this.decrementVibeMotor();
@@ -404,18 +430,23 @@ export class ApplicationBasicComponent implements OnInit, OnDestroy {
 
   buttonsChanged(value: LeloF1ButtonsStatus): void {
     this.buttonsStatus = value;
-      
-      if (this.authorized) {
-          if (value.central) {
-            this.centralButtonPressed();
-          } else if (value.minus) {
-            this.minusButtonPressed();
-          } else if (value.plus) {
-            this.plusButtonPressed();
-          }
-      }
+    
+    if (this.playingSequence) {
+      this.activeSequenceController?.dispatchButtonPress(value);
+      return;
+    }
+    
+    if (this.authorized) {
+        if (value.central) {
+          this.centralButtonPressed();
+        } else if (value.minus) {
+          this.minusButtonPressed();
+        } else if (value.plus) {
+          this.plusButtonPressed();
+        }
+    }
 
-      this.refresh();
+    this.refresh();
   }
 
   temperatureAndPressureChanged(value: number[]): void {
@@ -489,6 +520,43 @@ export class ApplicationBasicComponent implements OnInit, OnDestroy {
         this.errors.splice(0, 1);
         this.refresh();
       }, 5000);
+  }
+
+  pickSequence(): void {
+    const modal = this.modalService.open(SequencePickerModalComponent, {
+      backdrop: true,
+      keyboard: true,
+      size: 'lg'
+    });
+
+    modal.result.then(result => {
+      this.stopMotors().then(() => {
+        this.playSequence(result);
+      });
+    }, () => {});
+  }
+
+  playSequence(sequence: ISequence): void {
+    this.playingSequence = true;
+
+    const modal = this.modalService.open(SequencePlayerModalComponent, {
+      backdrop: 'static',
+      keyboard: false,
+      size: 'lg'
+    });
+
+    this.activeSequenceController = (modal.componentInstance as SequencePlayerModalComponent);
+    this.activeSequenceController.activate(this.client, sequence);
+
+    modal.result.then(() => {
+      this.stopMotors();
+      this.playingSequence = false;
+      this.activeSequenceController = null;
+      
+    }, () => {
+      this.playingSequence = false;
+      this.activeSequenceController = null;
+    });
   }
 
 }

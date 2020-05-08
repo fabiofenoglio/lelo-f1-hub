@@ -1,0 +1,156 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-sequence-step-action-definition-parameter-heading" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.home.createOrEditLabel">Create or edit a Sequence Step Action Definition Parameter</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.generation" for="field_generation">Generation</label>
+                    <select class="form-control" name="generation" formControlName="generation" id="field_generation">
+                        <option value="GEN1">{{ 'leloHubApp.SequenceStepActionGeneration.GEN1' | translate }}</option>
+                    </select>
+                    <div *ngIf="editForm.get('generation')!.invalid && (editForm.get('generation')!.dirty || editForm.get('generation')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('generation')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.code" for="field_code">Code</label>
+                    <input type="text" class="form-control" name="code" id="field_code"
+                           formControlName="code"/>
+                    <div *ngIf="editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('code')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('code')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 100 }">
+                        This field cannot be longer than 100 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.name" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                    <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 250 }">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.description" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                           formControlName="description"/>
+                    <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('description')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 250 }">
+                        This field cannot be longer than 250 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.type" for="field_type">Type</label>
+                    <select class="form-control" name="type" formControlName="type" id="field_type">
+                        <option value="STRING">{{ 'leloHubApp.SequenceStepActionDefinitionParameterType.STRING' | translate }}</option>
+                        <option value="NUMBER">{{ 'leloHubApp.SequenceStepActionDefinitionParameterType.NUMBER' | translate }}</option>
+                        <option value="OPERATOR">{{ 'leloHubApp.SequenceStepActionDefinitionParameterType.OPERATOR' | translate }}</option>
+                        <option value="VARIABLE">{{ 'leloHubApp.SequenceStepActionDefinitionParameterType.VARIABLE' | translate }}</option>
+                    </select>
+                    <div *ngIf="editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('type')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.evaluationEngine" for="field_evaluationEngine">Evaluation Engine</label>
+                    <select class="form-control" name="evaluationEngine" formControlName="evaluationEngine" id="field_evaluationEngine">
+                        <option value="DEFAULT_ENGINE">{{ 'leloHubApp.SequenceStepActionEvaluationEngine.DEFAULT_ENGINE' | translate }}</option>
+                    </select>
+                    <div *ngIf="editForm.get('evaluationEngine')!.invalid && (editForm.get('evaluationEngine')!.dirty || editForm.get('evaluationEngine')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('evaluationEngine')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.minValue" for="field_minValue">Min Value</label>
+                    <input type="number" class="form-control" name="minValue" id="field_minValue"
+                           formControlName="minValue"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.maxValue" for="field_maxValue">Max Value</label>
+                    <input type="number" class="form-control" name="maxValue" id="field_maxValue"
+                           formControlName="maxValue"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.stepValue" for="field_stepValue">Step Value</label>
+                    <input type="number" class="form-control" name="stepValue" id="field_stepValue"
+                           formControlName="stepValue"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.minLength" for="field_minLength">Min Length</label>
+                    <input type="number" class="form-control" name="minLength" id="field_minLength"
+                           formControlName="minLength"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.maxLength" for="field_maxLength">Max Length</label>
+                    <input type="number" class="form-control" name="maxLength" id="field_maxLength"
+                           formControlName="maxLength"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.definition" for="field_definition">Definition</label>
+                    <select class="form-control" id="field_definition" name="definition" formControlName="definitionId">
+                        <option *ngIf="!editForm.get('definitionId')!.value" [ngValue]="null" selected></option>
+                        <option [ngValue]="sequenceStepActionDefinitionOption.id" *ngFor="let sequenceStepActionDefinitionOption of sequencestepactiondefinitions; trackBy: trackById">{{ sequenceStepActionDefinitionOption.code }}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('definitionId')!.invalid && (editForm.get('definitionId')!.dirty || editForm.get('definitionId')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('definitionId')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

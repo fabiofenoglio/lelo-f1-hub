@@ -1,0 +1,25 @@
+{
+  "leloHubApp": {
+    "sequenceStepActionDefinition": {
+      "home": {
+        "title": "SequenceStepActionDefinitions",
+        "createLabel": "Genera un nuovo Sequence Step Action Definition",
+        "createOrEditLabel": "Genera o modifica un Sequence Step Action Definition",
+        "notFound": "No Sequence Step Action Definitions found"
+      },
+      "created": "&Egrave; stato generato un nuovo Sequence Step Action Definition con identificatore {{ param }}",
+      "updated": "&Egrave; stato aggiornato Sequence Step Action Definition identificato da {{ param }}",
+      "deleted": "&Egrave; stato eliminato Sequence Step Action Definition con identificatore {{ param }}",
+      "delete": {
+        "question": "Sei sicuro di volere eliminare Sequence Step Action Definition {{ id }}?"
+      },
+      "detail": {
+        "title": "Sequence Step Action Definition"
+      },
+      "generation": "Generation",
+      "code": "Code",
+      "description": "Description",
+      "parameters": "Parameters"
+    }
+  }
+}

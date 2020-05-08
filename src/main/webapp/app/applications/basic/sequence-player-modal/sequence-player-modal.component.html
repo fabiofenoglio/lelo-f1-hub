@@ -1,0 +1,199 @@
+<div class="modal-header">
+    <h6 class="modal-title">Sequence player <span *ngIf="sequence">- {{ sequence?.name }}</span></h6>
+</div>
+<div class="modal-body" *ngIf="ready">
+    <!-- STATUS -->
+    <p class="alert alert-{{ running ? 'info' : paused ? 'warning' : aborting ? 'danger' : 'secondary' }}" *ngIf="running || paused">
+        <span *ngIf="running">
+            Sequence running ...
+        </span>
+        <span *ngIf="paused">
+            Sequence paused
+        </span>
+        <span *ngIf="aborting">
+            Stopping sequence ...
+        </span>
+        <br/>
+        <small>Tip: you can press anyone of the buttons on the device to pause or resume the sequence.</small>
+    </p>
+
+    <!-- STEPS -->
+    <div class="row">
+        <div class="col-12">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-{{ idle ? 'info' : 'light' }} start">
+                    <div class="row">
+                        <div class="col-1"> <fa-icon *ngIf="idle" icon="pause"></fa-icon> </div>
+                        <div class="col-11"> Sequence start </div>
+                    </div>
+                </li>
+                <ng-container *ngFor="let entry of executionSteps">
+                    <ng-container *ngTemplateOutlet="stepTemplate; context:{ $implicit: entry }"></ng-container>
+                </ng-container>
+                <li *ngIf="finished" class="list-group-item list-group-item-success finish">
+                    <div class="row">
+                        <div class="col-1"> <fa-icon icon="check"></fa-icon> </div>
+                        <div class="col-11"> Sequence completed </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="modal-footer text-left" *ngIf="ready">
+    <div class="row w-100">
+        <div class="col-12 col-md-4 text-left">
+            <button type="button" class="btn btn-secondary mr-2" (click)="cancel()" *ngIf="idle || finished">
+                Cancel
+            </button>
+        </div>
+        <div class="col-12 col-md-8 text-right">
+            <button type="button" class="btn btn-primary ml-2" (click)="cancel()" *ngIf="finished">
+                Exit
+            </button>
+            <button type="button" class="btn btn-danger ml-2" (click)="abort()" *ngIf="running || paused">
+                <fa-icon icon="stop"></fa-icon>
+                Abort
+            </button>
+            <button type="button" class="btn btn-primary ml-2" (click)="pause()" *ngIf="running">
+                <fa-icon icon="pause"></fa-icon>
+                Pause
+            </button>
+            <button type="button" class="btn btn-primary ml-2" (click)="resume()" *ngIf="paused">
+                <fa-icon icon="play"></fa-icon>
+                Resume
+            </button>
+        </div>
+    </div>
+</div>
+
+<ng-template #stepTemplate let-entry>
+    <li class="list-group-item {{ getStyle(entry) }}">
+        <div class="row">
+            <div class="col-1">
+                <!--
+                <span *ngIf="!entry.current">
+                    {{ entry.step.ordinal }}
+                </span>
+                <span *ngIf="entry.current">
+                    <fa-icon [icon]="getIcon(entry)" [spin]="entry.current && running"></fa-icon>
+                </span>
+                -->
+                {{ entry.step.ordinal }}
+            </div>
+            <div class="col-11">
+                <div class="step-content">
+                    <!-- conditions if present -->
+                    <div *ngIf="entry.step.conditions?.length">
+                        <div *ngFor="let condition of entry.step.conditions">
+                            <ng-container *ngTemplateOutlet="conditionTemplate; context:{ $implicit: condition }"></ng-container>
+                        </div>
+                    </div>
+
+                    <!-- actions -->
+                    <div *ngIf="entry.step.actions?.length" class="step-actions">
+                        <div *ngFor="let action of entry.step.actions">
+                            <ng-container *ngTemplateOutlet="actionTemplate; context:{ $implicit: action, entry: entry, current: entry.currentActionContext && entry.currentActionContext.action?.id === action.id }"></ng-container>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- messages -->
+                <div class="step-messages" *ngIf="entry.messages?.length">
+                    <div *ngFor="let message of entry.messages" class="message-{{ message.level | lowercase }}">
+                        <span [ngSwitch]="message.level" style="min-width: 1em;">
+                            <fa-icon *ngSwitchCase="'ERROR'" icon="exclamation-triangle" flip="horizontal"></fa-icon>
+                            <fa-icon *ngSwitchCase="'WARNING'" icon="exclamation-triangle"></fa-icon>
+                            <fa-icon *ngSwitchCase="'DEBUG'" icon="bug"></fa-icon>
+                            <span *ngSwitchDefault>&nbsp;</span>
+                        </span>
+                        {{ message.text }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+</ng-template>
+
+<ng-template #actionProgressTemplate let-entry>
+    <div class="step-progress" *ngIf="entry.currentActionContext?.progress">
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped bg-info" role="progressbar" 
+            style="width: {{ entry.currentActionContext?.progress }}%"></div>
+      </div>
+</div>
+</ng-template>
+
+<ng-template #conditionTemplate let-condition>
+    <div class="row">
+        <div class="col-12">
+            <!-- definition -->
+            <div>
+                WHEN {{ condition.definition.description }}
+                <!-- parameters -->
+                <span *ngIf="condition.parameters?.length">
+                    <span *ngFor="let param of condition.parameters">
+                        <ng-container *ngTemplateOutlet="parameterTemplate; context:{ $implicit: param }"></ng-container>
+                    </span>
+                </span>
+            </div>
+            <!-- AND conditions -->
+            <div *ngIf="condition.andConditions?.length">
+                <div *ngFor="let otherCondition of condition.andConditions">
+                    <ng-container *ngTemplateOutlet="conditionTemplate; context:{ $implicit: otherCondition }"></ng-container>
+                </div>
+            </div>
+            <!-- OR conditions -->
+            <div *ngIf="condition.orConditions?.length">
+                <div *ngFor="let otherCondition of condition.orConditions">
+                    <ng-container *ngTemplateOutlet="conditionTemplate; context:{ $implicit: otherCondition }"></ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #actionTemplate let-action let-current="current" let-entry="entry">
+    <div class="row step-action" [class.current]="current">
+        <div class="col-12">
+            <span *ngIf="current">
+                <fa-icon *ngIf="running" icon="circle-notch" [spin]="true"></fa-icon>
+                <fa-icon *ngIf="paused" icon="pause"></fa-icon>
+            </span>
+
+            <!-- definition -->
+            {{ action.definition.description }}
+            
+            <!-- parameters -->
+            <span *ngIf="action.parameters?.length">
+                <span *ngFor="let param of action.parameters">
+                    <ng-container *ngTemplateOutlet="parameterTemplate; context:{ $implicit: param }"></ng-container>
+                </span>
+            </span>
+
+            <!-- progress if present -->
+            <ng-container *ngIf="current">
+                <ng-container *ngTemplateOutlet="actionProgressTemplate; context:{ $implicit: entry }"></ng-container>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #parameterTemplate let-param>
+    <!-- {{ param.definition.name }} -->
+    <span *ngIf="param.definition.type === 'STRING'">
+        {{ param.valueString }}
+    </span>
+    <span *ngIf="param.definition.type === 'NUMBER'">
+        {{ param.valueNumber }}
+    </span>
+    <span *ngIf="param.definition.type === 'BOOLEAN'">
+        {{ param.valueBoolean }}
+    </span>
+    <span *ngIf="param.definition.type === 'OPERATOR'">
+        {{ param.valueOperator }}
+    </span>
+    <span *ngIf="param.definition.type === 'VARIABLE'">
+        {{ param.valueVariable }}
+    </span>
+</ng-template>

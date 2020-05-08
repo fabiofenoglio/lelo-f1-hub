@@ -1,17 +1,19 @@
 package it.fabiofenoglio.lelohub.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.time.Instant;
+
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
+
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.io.Serializable;
-import java.time.Instant;
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Base abstract class for entities which will hold definitions for created, last modified, created by,
@@ -19,7 +21,7 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AbstractAuditingEntity implements Serializable {
+public abstract class AbstractAuditingEntity<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -51,6 +53,12 @@ public abstract class AbstractAuditingEntity implements Serializable {
         this.createdBy = createdBy;
     }
 
+    @SuppressWarnings("unchecked")
+    public T createdBy(String createdBy) {
+        this.createdBy = createdBy;
+        return (T) this;
+    }
+    
     public Instant getCreatedDate() {
         return createdDate;
     }
@@ -59,6 +67,12 @@ public abstract class AbstractAuditingEntity implements Serializable {
         this.createdDate = createdDate;
     }
 
+    @SuppressWarnings("unchecked")
+	public T createdDate(Instant createdDate) {
+        this.createdDate = createdDate;
+        return (T) this;
+    }
+    
     public String getLastModifiedBy() {
         return lastModifiedBy;
     }
@@ -67,11 +81,23 @@ public abstract class AbstractAuditingEntity implements Serializable {
         this.lastModifiedBy = lastModifiedBy;
     }
 
+    @SuppressWarnings("unchecked")
+    public T lastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+        return (T) this;
+    }
+
     public Instant getLastModifiedDate() {
         return lastModifiedDate;
     }
 
     public void setLastModifiedDate(Instant lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T lastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+        return (T) this;
     }
 }

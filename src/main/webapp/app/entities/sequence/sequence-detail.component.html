@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sequence">
+            <h2><span jhiTranslate="leloHubApp.sequence.detail.title">Sequence</span> {{ sequence.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="leloHubApp.sequence.generation">Generation</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceGeneration.' + sequence.generation }}">{{ sequence.generation }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequence.name">Name</span></dt>
+                <dd>
+                    <span>{{ sequence.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequence.description">Description</span></dt>
+                <dd>
+                    <span>{{ sequence.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequence.visibility">Visibility</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceVisibility.' + sequence.visibility }}">{{ sequence.visibility }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequence.createdDate">Created At</span></dt>
+                <dd>
+                    <span>{{ sequence.createdDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequence.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{ sequence.createdBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequence.lastModifiedDate">Modified At</span></dt>
+                <dd>
+                    <span>{{ sequence.lastModifiedDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequence.lastModifiedBy">Modified By</span></dt>
+                <dd>
+                    <span>{{ sequence.lastModifiedBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequence.user">User</span></dt>
+                <dd>
+                    {{ sequence.userLogin }}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sequence', sequence.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

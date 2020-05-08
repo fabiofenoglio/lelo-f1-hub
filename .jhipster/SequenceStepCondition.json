@@ -1,0 +1,113 @@
+{
+    "name": "SequenceStepCondition",
+    "fields": [
+        {
+            "fieldName": "generation",
+            "fieldType": "SequenceStepConditionGeneration",
+            "fieldValues": "GEN1",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "250"
+        },
+        {
+            "fieldName": "negate",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "createdBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastModifiedDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastModifiedBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sequenceStepConditionParameter",
+            "otherEntityRelationshipName": "condition",
+            "relationshipName": "parameters"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sequenceStepCondition",
+            "otherEntityRelationshipName": "otherAndCondition",
+            "relationshipName": "andConditions"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sequenceStepCondition",
+            "otherEntityRelationshipName": "otherOrCondition",
+            "relationshipName": "orConditions"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sequenceStepConditionDefinition",
+            "otherEntityRelationshipName": "sequenceStepCondition",
+            "relationshipValidateRules": "required",
+            "relationshipName": "definition",
+            "otherEntityField": "code"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sequenceStep",
+            "otherEntityRelationshipName": "conditions",
+            "relationshipName": "step",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sequenceStepCondition",
+            "otherEntityRelationshipName": "andConditions",
+            "relationshipName": "otherAndCondition",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sequenceStepCondition",
+            "otherEntityRelationshipName": "orConditions",
+            "relationshipName": "otherOrCondition",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200505101600",
+    "entityTableName": "sequence_step_condition",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

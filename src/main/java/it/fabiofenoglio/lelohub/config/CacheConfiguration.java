@@ -42,6 +42,25 @@ public class CacheConfiguration {
             createCache(cm, it.fabiofenoglio.lelohub.domain.User.class.getName());
             createCache(cm, it.fabiofenoglio.lelohub.domain.Authority.class.getName());
             createCache(cm, it.fabiofenoglio.lelohub.domain.User.class.getName() + ".authorities");
+            createCache(cm, it.fabiofenoglio.lelohub.domain.Sequence.class.getName());
+            // createCache(cm, it.fabiofenoglio.lelohub.domain.Sequence.class.getName() + ".steps");
+            createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStep.class.getName());
+            // createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStep.class.getName() + ".conditions");
+            // createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStep.class.getName() + ".actions");
+            createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepConditionDefinition.class.getName());
+            // createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepConditionDefinition.class.getName() + ".parameters");
+            createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepConditionDefinitionParameter.class.getName());
+            createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepCondition.class.getName());
+            // createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepCondition.class.getName() + ".parameters");
+            // createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepCondition.class.getName() + ".andConditions");
+            // createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepCondition.class.getName() + ".orConditions");
+            createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepConditionParameter.class.getName());
+            createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepActionDefinition.class.getName());
+            // createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepActionDefinition.class.getName() + ".parameters");
+            createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepActionDefinitionParameter.class.getName());
+            createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepAction.class.getName());
+            // createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepAction.class.getName() + ".parameters");
+            createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepActionParameter.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

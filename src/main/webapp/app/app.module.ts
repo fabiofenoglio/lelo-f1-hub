@@ -16,6 +16,8 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { LeloHubApplicationsModule } from './applications/applications.module';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 
 @NgModule({
@@ -23,14 +25,16 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
     BrowserModule,
     LeloHubSharedModule,
     LeloHubCoreModule,
+    NgHttpLoaderModule.forRoot(),
     LeloHubHomeModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     LeloHubEntityModule,
     LeloHubApplicationsModule,
     LeloHubAppRoutingModule,
-    LoggerModule.forRoot({level: NgxLoggerLevel.DEBUG, })
+    LoggerModule.forRoot({level: NgxLoggerLevel.TRACE, })
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
-  bootstrap: [MainComponent]
+  bootstrap: [MainComponent],
+  providers: [DeviceDetectorService]
 })
 export class LeloHubAppModule {}

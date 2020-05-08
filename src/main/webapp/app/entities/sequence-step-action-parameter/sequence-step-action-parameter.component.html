@@ -1,0 +1,89 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="leloHubApp.sequenceStepActionParameter.home.title">Sequence Step Action Parameters</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-sequence-step-action-parameter" [routerLink]="['/sequence-step-action-parameter/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="leloHubApp.sequenceStepActionParameter.home.createLabel">
+            Create a new Sequence Step Action Parameter
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="sequenceStepActionParameters?.length === 0">
+        <span jhiTranslate="leloHubApp.sequenceStepActionParameter.home.notFound">No sequenceStepActionParameters found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="sequenceStepActionParameters?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="generation"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.generation">Generation</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="valueString"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.valueString">Value String</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="valueNumber"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.valueNumber">Value Number</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="valueBoolean"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.valueBoolean">Value Boolean</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="valueVariable"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.valueVariable">Value Variable</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createdDate"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.createdDate">Created At</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createdBy"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.createdBy">Created By</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastModifiedDate"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.lastModifiedDate">Modified At</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastModifiedBy"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.lastModifiedBy">Modified By</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionName"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.definition">Definition</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="actionId"><span jhiTranslate="leloHubApp.sequenceStepActionParameter.action">Action</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let sequenceStepActionParameter of sequenceStepActionParameters ;trackBy: trackId">
+                    <td><a [routerLink]="['/sequence-step-action-parameter', sequenceStepActionParameter.id, 'view']">{{ sequenceStepActionParameter.id }}</a></td>
+                    <td jhiTranslate="{{ 'leloHubApp.SequenceStepActionGeneration.' + sequenceStepActionParameter.generation }}">{{ sequenceStepActionParameter.generation }}</td>
+                    <td>{{ sequenceStepActionParameter.valueString }}</td>
+                    <td>{{ sequenceStepActionParameter.valueNumber }}</td>
+                    <td>{{ sequenceStepActionParameter.valueBoolean }}</td>
+                    <td jhiTranslate="{{ 'leloHubApp.SequenceVariable.' + sequenceStepActionParameter.valueVariable }}">{{ sequenceStepActionParameter.valueVariable }}</td>
+                    <td>{{ sequenceStepActionParameter.createdDate | date:'medium' }}</td>
+                    <td>{{ sequenceStepActionParameter.createdBy }}</td>
+                    <td>{{ sequenceStepActionParameter.lastModifiedDate | date:'medium' }}</td>
+                    <td>{{ sequenceStepActionParameter.lastModifiedBy }}</td>
+                    <td>
+                        <div *ngIf="sequenceStepActionParameter.definitionId">
+                            <a [routerLink]="['/sequence-step-action-definition-parameter', sequenceStepActionParameter.definitionId , 'view']" >{{ sequenceStepActionParameter.definitionName }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="sequenceStepActionParameter.actionId">
+                            <a [routerLink]="['/sequence-step-action', sequenceStepActionParameter.actionId , 'view']" >{{ sequenceStepActionParameter.actionId }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/sequence-step-action-parameter', sequenceStepActionParameter.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/sequence-step-action-parameter', sequenceStepActionParameter.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(sequenceStepActionParameter)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

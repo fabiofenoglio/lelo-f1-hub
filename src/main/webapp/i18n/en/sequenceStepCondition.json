@@ -1,0 +1,35 @@
+{
+  "leloHubApp": {
+    "sequenceStepCondition": {
+      "home": {
+        "title": "Sequence Step Conditions",
+        "createLabel": "Create a new Sequence Step Condition",
+        "createOrEditLabel": "Create or edit a Sequence Step Condition",
+        "notFound": "No Sequence Step Conditions found"
+      },
+      "created": "A new Sequence Step Condition is created with identifier {{ param }}",
+      "updated": "A Sequence Step Condition is updated with identifier {{ param }}",
+      "deleted": "A Sequence Step Condition is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Sequence Step Condition {{ id }}?"
+      },
+      "detail": {
+        "title": "Sequence Step Condition"
+      },
+      "generation": "Generation",
+      "description": "Description",
+      "negate": "Negate",
+      "createdDate": "Created At",
+      "createdBy": "Created By",
+      "lastModifiedDate": "Modified At",
+      "lastModifiedBy": "Modified By",
+      "parameters": "Parameters",
+      "andConditions": "And Conditions",
+      "orConditions": "Or Conditions",
+      "definition": "Definition",
+      "step": "Step",
+      "otherAndCondition": "Other And Condition",
+      "otherOrCondition": "Other Or Condition"
+    }
+  }
+}

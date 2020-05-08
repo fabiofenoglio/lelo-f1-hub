@@ -1,0 +1,49 @@
+{
+    "name": "SequenceStepConditionDefinition",
+    "fields": [
+        {
+            "fieldName": "generation",
+            "fieldType": "SequenceStepConditionGeneration",
+            "fieldValues": "GEN1",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "code",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength",
+                "required"
+            ],
+            "fieldValidateRulesMaxlength": "100"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "250"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sequenceStepConditionDefinitionParameter",
+            "otherEntityRelationshipName": "definition",
+            "relationshipName": "parameters"
+        }
+    ],
+    "changelogDate": "20200505101400",
+    "entityTableName": "seq_step_cond_def",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

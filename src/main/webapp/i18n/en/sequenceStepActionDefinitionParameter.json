@@ -1,0 +1,33 @@
+{
+  "leloHubApp": {
+    "sequenceStepActionDefinitionParameter": {
+      "home": {
+        "title": "Sequence Step Action Definition Parameters",
+        "createLabel": "Create a new Sequence Step Action Definition Parameter",
+        "createOrEditLabel": "Create or edit a Sequence Step Action Definition Parameter",
+        "notFound": "No Sequence Step Action Definition Parameters found"
+      },
+      "created": "A new Sequence Step Action Definition Parameter is created with identifier {{ param }}",
+      "updated": "A Sequence Step Action Definition Parameter is updated with identifier {{ param }}",
+      "deleted": "A Sequence Step Action Definition Parameter is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Sequence Step Action Definition Parameter {{ id }}?"
+      },
+      "detail": {
+        "title": "Sequence Step Action Definition Parameter"
+      },
+      "generation": "Generation",
+      "code": "Code",
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "evaluationEngine": "Evaluation Engine",
+      "minValue": "Min Value",
+      "maxValue": "Max Value",
+      "stepValue": "Step Value",
+      "minLength": "Min Length",
+      "maxLength": "Max Length",
+      "definition": "Definition"
+    }
+  }
+}

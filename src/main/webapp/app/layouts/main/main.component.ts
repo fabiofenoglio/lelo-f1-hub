@@ -55,6 +55,6 @@ export class MainComponent implements OnInit {
     if (!pageTitle) {
       pageTitle = 'global.title';
     }
-    this.translateService.get(pageTitle).subscribe(title => this.titleService.setTitle(title));
+    this.translateService.get(pageTitle).subscribe(title => this.titleService.setTitle('LeloHUB - ' + title));
   }
 }

@@ -1,0 +1,74 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sequenceStepActionParameter">
+            <h2><span jhiTranslate="leloHubApp.sequenceStepActionParameter.detail.title">Sequence Step Action Parameter</span> {{ sequenceStepActionParameter.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.generation">Generation</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceStepActionGeneration.' + sequenceStepActionParameter.generation }}">{{ sequenceStepActionParameter.generation }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.valueString">Value String</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionParameter.valueString }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.valueNumber">Value Number</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionParameter.valueNumber }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.valueBoolean">Value Boolean</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionParameter.valueBoolean }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.valueVariable">Value Variable</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceVariable.' + sequenceStepActionParameter.valueVariable }}">{{ sequenceStepActionParameter.valueVariable }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.createdDate">Created At</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionParameter.createdDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionParameter.createdBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.lastModifiedDate">Modified At</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionParameter.lastModifiedDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.lastModifiedBy">Modified By</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionParameter.lastModifiedBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.definition">Definition</span></dt>
+                <dd>
+                    <div *ngIf="sequenceStepActionParameter.definitionId">
+                        <a [routerLink]="['/sequence-step-action-definition-parameter', sequenceStepActionParameter.definitionId, 'view']">{{ sequenceStepActionParameter.definitionName }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionParameter.action">Action</span></dt>
+                <dd>
+                    <div *ngIf="sequenceStepActionParameter.actionId">
+                        <a [routerLink]="['/sequence-step-action', sequenceStepActionParameter.actionId, 'view']">{{ sequenceStepActionParameter.actionId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sequence-step-action-parameter', sequenceStepActionParameter.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

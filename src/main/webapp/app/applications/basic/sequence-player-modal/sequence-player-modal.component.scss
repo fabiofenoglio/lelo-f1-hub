@@ -1,0 +1,55 @@
+.clickable {
+    cursor: pointer;
+}
+
+.list-group-item.skipped {
+    opacity: 0.8;
+}
+
+.list-group-item.skipped .step-content {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+.list-group-item.passed {
+    opacity: 0.6;
+}
+
+.list-group-item.future {
+    opacity: 0.8;
+}
+
+.list-group-item.current {
+    opacity: 1.0;
+}
+
+.message-debug {
+    opacity: 0.8;
+}
+
+.message-info {
+    font-size: 1.0em;
+}
+
+.message-warning {
+    font-size: 1.0em;
+}
+
+.message-error {
+    font-size: 1.0em;
+}
+
+.step-progress {
+    padding-bottom: 0.75em;
+}
+
+.step-progress .progress {
+    height: 0.5em;
+}
+
+.step-action:not(.current) {
+    opacity: 0.6;
+}
+.step-action.current {
+    opacity: 1.0;
+}

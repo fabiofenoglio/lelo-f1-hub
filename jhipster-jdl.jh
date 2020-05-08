@@ -1,0 +1,244 @@
+entity Sequence {
+	generation SequenceGeneration required,
+    name String required maxlength(250),
+    description String maxlength(2000),
+    visibility SequenceVisibility required,
+    // AUDIT fields
+    createdDate ZonedDateTime required,
+    createdBy String required,
+    lastModifiedDate ZonedDateTime required
+    lastModifiedBy String required
+}
+enum SequenceGeneration {
+    GEN1
+}
+enum SequenceVisibility {
+    PRIVATE,REMOTE,PUBLIC
+}
+relationship ManyToOne {
+	Sequence{user(login) required} to User
+}
+relationship OneToMany {
+	Sequence{steps(id)} to SequenceStep{sequence(name) required}
+}
+
+
+entity SequenceStep {
+	generation SequenceStepGeneration required,
+    ordinal Integer required,
+    description String maxlength(250),
+    // AUDIT fields
+    createdDate ZonedDateTime required,
+    createdBy String required,
+    lastModifiedDate ZonedDateTime required
+    lastModifiedBy String required
+}
+enum SequenceStepGeneration {
+    GEN1
+}
+relationship OneToMany {
+	SequenceStep{conditions} to SequenceStepCondition{step}
+	SequenceStep{actions} to SequenceStepAction{step required}
+}
+
+
+// es. 'CHECK VARIABLE VALUE'
+entity SequenceStepConditionDefinition(seq_step_cond_def) {
+	generation SequenceStepConditionGeneration required,
+    code String maxlength(100) required,
+	description String maxlength(250),
+}
+relationship OneToMany {
+	SequenceStepConditionDefinition{parameters} to SequenceStepConditionDefinitionParameter{definition(code) required}
+}
+
+// es. 	name='VARIABLE_NAME', type='STRING'
+//		name='OPERATOR', type='OPERATOR'
+//		name='ARGUMENT', type='STRING'
+entity SequenceStepConditionDefinitionParameter(seq_step_cond_def_param) {
+	generation SequenceStepConditionGeneration required,
+    code String maxlength(100) required,
+    name String maxlength(250) required,
+	description String maxlength(250),
+    type SequenceStepConditionDefinitionParameterType required,
+    evaluationEngine SequenceStepConditionEvaluationEngine required,
+    minValue Double,
+    maxValue Double,
+    stepValue Double,
+    minLength Integer,
+    maxLength Integer
+}
+enum SequenceStepConditionDefinitionParameterType {
+	STRING,
+    NUMBER,
+    OPERATOR,
+    VARIABLE
+}
+enum SequenceStepConditionEvaluationEngine {
+	DEFAULT_ENGINE
+}
+
+
+entity SequenceStepCondition {
+	generation SequenceStepConditionGeneration required,
+	description String maxlength(250),
+
+	negate Boolean,
+
+    // AUDIT fields
+    createdDate ZonedDateTime required,
+    createdBy String required,
+    lastModifiedDate ZonedDateTime required
+    lastModifiedBy String required
+}
+enum SequenceStepConditionGeneration {
+    GEN1
+}
+relationship ManyToOne {
+    SequenceStepCondition{definition(code) required} to SequenceStepConditionDefinition
+}
+relationship OneToMany {
+	SequenceStepCondition{parameters} to SequenceStepConditionParameter{condition required}
+	SequenceStepCondition{andConditions} to SequenceStepCondition{otherAndCondition}
+	SequenceStepCondition{orConditions} to SequenceStepCondition{otherOrCondition}
+}
+
+entity SequenceStepConditionParameter(seq_step_cond_param) {
+	generation SequenceStepConditionGeneration required,
+	
+    valueString String,
+    valueNumber Double,
+    valueBoolean Boolean,
+    valueVariable SequenceVariable,
+    valueOperator SequenceOperator,
+
+    // AUDIT fields
+    createdDate ZonedDateTime required,
+    createdBy String required,
+    lastModifiedDate ZonedDateTime required
+    lastModifiedBy String required
+}
+relationship ManyToOne {
+    SequenceStepConditionParameter{definition(name) required} to SequenceStepConditionDefinitionParameter
+}
+
+enum SequenceVariable {
+	USER_VARIABLE,
+    MOTOR_SPEED, // 0 to 100
+    VIBE_SPEED, // 0 to 100
+    CENTRAL_BUTTON_PRESSED, // boolean
+    PLUS_BUTTON_PRESSED, // boolean
+    MINUS_BUTTON_PRESSED, // boolean
+    TEMPERATURE, // float
+    PRESSURE, // float
+    INSERTION_DEPTH, // 0 to 8
+    ACCELERATION_X, // integer
+    ACCELERATION_Y, // integer
+    ACCELERATION_Z, // integer
+    RUN_TIME, // run time in seconds
+    RANDOM // 0 to 100
+}
+enum SequenceOperator {
+    EQUALS,
+    DIFFERS,
+    GREATER_THAN,
+    GREATER_THAN_OR_EQUAL_TO,
+    LESS_THAN,
+    LESS_THAN_OR_EQUAL_TO,
+    DEFINED,
+    NOT_DEFINED,
+    ALWAYS,
+    NEVER
+}
+
+
+// es. 'SET MOTOR SPEED', 'SET VARIABLE VALUE', 'WAIT'
+entity SequenceStepActionDefinition(seq_step_action_def) {
+	generation SequenceStepActionGeneration required,
+    code String maxlength(100) required,
+	description String maxlength(250),
+}
+relationship OneToMany {
+	SequenceStepActionDefinition{parameters} to SequenceStepActionDefinitionParameter{definition(code) required}
+}
+
+// es. 	name='VARIABLE_NAME', type='STRING'
+//		name='OPERATOR', type='OPERATOR'
+//		name='ARGUMENT', type='STRING'
+entity SequenceStepActionDefinitionParameter(seq_step_action_def_param) {
+	generation SequenceStepActionGeneration required,
+    code String maxlength(100) required,
+    name String maxlength(250) required,
+	description String maxlength(250),
+    type SequenceStepActionDefinitionParameterType required,
+    evaluationEngine SequenceStepActionEvaluationEngine required,
+    minValue Double,
+    maxValue Double,
+    stepValue Double,
+    minLength Integer,
+    maxLength Integer
+}
+enum SequenceStepActionDefinitionParameterType {
+	STRING,
+    NUMBER,
+    OPERATOR,
+    VARIABLE
+}
+enum SequenceStepActionEvaluationEngine {
+	DEFAULT_ENGINE
+}
+
+
+entity SequenceStepAction {
+	generation SequenceStepActionGeneration required,
+	description String maxlength(250),
+
+    // AUDIT fields
+    createdDate ZonedDateTime required,
+    createdBy String required,
+    lastModifiedDate ZonedDateTime required
+    lastModifiedBy String required
+}
+enum SequenceStepActionGeneration {
+    GEN1
+}
+relationship ManyToOne {
+    SequenceStepAction{definition(code) required} to SequenceStepActionDefinition
+}
+relationship OneToMany {
+	SequenceStepAction{parameters} to SequenceStepActionParameter{action required}
+}
+
+entity SequenceStepActionParameter {
+	generation SequenceStepActionGeneration required,
+	
+    valueString String,
+    valueNumber Double,
+    valueBoolean Boolean,
+    valueVariable SequenceVariable,
+
+    // AUDIT fields
+    createdDate ZonedDateTime required,
+    createdBy String required,
+    lastModifiedDate ZonedDateTime required
+    lastModifiedBy String required
+}
+relationship ManyToOne {
+    SequenceStepActionParameter{definition(name) required} to SequenceStepActionDefinitionParameter
+}
+
+
+// Set pagination options
+paginate all with infinite-scroll
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceClass
+
+// Metamodel filtering
+filter all
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

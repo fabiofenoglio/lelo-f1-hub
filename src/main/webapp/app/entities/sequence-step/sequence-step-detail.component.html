@@ -1,0 +1,60 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sequenceStep">
+            <h2><span jhiTranslate="leloHubApp.sequenceStep.detail.title">Sequence Step</span> {{ sequenceStep.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="leloHubApp.sequenceStep.generation">Generation</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceStepGeneration.' + sequenceStep.generation }}">{{ sequenceStep.generation }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStep.ordinal">Ordinal</span></dt>
+                <dd>
+                    <span>{{ sequenceStep.ordinal }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStep.description">Description</span></dt>
+                <dd>
+                    <span>{{ sequenceStep.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStep.createdDate">Created At</span></dt>
+                <dd>
+                    <span>{{ sequenceStep.createdDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStep.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{ sequenceStep.createdBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStep.lastModifiedDate">Modified At</span></dt>
+                <dd>
+                    <span>{{ sequenceStep.lastModifiedDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStep.lastModifiedBy">Modified By</span></dt>
+                <dd>
+                    <span>{{ sequenceStep.lastModifiedBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStep.sequence">Sequence</span></dt>
+                <dd>
+                    <div *ngIf="sequenceStep.sequenceId">
+                        <a [routerLink]="['/sequence', sequenceStep.sequenceId, 'view']">{{ sequenceStep.sequenceName }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sequence-step', sequenceStep.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

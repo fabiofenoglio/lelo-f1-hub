@@ -1,0 +1,96 @@
+{
+    "name": "SequenceStepActionDefinitionParameter",
+    "fields": [
+        {
+            "fieldName": "generation",
+            "fieldType": "SequenceStepActionGeneration",
+            "fieldValues": "GEN1",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "code",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength",
+                "required"
+            ],
+            "fieldValidateRulesMaxlength": "100"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength",
+                "required"
+            ],
+            "fieldValidateRulesMaxlength": "250"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "250"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "SequenceStepActionDefinitionParameterType",
+            "fieldValues": "STRING,NUMBER,OPERATOR,VARIABLE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "evaluationEngine",
+            "fieldType": "SequenceStepActionEvaluationEngine",
+            "fieldValues": "DEFAULT_ENGINE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "minValue",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "maxValue",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "stepValue",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "minLength",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "maxLength",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sequenceStepActionDefinition",
+            "otherEntityRelationshipName": "parameters",
+            "relationshipValidateRules": "required",
+            "relationshipName": "definition",
+            "otherEntityField": "code"
+        }
+    ],
+    "changelogDate": "20200505101900",
+    "entityTableName": "seq_step_action_def_param",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

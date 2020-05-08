@@ -1,0 +1,92 @@
+{
+    "name": "SequenceStepConditionParameter",
+    "fields": [
+        {
+            "fieldName": "generation",
+            "fieldType": "SequenceStepConditionGeneration",
+            "fieldValues": "GEN1",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "valueString",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "valueNumber",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "valueBoolean",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "valueVariable",
+            "fieldType": "SequenceVariable",
+            "fieldValues": "USER_VARIABLE,MOTOR_SPEED,VIBE_SPEED,CENTRAL_BUTTON_PRESSED,PLUS_BUTTON_PRESSED,MINUS_BUTTON_PRESSED,TEMPERATURE,PRESSURE,INSERTION_DEPTH,ACCELERATION_X,ACCELERATION_Y,ACCELERATION_Z,RUN_TIME,RANDOM"
+        },
+        {
+            "fieldName": "valueOperator",
+            "fieldType": "SequenceOperator",
+            "fieldValues": "EQUALS,DIFFERS,GREATER_THAN,GREATER_THAN_OR_EQUAL_TO,LESS_THAN,LESS_THAN_OR_EQUAL_TO,DEFINED,NOT_DEFINED,ALWAYS,NEVER"
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "createdBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastModifiedDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastModifiedBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sequenceStepConditionDefinitionParameter",
+            "otherEntityRelationshipName": "sequenceStepConditionParameter",
+            "relationshipValidateRules": "required",
+            "relationshipName": "definition",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sequenceStepCondition",
+            "otherEntityRelationshipName": "parameters",
+            "relationshipValidateRules": "required",
+            "relationshipName": "condition",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200505101700",
+    "entityTableName": "seq_step_cond_param",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

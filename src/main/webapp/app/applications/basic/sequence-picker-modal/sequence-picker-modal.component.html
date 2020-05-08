@@ -1,0 +1,97 @@
+<div class="modal-header">
+    <h6 class="modal-title">Pick a sequence</h6>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="input-group">
+                <input [(ngModel)]="fullTextSearchShared" (keyup)="searchTermSharedChanged($event)" 
+                    class="form-control" type="text" placeholder="search in sequences ..." />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-secondary" (click)="searchTermSharedChangedDebounced()">
+                        <fa-icon icon="search"></fa-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning text-center" id="no-result" *ngIf="sharedSequences?.length === 0 && sequences?.length === 0">
+        No sequences found.
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="table-responsive" id="sharedSequences" *ngIf="sharedSequences?.length > 0 || sequences?.length > 0">
+                <table class="table table-sm table-hover" aria-describedby="page-heading">
+                    <thead>
+                        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                            <th scope="col" jhiSortBy="name"><span jhiTranslate="leloHubApp.sequence.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+                            <th scope="col" jhiSortBy="userLogin"><span>Made by</span> <fa-icon icon="sort"></fa-icon></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                        <tr class="table-info">
+                            <th colspan="3">
+                                Your sequences
+                            </th>
+                        </tr>
+                        <tr class="clickable" *ngFor="let sequence of sequences ;trackBy: trackId" (click)="pick(sequence)">
+                            <td>
+                                {{ sequence.name }}
+                                <div *ngIf="sequence.description">
+                                    <small>
+                                        {{ sequence.description }}
+                                    </small>
+                                </div>
+                            </td>
+                            <td>
+                                you
+                            </td>
+                            <td class="text-right">
+                                <button type="button" class="btn btn-sm btn-outline-primary" (click)="pick(sequence)">
+                                    <fa-icon icon="play"></fa-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="table-warning">
+                            <th colspan="3">
+                                Community sequences
+                            </th>
+                        </tr>
+                        <tr class="clickable" *ngFor="let sequence of sharedSequences ;trackBy: trackId" (click)="pick(sequence)">
+                            <td>
+                                {{ sequence.name }}
+                                <div *ngIf="sequence.description">
+                                    <small>
+                                        {{ sequence.description }}
+                                    </small>
+                                </div>
+                            </td>
+                            <td>
+                                <fa-icon icon="user-friends"></fa-icon>
+                                {{ sequence.userLogin }}
+                            </td>
+                            <td class="text-right">
+                                <button type="button" class="btn btn-sm btn-outline-primary" (click)="pick(sequence)">
+                                    <fa-icon icon="play"></fa-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </duv>
+</div>
+<div class="modal-footer">
+    <div class="row">
+
+        <button type="button" class="btn btn-secondary mr-2" (click)="cancel()">
+            Cancel
+        </button>
+
+    </div>
+</div>

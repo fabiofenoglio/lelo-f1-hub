@@ -1,0 +1,87 @@
+{
+    "name": "SequenceStepActionParameter",
+    "fields": [
+        {
+            "fieldName": "generation",
+            "fieldType": "SequenceStepActionGeneration",
+            "fieldValues": "GEN1",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "valueString",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "valueNumber",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "valueBoolean",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "valueVariable",
+            "fieldType": "SequenceVariable",
+            "fieldValues": "USER_VARIABLE,MOTOR_SPEED,VIBE_SPEED,CENTRAL_BUTTON_PRESSED,PLUS_BUTTON_PRESSED,MINUS_BUTTON_PRESSED,TEMPERATURE,PRESSURE,INSERTION_DEPTH,ACCELERATION_X,ACCELERATION_Y,ACCELERATION_Z,RUN_TIME,RANDOM"
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "createdBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastModifiedDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastModifiedBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sequenceStepActionDefinitionParameter",
+            "otherEntityRelationshipName": "sequenceStepActionParameter",
+            "relationshipValidateRules": "required",
+            "relationshipName": "definition",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sequenceStepAction",
+            "otherEntityRelationshipName": "parameters",
+            "relationshipValidateRules": "required",
+            "relationshipName": "action",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200505102100",
+    "entityTableName": "sequence_step_action_parameter",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

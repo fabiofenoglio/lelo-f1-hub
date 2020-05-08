@@ -8,6 +8,8 @@ import it.fabiofenoglio.lelohub.repository.PersistenceAuditEventRepository;
 import it.fabiofenoglio.lelohub.security.AuthoritiesConstants;
 
 import it.fabiofenoglio.lelohub.service.AuditEventService;
+import it.fabiofenoglio.lelohub.web.rest.admin.AuditResource;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;

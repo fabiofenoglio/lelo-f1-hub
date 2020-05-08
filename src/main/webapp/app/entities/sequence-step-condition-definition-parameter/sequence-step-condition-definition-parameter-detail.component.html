@@ -1,0 +1,76 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sequenceStepConditionDefinitionParameter">
+            <h2><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.detail.title">Sequence Step Condition Definition Parameter</span> {{ sequenceStepConditionDefinitionParameter.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.generation">Generation</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceStepConditionGeneration.' + sequenceStepConditionDefinitionParameter.generation }}">{{ sequenceStepConditionDefinitionParameter.generation }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.code">Code</span></dt>
+                <dd>
+                    <span>{{ sequenceStepConditionDefinitionParameter.code }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.name">Name</span></dt>
+                <dd>
+                    <span>{{ sequenceStepConditionDefinitionParameter.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.description">Description</span></dt>
+                <dd>
+                    <span>{{ sequenceStepConditionDefinitionParameter.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.type">Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceStepConditionDefinitionParameterType.' + sequenceStepConditionDefinitionParameter.type }}">{{ sequenceStepConditionDefinitionParameter.type }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.evaluationEngine">Evaluation Engine</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceStepConditionEvaluationEngine.' + sequenceStepConditionDefinitionParameter.evaluationEngine }}">{{ sequenceStepConditionDefinitionParameter.evaluationEngine }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.minValue">Min Value</span></dt>
+                <dd>
+                    <span>{{ sequenceStepConditionDefinitionParameter.minValue }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.maxValue">Max Value</span></dt>
+                <dd>
+                    <span>{{ sequenceStepConditionDefinitionParameter.maxValue }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.stepValue">Step Value</span></dt>
+                <dd>
+                    <span>{{ sequenceStepConditionDefinitionParameter.stepValue }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.minLength">Min Length</span></dt>
+                <dd>
+                    <span>{{ sequenceStepConditionDefinitionParameter.minLength }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.maxLength">Max Length</span></dt>
+                <dd>
+                    <span>{{ sequenceStepConditionDefinitionParameter.maxLength }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinitionParameter.definition">Definition</span></dt>
+                <dd>
+                    <div *ngIf="sequenceStepConditionDefinitionParameter.definitionId">
+                        <a [routerLink]="['/sequence-step-condition-definition', sequenceStepConditionDefinitionParameter.definitionId, 'view']">{{ sequenceStepConditionDefinitionParameter.definitionCode }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sequence-step-condition-definition-parameter', sequenceStepConditionDefinitionParameter.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

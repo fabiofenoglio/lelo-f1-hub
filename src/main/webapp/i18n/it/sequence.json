@@ -1,0 +1,31 @@
+{
+  "leloHubApp": {
+    "sequence": {
+      "home": {
+        "title": "Sequences",
+        "createLabel": "Genera un nuovo Sequence",
+        "createOrEditLabel": "Genera o modifica un Sequence",
+        "notFound": "No Sequences found"
+      },
+      "created": "&Egrave; stato generato un nuovo Sequence con identificatore {{ param }}",
+      "updated": "&Egrave; stato aggiornato Sequence identificato da {{ param }}",
+      "deleted": "&Egrave; stato eliminato Sequence con identificatore {{ param }}",
+      "delete": {
+        "question": "Sei sicuro di volere eliminare Sequence {{ id }}?"
+      },
+      "detail": {
+        "title": "Sequence"
+      },
+      "generation": "Generation",
+      "name": "Name",
+      "description": "Description",
+      "visibility": "Visibility",
+      "createdDate": "Created At",
+      "createdBy": "Created By",
+      "lastModifiedDate": "Modified At",
+      "lastModifiedBy": "Modified By",
+      "steps": "Steps",
+      "user": "User"
+    }
+  }
+}

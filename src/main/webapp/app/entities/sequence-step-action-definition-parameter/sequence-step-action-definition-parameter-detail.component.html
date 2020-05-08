@@ -1,0 +1,76 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sequenceStepActionDefinitionParameter">
+            <h2><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.detail.title">Sequence Step Action Definition Parameter</span> {{ sequenceStepActionDefinitionParameter.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.generation">Generation</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceStepActionGeneration.' + sequenceStepActionDefinitionParameter.generation }}">{{ sequenceStepActionDefinitionParameter.generation }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.code">Code</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionDefinitionParameter.code }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.name">Name</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionDefinitionParameter.name }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.description">Description</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionDefinitionParameter.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.type">Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceStepActionDefinitionParameterType.' + sequenceStepActionDefinitionParameter.type }}">{{ sequenceStepActionDefinitionParameter.type }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.evaluationEngine">Evaluation Engine</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceStepActionEvaluationEngine.' + sequenceStepActionDefinitionParameter.evaluationEngine }}">{{ sequenceStepActionDefinitionParameter.evaluationEngine }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.minValue">Min Value</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionDefinitionParameter.minValue }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.maxValue">Max Value</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionDefinitionParameter.maxValue }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.stepValue">Step Value</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionDefinitionParameter.stepValue }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.minLength">Min Length</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionDefinitionParameter.minLength }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.maxLength">Max Length</span></dt>
+                <dd>
+                    <span>{{ sequenceStepActionDefinitionParameter.maxLength }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepActionDefinitionParameter.definition">Definition</span></dt>
+                <dd>
+                    <div *ngIf="sequenceStepActionDefinitionParameter.definitionId">
+                        <a [routerLink]="['/sequence-step-action-definition', sequenceStepActionDefinitionParameter.definitionId, 'view']">{{ sequenceStepActionDefinitionParameter.definitionCode }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sequence-step-action-definition-parameter', sequenceStepActionDefinitionParameter.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
