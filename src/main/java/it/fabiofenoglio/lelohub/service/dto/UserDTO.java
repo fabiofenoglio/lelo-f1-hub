@@ -1,21 +1,29 @@
 package it.fabiofenoglio.lelohub.service.dto;
 
-import it.fabiofenoglio.lelohub.config.Constants;
-
-import it.fabiofenoglio.lelohub.domain.Authority;
-import it.fabiofenoglio.lelohub.domain.User;
-
-import javax.validation.constraints.*;
-import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import it.fabiofenoglio.lelohub.config.Constants;
+import it.fabiofenoglio.lelohub.domain.Authority;
+import it.fabiofenoglio.lelohub.domain.User;
+import it.fabiofenoglio.lelohub.domain.proto.HasID;
 
 /**
  * A DTO representing a user, with his authorities.
  */
-public class UserDTO {
+public class UserDTO extends AbstractAuditingDTO implements HasID {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     @NotBlank
     @Pattern(regexp = Constants.LOGIN_REGEX)
@@ -39,14 +47,6 @@ public class UserDTO {
 
     @Size(min = 2, max = 10)
     private String langKey;
-
-    private String createdBy;
-
-    private Instant createdDate;
-
-    private String lastModifiedBy;
-
-    private Instant lastModifiedDate;
 
     private Set<String> authorities;
 
@@ -134,38 +134,6 @@ public class UserDTO {
 
     public void setLangKey(String langKey) {
         this.langKey = langKey;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
     }
 
     public Set<String> getAuthorities() {

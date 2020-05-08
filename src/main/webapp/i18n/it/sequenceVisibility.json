@@ -1,0 +1,10 @@
+{
+  "leloHubApp": {
+    "SequenceVisibility": {
+      "null": "",
+      "PRIVATE": "PRIVATE",
+      "REMOTE": "REMOTE",
+      "PUBLIC": "PUBLIC"
+    }
+  }
+}

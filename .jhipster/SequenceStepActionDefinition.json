@@ -1,0 +1,49 @@
+{
+    "name": "SequenceStepActionDefinition",
+    "fields": [
+        {
+            "fieldName": "generation",
+            "fieldType": "SequenceStepActionGeneration",
+            "fieldValues": "GEN1",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "code",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength",
+                "required"
+            ],
+            "fieldValidateRulesMaxlength": "100"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "250"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sequenceStepActionDefinitionParameter",
+            "otherEntityRelationshipName": "definition",
+            "relationshipName": "parameters"
+        }
+    ],
+    "changelogDate": "20200505101800",
+    "entityTableName": "seq_step_action_def",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

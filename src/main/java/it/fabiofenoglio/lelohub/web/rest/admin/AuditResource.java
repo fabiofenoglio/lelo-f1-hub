@@ -1,4 +1,4 @@
-package it.fabiofenoglio.lelohub.web.rest;
+package it.fabiofenoglio.lelohub.web.rest.admin;
 
 import it.fabiofenoglio.lelohub.service.AuditEventService;
 

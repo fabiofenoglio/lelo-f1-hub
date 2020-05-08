@@ -1,0 +1,33 @@
+{
+  "leloHubApp": {
+    "sequenceStepConditionParameter": {
+      "home": {
+        "title": "SequenceStepConditionParameters",
+        "createLabel": "Genera un nuovo Sequence Step Condition Parameter",
+        "createOrEditLabel": "Genera o modifica un Sequence Step Condition Parameter",
+        "notFound": "No Sequence Step Condition Parameters found"
+      },
+      "created": "&Egrave; stato generato un nuovo Sequence Step Condition Parameter con identificatore {{ param }}",
+      "updated": "&Egrave; stato aggiornato Sequence Step Condition Parameter identificato da {{ param }}",
+      "deleted": "&Egrave; stato eliminato Sequence Step Condition Parameter con identificatore {{ param }}",
+      "delete": {
+        "question": "Sei sicuro di volere eliminare Sequence Step Condition Parameter {{ id }}?"
+      },
+      "detail": {
+        "title": "Sequence Step Condition Parameter"
+      },
+      "generation": "Generation",
+      "valueString": "Value String",
+      "valueNumber": "Value Number",
+      "valueBoolean": "Value Boolean",
+      "valueVariable": "Value Variable",
+      "valueOperator": "Value Operator",
+      "createdDate": "Created At",
+      "createdBy": "Created By",
+      "lastModifiedDate": "Modified At",
+      "lastModifiedBy": "Modified By",
+      "definition": "Definition",
+      "condition": "Condition"
+    }
+  }
+}

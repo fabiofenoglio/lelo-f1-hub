@@ -1,0 +1,5 @@
+ID;GENERATION;CODE;NAME;DESCRIPTION;TYPE;EVALUATION_ENGINE;MIN_VALUE;MAX_VALUE;STEP_VALUE;MIN_LENGTH;MAX_LENGTH;DEFINITION_ID
+1;GEN1;DEVICE_PROPERTY;Device property;The property of device to check;VARIABLE;DEFAULT_ENGINE;;;;;;1
+2;GEN1;OPERATOR;Operator;How to check between device value and your argument;OPERATOR;DEFAULT_ENGINE;;;;;;1
+3;GEN1;ARGUMENT;Argument;Argument to compare with device value;NUMBER;DEFAULT_ENGINE;;;;;;1
+4;GEN1;CHANCE;Probability (on 100);Probability of random execution (0 to 100);NUMBER;DEFAULT_ENGINE;0;100;0.1;;;5

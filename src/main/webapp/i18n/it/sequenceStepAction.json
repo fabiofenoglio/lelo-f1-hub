@@ -1,0 +1,30 @@
+{
+  "leloHubApp": {
+    "sequenceStepAction": {
+      "home": {
+        "title": "SequenceStepActions",
+        "createLabel": "Genera un nuovo Sequence Step Action",
+        "createOrEditLabel": "Genera o modifica un Sequence Step Action",
+        "notFound": "No Sequence Step Actions found"
+      },
+      "created": "&Egrave; stato generato un nuovo Sequence Step Action con identificatore {{ param }}",
+      "updated": "&Egrave; stato aggiornato Sequence Step Action identificato da {{ param }}",
+      "deleted": "&Egrave; stato eliminato Sequence Step Action con identificatore {{ param }}",
+      "delete": {
+        "question": "Sei sicuro di volere eliminare Sequence Step Action {{ id }}?"
+      },
+      "detail": {
+        "title": "Sequence Step Action"
+      },
+      "generation": "Generation",
+      "description": "Description",
+      "createdDate": "Created At",
+      "createdBy": "Created By",
+      "lastModifiedDate": "Modified At",
+      "lastModifiedBy": "Modified By",
+      "parameters": "Parameters",
+      "definition": "Definition",
+      "step": "Step"
+    }
+  }
+}

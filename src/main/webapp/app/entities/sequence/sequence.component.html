@@ -1,0 +1,163 @@
+<div>
+    <h2 id="page-heading">
+        <span>Your sequences</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-sequence" [routerLink]="['/sequence/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="leloHubApp.sequence.home.createLabel">
+            Create a new Sequence
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning text-center" id="no-result" *ngIf="sequences?.length === 0">
+        <span jhiTranslate="leloHubApp.sequence.home.notFound">No sequences found</span>
+        <p class="mt-3 text-center">
+            <a [routerLink]="['/sequence/new']">Create your first!</a>
+        </p>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="sequences?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="resetOwn.bind(this)">
+                    <th scope="col"></th>
+                    <th scope="col" jhiSortBy="name"><span jhiTranslate="leloHubApp.sequence.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col" jhiSortBy="lastModifiedDate">Last updated <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let sequence of sequences ;trackBy: trackId">
+                    <td>
+                        <span *ngIf="sequence.visibility === 'PUBLIC'" title="Public - everyone can use it!">
+                            <fa-icon icon="user-friends"></fa-icon>
+                        </span>
+                        <span *ngIf="sequence.visibility === 'PRIVATE'" title="Private - visible only to you">
+                            <fa-icon icon="eye-slash"></fa-icon>
+                        </span>
+                    </td>
+                    <td>
+                        {{ sequence.name }}
+                        <div *ngIf="sequence.description">
+                            <small>
+                                {{ sequence.description }}
+                            </small>
+                        </div>
+                    </td>
+                    <td>{{ sequence.lastModifiedDate | date:'medium' }}</td>
+                    <td class="text-right">
+                        <div class="btn-group">
+
+                            <button type="submit"
+                                    *ngIf="sequence.authorizations.WRITE"
+                                    [routerLink]="['/sequence', sequence.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="button"
+                                    (click)="clone(sequence.id)"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="clone"></fa-icon>
+                                <span class="d-none d-md-inline">Clone</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(sequence)"
+                                    *ngIf="sequence.authorizations.OWNER"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <ng-container>
+        <div class="row mt-5">
+            <div class="col-12 col-sm-6 col-md-8">
+                <h2 id="page-heading">
+                    <span>Community sequences</span>
+                </h2>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="input-group">
+                    <input [(ngModel)]="fullTextSearchShared" (keyup)="searchTermSharedChanged($event)" 
+                        class="form-control" type="text" placeholder="search in community sequences ..." />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="searchTermSharedChangedDebounced()">
+                            <fa-icon icon="search"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-warning text-center" id="no-result" *ngIf="sharedSequences?.length === 0">
+            No community sequences found.
+        </div>
+
+        <div class="table-responsive" id="sharedSequences" *ngIf="sharedSequences?.length > 0">
+            <table class="table table-striped" aria-describedby="page-heading">
+                <thead>
+                    <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="resetShared.bind(this)">
+                        <th scope="col"></th>
+                        <th scope="col" jhiSortBy="name"><span jhiTranslate="leloHubApp.sequence.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+                        <th scope="col" jhiSortBy="lastModifiedDate">Last updated <fa-icon icon="sort"></fa-icon></th>
+                        <th scope="col" jhiSortBy="userLogin"><span>Shared by</span> <fa-icon icon="sort"></fa-icon></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                    <tr *ngFor="let sequence of sharedSequences ;trackBy: trackId">
+                        <td>
+                            <span *ngIf="sequence.visibility === 'PUBLIC'" title="Public - everyone can use it!">
+                                <fa-icon icon="user-friends"></fa-icon>
+                            </span>
+                            <span *ngIf="sequence.visibility === 'PRIVATE'" title="Private - visible only to you">
+                                <fa-icon icon="eye-slash"></fa-icon>
+                            </span>
+                        </td>
+                        <td>
+                            {{ sequence.name }}
+                            <div *ngIf="sequence.description">
+                                <small>
+                                    {{ sequence.description }}
+                                </small>
+                            </div>
+                        </td>
+                        <td>{{ sequence.lastModifiedDate | date:'medium' }}</td>
+                        <td>
+                            {{ sequence.userLogin }}
+                        </td>
+                        <td class="text-right">
+                            <div class="btn-group">
+                                <button type="submit"
+                                        [routerLink]="['/sequence', sequence.id, 'view']"
+                                        class="btn btn-info btn-sm">
+                                    <fa-icon icon="eye"></fa-icon>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                                </button>
+
+                                <button type="button"
+                                        (click)="clone(sequence.id)"
+                                        class="btn btn-primary btn-sm">
+                                    <fa-icon icon="clone"></fa-icon>
+                                    <span class="d-none d-md-inline">Clone</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
+</div>

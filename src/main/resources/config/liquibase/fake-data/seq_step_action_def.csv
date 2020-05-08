@@ -1,0 +1,12 @@
+id;generation;code;description
+1;GEN1;SET_MAIN_MOTOR_SPEED;Set main motor speed
+2;GEN1;SET_VIBE_SPEED;Set vibrator speed
+3;GEN1;SET_MAIN_MOTOR_SPEED_RANGE;Set main motor randomly in range
+4;GEN1;SET_VIBE_SPEED_RANGE;Set vibrator motor randomly in range
+5;GEN1;SET_MAIN_MOTOR_RAMP;Increase or decrease main motor gradually
+6;GEN1;SET_VIBE_RAMP;Increase or decrease vibrator motor gradually
+7;GEN1;WAIT;Wait for an amount of time
+8;GEN1;WAIT_RANGE;Wait a random amount of time
+9;GEN1;STOP_MAIN_MOTOR;Stop the main motor
+10;GEN1;STOP_VIBE;Stop the vibrator
+11;GEN1;GOTO;Go to another step

@@ -1,0 +1,89 @@
+{
+    "name": "SequenceStep",
+    "fields": [
+        {
+            "fieldName": "generation",
+            "fieldType": "SequenceStepGeneration",
+            "fieldValues": "GEN1",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "ordinal",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "250"
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "createdBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastModifiedDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastModifiedBy",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sequenceStepCondition",
+            "otherEntityRelationshipName": "step",
+            "relationshipName": "conditions"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sequenceStepAction",
+            "otherEntityRelationshipName": "step",
+            "relationshipName": "actions"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "sequence",
+            "otherEntityRelationshipName": "steps",
+            "relationshipValidateRules": "required",
+            "relationshipName": "sequence",
+            "otherEntityField": "name"
+        }
+    ],
+    "changelogDate": "20200505101300",
+    "entityTableName": "sequence_step",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

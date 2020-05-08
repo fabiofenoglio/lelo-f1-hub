@@ -1,0 +1,17 @@
+{
+  "leloHubApp": {
+    "SequenceOperator": {
+      "null": "",
+      "EQUALS": "EQUALS",
+      "DIFFERS": "DIFFERS",
+      "GREATER_THAN": "GREATER_THAN",
+      "GREATER_THAN_OR_EQUAL_TO": "GREATER_THAN_OR_EQUAL_TO",
+      "LESS_THAN": "LESS_THAN",
+      "LESS_THAN_OR_EQUAL_TO": "LESS_THAN_OR_EQUAL_TO",
+      "DEFINED": "DEFINED",
+      "NOT_DEFINED": "NOT_DEFINED",
+      "ALWAYS": "ALWAYS",
+      "NEVER": "NEVER"
+    }
+  }
+}

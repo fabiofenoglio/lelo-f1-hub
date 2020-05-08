@@ -7,6 +7,16 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entità",
+        "sequence": "Sequence",
+        "sequenceStep": "Sequence Step",
+        "sequenceStepConditionDefinition": "Sequence Step Condition Definition",
+        "sequenceStepConditionDefinitionParameter": "Sequence Step Condition Definition Parameter",
+        "sequenceStepCondition": "Sequence Step Condition",
+        "sequenceStepConditionParameter": "Sequence Step Condition Parameter",
+        "sequenceStepActionDefinition": "Sequence Step Action Definition",
+        "sequenceStepActionDefinitionParameter": "Sequence Step Action Definition Parameter",
+        "sequenceStepAction": "Sequence Step Action",
+        "sequenceStepActionParameter": "Sequence Step Action Parameter",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "applications": {

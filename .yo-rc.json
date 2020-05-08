@@ -6,7 +6,7 @@
     },
     "jhipsterVersion": "6.8.0",
     "applicationType": "monolith",
-    "baseName": "lelohub",
+    "baseName": "leloHub",
     "packageName": "it.fabiofenoglio.lelohub",
     "packageFolder": "it/fabiofenoglio/lelohub",
     "serverPort": "8080",

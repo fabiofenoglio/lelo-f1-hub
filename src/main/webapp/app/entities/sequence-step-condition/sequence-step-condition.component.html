@@ -1,0 +1,97 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="leloHubApp.sequenceStepCondition.home.title">Sequence Step Conditions</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-sequence-step-condition" [routerLink]="['/sequence-step-condition/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="leloHubApp.sequenceStepCondition.home.createLabel">
+            Create a new Sequence Step Condition
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="sequenceStepConditions?.length === 0">
+        <span jhiTranslate="leloHubApp.sequenceStepCondition.home.notFound">No sequenceStepConditions found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="sequenceStepConditions?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="generation"><span jhiTranslate="leloHubApp.sequenceStepCondition.generation">Generation</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="description"><span jhiTranslate="leloHubApp.sequenceStepCondition.description">Description</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="negate"><span jhiTranslate="leloHubApp.sequenceStepCondition.negate">Negate</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createdDate"><span jhiTranslate="leloHubApp.sequenceStepCondition.createdDate">Created At</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createdBy"><span jhiTranslate="leloHubApp.sequenceStepCondition.createdBy">Created By</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastModifiedDate"><span jhiTranslate="leloHubApp.sequenceStepCondition.lastModifiedDate">Modified At</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastModifiedBy"><span jhiTranslate="leloHubApp.sequenceStepCondition.lastModifiedBy">Modified By</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionCode"><span jhiTranslate="leloHubApp.sequenceStepCondition.definition">Definition</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="stepId"><span jhiTranslate="leloHubApp.sequenceStepCondition.step">Step</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="otherAndConditionId"><span jhiTranslate="leloHubApp.sequenceStepCondition.otherAndCondition">Other And Condition</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="otherOrConditionId"><span jhiTranslate="leloHubApp.sequenceStepCondition.otherOrCondition">Other Or Condition</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let sequenceStepCondition of sequenceStepConditions ;trackBy: trackId">
+                    <td><a [routerLink]="['/sequence-step-condition', sequenceStepCondition.id, 'view']">{{ sequenceStepCondition.id }}</a></td>
+                    <td jhiTranslate="{{ 'leloHubApp.SequenceStepConditionGeneration.' + sequenceStepCondition.generation }}">{{ sequenceStepCondition.generation }}</td>
+                    <td>{{ sequenceStepCondition.description }}</td>
+                    <td>{{ sequenceStepCondition.negate }}</td>
+                    <td>{{ sequenceStepCondition.createdDate | date:'medium' }}</td>
+                    <td>{{ sequenceStepCondition.createdBy }}</td>
+                    <td>{{ sequenceStepCondition.lastModifiedDate | date:'medium' }}</td>
+                    <td>{{ sequenceStepCondition.lastModifiedBy }}</td>
+                    <td>
+                        <div *ngIf="sequenceStepCondition.definitionId">
+                            <a [routerLink]="['/sequence-step-condition-definition', sequenceStepCondition.definitionId , 'view']" >{{ sequenceStepCondition.definitionCode }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="sequenceStepCondition.stepId">
+                            <a [routerLink]="['/sequence-step', sequenceStepCondition.stepId , 'view']" >{{ sequenceStepCondition.stepId }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="sequenceStepCondition.otherAndConditionId">
+                            <a [routerLink]="['/sequence-step-condition', sequenceStepCondition.otherAndConditionId , 'view']" >{{ sequenceStepCondition.otherAndConditionId }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="sequenceStepCondition.otherOrConditionId">
+                            <a [routerLink]="['/sequence-step-condition', sequenceStepCondition.otherOrConditionId , 'view']" >{{ sequenceStepCondition.otherOrConditionId }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/sequence-step-condition', sequenceStepCondition.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/sequence-step-condition', sequenceStepCondition.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(sequenceStepCondition)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

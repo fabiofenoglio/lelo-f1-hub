@@ -1,0 +1,78 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sequenceStepCondition">
+            <h2><span jhiTranslate="leloHubApp.sequenceStepCondition.detail.title">Sequence Step Condition</span> {{ sequenceStepCondition.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.generation">Generation</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceStepConditionGeneration.' + sequenceStepCondition.generation }}">{{ sequenceStepCondition.generation }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.description">Description</span></dt>
+                <dd>
+                    <span>{{ sequenceStepCondition.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.negate">Negate</span></dt>
+                <dd>
+                    <span>{{ sequenceStepCondition.negate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.createdDate">Created At</span></dt>
+                <dd>
+                    <span>{{ sequenceStepCondition.createdDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{ sequenceStepCondition.createdBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.lastModifiedDate">Modified At</span></dt>
+                <dd>
+                    <span>{{ sequenceStepCondition.lastModifiedDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.lastModifiedBy">Modified By</span></dt>
+                <dd>
+                    <span>{{ sequenceStepCondition.lastModifiedBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.definition">Definition</span></dt>
+                <dd>
+                    <div *ngIf="sequenceStepCondition.definitionId">
+                        <a [routerLink]="['/sequence-step-condition-definition', sequenceStepCondition.definitionId, 'view']">{{ sequenceStepCondition.definitionCode }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.step">Step</span></dt>
+                <dd>
+                    <div *ngIf="sequenceStepCondition.stepId">
+                        <a [routerLink]="['/sequence-step', sequenceStepCondition.stepId, 'view']">{{ sequenceStepCondition.stepId }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.otherAndCondition">Other And Condition</span></dt>
+                <dd>
+                    <div *ngIf="sequenceStepCondition.otherAndConditionId">
+                        <a [routerLink]="['/sequence-step-condition', sequenceStepCondition.otherAndConditionId, 'view']">{{ sequenceStepCondition.otherAndConditionId }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepCondition.otherOrCondition">Other Or Condition</span></dt>
+                <dd>
+                    <div *ngIf="sequenceStepCondition.otherOrConditionId">
+                        <a [routerLink]="['/sequence-step-condition', sequenceStepCondition.otherOrConditionId, 'view']">{{ sequenceStepCondition.otherOrConditionId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sequence-step-condition', sequenceStepCondition.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import it.fabiofenoglio.lelohub.web.rest.errors.ForbiddenException;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -17,6 +19,10 @@ public final class SecurityUtils {
     private SecurityUtils() {
     }
 
+    public static String requireCurrentLogin() {
+    	return getCurrentUserLogin().orElseThrow(() -> new ForbiddenException());
+    }
+    
     /**
      * Get the login of the current user.
      *

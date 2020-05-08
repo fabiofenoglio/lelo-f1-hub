@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <!--
+        Added the constraints for entity SequenceStepConditionDefinitionParameter.
+    -->
+    <changeSet id="20200505101500-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="definition_id"
+                                 baseTableName="seq_step_cond_def_param"
+                                 constraintName="fk_seq_step_cond_def_param_definition_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="seq_step_cond_def"/>
+
+    </changeSet>
+</databaseChangeLog>

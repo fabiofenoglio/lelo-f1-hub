@@ -57,7 +57,22 @@ import {
   faChevronDown,
   faCog,
   faChevronCircleDown,
-  faChevronCircleUp
+  faChevronCircleUp,
+  faQuestionCircle,
+  faUserFriends,
+  faClone,
+  faStream,
+  faClipboard,
+  faPlay,
+  faPause,
+  faEllipsisH,
+  faCheck,
+  faCommentDots,
+  faExclamationTriangle,
+  faExclamationCircle,
+  faBug,
+  faStop,
+  faGift
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -123,6 +138,21 @@ export const fontAwesomeIcons = [
   faChevronDown,
   faCog,
   faChevronCircleDown,
-  faChevronCircleUp
+  faChevronCircleUp,
+  faQuestionCircle,
+  faUserFriends,
+  faClone,
+  faStream,
+  faClipboard,
+  faPlay,
+  faPause,
+  faEllipsisH,
+  faCheck,
+  faCommentDots,
+  faExclamationTriangle,
+  faExclamationCircle,
+  faBug,
+  faStop,
+  faGift
   // jhipster-needle-add-icon-import
 ];

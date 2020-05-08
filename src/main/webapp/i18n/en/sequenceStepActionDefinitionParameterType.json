@@ -1,0 +1,11 @@
+{
+  "leloHubApp": {
+    "SequenceStepActionDefinitionParameterType": {
+      "null": "",
+      "STRING": "STRING",
+      "NUMBER": "NUMBER",
+      "OPERATOR": "OPERATOR",
+      "VARIABLE": "VARIABLE"
+    }
+  }
+}

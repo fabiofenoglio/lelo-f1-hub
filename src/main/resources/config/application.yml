@@ -134,7 +134,7 @@ info:
 
 jhipster:
   clientApp:
-    name: 'lelohubApp'
+    name: 'leloHubApp'
   # By default CORS is disabled. Uncomment to enable.
   cors:
       allowed-origins: "https://lelo-hub.fabiofenoglio.it"

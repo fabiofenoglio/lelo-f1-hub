@@ -14,6 +14,24 @@
     <property name="uuidType" value="varchar(36)" dbms="h2, mysql, mariadb"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101200_added_entity_Sequence.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101300_added_entity_SequenceStep.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101400_added_entity_SequenceStepConditionDefinition.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101500_added_entity_SequenceStepConditionDefinitionParameter.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101600_added_entity_SequenceStepCondition.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101700_added_entity_SequenceStepConditionParameter.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101800_added_entity_SequenceStepActionDefinition.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101900_added_entity_SequenceStepActionDefinitionParameter.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505102000_added_entity_SequenceStepAction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505102100_added_entity_SequenceStepActionParameter.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20200505101200_added_entity_constraints_Sequence.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101300_added_entity_constraints_SequenceStep.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101500_added_entity_constraints_SequenceStepConditionDefinitionParameter.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101600_added_entity_constraints_SequenceStepCondition.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101700_added_entity_constraints_SequenceStepConditionParameter.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505101900_added_entity_constraints_SequenceStepActionDefinitionParameter.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505102000_added_entity_constraints_SequenceStepAction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200505102100_added_entity_constraints_SequenceStepActionParameter.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -1,0 +1,80 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as moment from 'moment';
+
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared/util/request-util';
+import { ISequenceStepCondition } from 'app/shared/model/sequence-step-condition.model';
+
+type EntityResponseType = HttpResponse<ISequenceStepCondition>;
+type EntityArrayResponseType = HttpResponse<ISequenceStepCondition[]>;
+
+@Injectable({ providedIn: 'root' })
+export class SequenceStepConditionService {
+  public resourceUrl = SERVER_API_URL + 'api/sequence-step-conditions';
+
+  constructor(protected http: HttpClient) {}
+
+  create(sequenceStepCondition: ISequenceStepCondition): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(sequenceStepCondition);
+    return this.http
+      .post<ISequenceStepCondition>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  update(sequenceStepCondition: ISequenceStepCondition): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(sequenceStepCondition);
+    return this.http
+      .put<ISequenceStepCondition>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  find(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<ISequenceStepCondition>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  query(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<ISequenceStepCondition[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  protected convertDateFromClient(sequenceStepCondition: ISequenceStepCondition): ISequenceStepCondition {
+    const copy: ISequenceStepCondition = Object.assign({}, sequenceStepCondition, {
+      createdDate:
+        sequenceStepCondition.createdDate && sequenceStepCondition.createdDate.isValid() ? sequenceStepCondition.createdDate.toJSON() : undefined,
+      lastModifiedDate:
+        sequenceStepCondition.lastModifiedDate && sequenceStepCondition.lastModifiedDate.isValid()
+          ? sequenceStepCondition.lastModifiedDate.toJSON()
+          : undefined
+    });
+    return copy;
+  }
+
+  protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
+    if (res.body) {
+      res.body.createdDate = res.body.createdDate ? moment(res.body.createdDate) : undefined;
+      res.body.lastModifiedDate = res.body.lastModifiedDate ? moment(res.body.lastModifiedDate) : undefined;
+    }
+    return res;
+  }
+
+  protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+    if (res.body) {
+      res.body.forEach((sequenceStepCondition: ISequenceStepCondition) => {
+        sequenceStepCondition.createdDate = sequenceStepCondition.createdDate ? moment(sequenceStepCondition.createdDate) : undefined;
+        sequenceStepCondition.lastModifiedDate = sequenceStepCondition.lastModifiedDate ? moment(sequenceStepCondition.lastModifiedDate) : undefined;
+      });
+    }
+    return res;
+  }
+}

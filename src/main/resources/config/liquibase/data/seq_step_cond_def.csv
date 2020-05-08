@@ -1,0 +1,6 @@
+ID;GENERATION;CODE;DESCRIPTION
+1;GEN1;DEVICE_TEST;Check device property
+2;GEN1;VARIABLE_TEST;Check variable value
+3;GEN1;ALWAYS;Always do
+4;GEN1;NEVER;Never do
+5;GEN1;RANDOM;Execute randomly

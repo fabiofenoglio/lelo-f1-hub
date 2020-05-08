@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sequenceStepConditionDefinition">
+            <h2><span jhiTranslate="leloHubApp.sequenceStepConditionDefinition.detail.title">Sequence Step Condition Definition</span> {{ sequenceStepConditionDefinition.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinition.generation">Generation</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'leloHubApp.SequenceStepConditionGeneration.' + sequenceStepConditionDefinition.generation }}">{{ sequenceStepConditionDefinition.generation }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinition.code">Code</span></dt>
+                <dd>
+                    <span>{{ sequenceStepConditionDefinition.code }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceStepConditionDefinition.description">Description</span></dt>
+                <dd>
+                    <span>{{ sequenceStepConditionDefinition.description }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sequence-step-condition-definition', sequenceStepConditionDefinition.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

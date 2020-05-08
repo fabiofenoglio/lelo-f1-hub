@@ -7,6 +7,7 @@ import it.fabiofenoglio.lelohub.repository.UserRepository;
 import it.fabiofenoglio.lelohub.security.AuthoritiesConstants;
 import it.fabiofenoglio.lelohub.service.dto.UserDTO;
 import it.fabiofenoglio.lelohub.service.mapper.UserMapper;
+import it.fabiofenoglio.lelohub.web.rest.admin.UserResource;
 import it.fabiofenoglio.lelohub.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
