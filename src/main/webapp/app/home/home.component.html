@@ -4,7 +4,7 @@
     </div>
 
     <div class="col-md-10 pl-5" [ngSwitch]="isAuthenticated()">
-        <h1 class="display-4 mb-5" jhiTranslate="home.title">Welcome!</h1>
+        <h1 class="display-5 mb-5" jhiTranslate="home.title">Welcome!</h1>
 
         <div>
             <div class="alert alert-warning" *ngSwitchCase="false">
@@ -24,7 +24,7 @@
             Play
         </button>
 
-        <div class="mt-5" *ngSwitchCase="true">
+        <div class="mt-5">
             <p class="alert alert-success">
                 <strong><fa-icon icon="gift"></fa-icon> New feature: SEQUENCES !</strong>
                 <br/>
@@ -33,7 +33,7 @@
 
                 <span>
                     With sequences you can program your device to do what you want, 
-                    ranging from the simples things to really complex schemes.
+                    ranging from the simple things to really complex schemes.
                     <br/>
                     Take advantage of the community features and play, copy and personalize other users' shared sequences!
                 </span>

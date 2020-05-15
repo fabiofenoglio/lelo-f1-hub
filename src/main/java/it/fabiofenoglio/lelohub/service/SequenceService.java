@@ -320,7 +320,7 @@ public class SequenceService extends QueryService<Sequence>  {
         cloned.setCreatedDate(null);
         cloned.setLastModifiedBy(null);
         cloned.setLastModifiedDate(null);
-        cloned.setName(existing.getName() + " (copied)");
+        cloned.setName(existing.getName());
         cloned.setUser(currentUser);
         cloned.setVisibility(existing.getVisibility());
         
