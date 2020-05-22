@@ -1,11 +1,11 @@
 <div>
     <h2 id="page-heading">
-        <span>Your sequences</span>
+        <span class="mb-3">Your sequences</span>
 
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-sequence" [routerLink]="['/sequence/new']">
             <fa-icon icon="plus"></fa-icon>
-            <span  jhiTranslate="leloHubApp.sequence.home.createLabel">
-            Create a new Sequence
+            <span  jhiTranslate="leloHubApp.sequence.home.createLabel" class="d-none d-md-inline">
+                Create a new Sequence
             </span>
         </button>
     </h2>
@@ -14,7 +14,7 @@
 
     <jhi-alert></jhi-alert>
 
-    <div class="alert alert-warning text-center" id="no-result" *ngIf="sequences?.length === 0">
+    <div class="alert alert-warning text-center" id="no-result" *ngIf="sequences?.length === 0 && !loading">
         <span jhiTranslate="leloHubApp.sequence.home.notFound">No sequences found</span>
         <p class="mt-3 text-center">
             <a [routerLink]="['/sequence/new']">Create your first!</a>
@@ -24,16 +24,59 @@
     <div class="table-responsive" id="entities" *ngIf="sequences?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="resetOwn.bind(this)">
-                    <th scope="col"></th>
-                    <th scope="col" jhiSortBy="name"><span jhiTranslate="leloHubApp.sequence.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col" jhiSortBy="lastModifiedDate">Last updated <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"></th>
+                <tr jhiSort [(predicate)]="ownPredicate" [(ascending)]="ownAscending" [callback]="resetOwn.bind(this)">
+                    <th class="d-none d-md-table-cell" scope="col"></th>
+                    <th class="d-none d-md-table-cell clickable" scope="col" (click)="toggleSortOwn('name')">
+                        <span *ngIf="ownPredicate === 'name'">
+                            <fa-icon [icon]="ownAscending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                        </span>
+                        Name
+                    </th>
+                    <th class="d-none d-md-table-cell clickable" scope="col" (click)="toggleSortOwn('averageRating')" >
+                        <span *ngIf="ownPredicate === 'averageRating'">
+                            <fa-icon [icon]="ownAscending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                        </span>
+                        Ratings
+                    </th>
+                    <th class="d-none d-md-table-cell clickable" scope="col" (click)="toggleSortOwn('lastModifiedDate')">
+                        <span *ngIf="ownPredicate === 'lastModifiedDate'">
+                            <fa-icon [icon]="ownAscending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                        </span>
+                        Last updated
+                    </th>
+                    <th class="d-none d-md-table-cell" scope="col"></th>
+                    <th class="d-md-none pl-3 pr-3 pt-3 pb-3" scope="col">
+                        <div class="row">
+                            <div class="col-9">
+                                Your sequences
+                            </div>
+                            <div class="col-3 text-right">
+                                <div ngbDropdown class="">
+                                    <button type="button" class="btn btn-sm no-arrow p-0" ngbDropdownToggle>
+                                        <fa-icon [icon]="ownAscending ? 'sort-amount-down-alt' : 'sort-amount-up'" size="2x"></fa-icon>
+                                    </button>
+                                    <ul class="dropdown-menu" ngbDropdownMenu>
+                                        <ng-container *ngFor="let opt of availableOwnSorting">
+                                        <li *ngIf="opt.mobile">
+                                            <a (click)="toggleSortOwn(opt.field)" class="dropdown-item mt-3">
+                                                <span *ngIf="ownPredicate === opt.field">
+                                                    <fa-icon [icon]="ownAscending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                                                </span>
+                                                {{ opt.label }}
+                                            </a>
+                                        </li>
+                                        </ng-container>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </th>
                 </tr>
             </thead>
-            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tbody>
                 <tr *ngFor="let sequence of sequences ;trackBy: trackId">
-                    <td>
+                    <!-- WIDE ROW -->
+                    <td class="d-none d-md-table-cell">
                         <span *ngIf="sequence.visibility === 'PUBLIC'" title="Public - everyone can use it!">
                             <fa-icon icon="user-friends"></fa-icon>
                         </span>
@@ -41,16 +84,25 @@
                             <fa-icon icon="eye-slash"></fa-icon>
                         </span>
                     </td>
-                    <td>
-                        {{ sequence.name }}
-                        <div *ngIf="sequence.description">
+                    <td class="d-none d-md-table-cell">
+                        {{ sequence.name | truncate:150 }}
+                        <div *ngIf="sequence.description" class="mt-2">
                             <small>
-                                {{ sequence.description }}
+                                {{ sequence.description | truncate:300 }}
                             </small>
                         </div>
                     </td>
-                    <td>{{ sequence.lastModifiedDate | date:'medium' }}</td>
-                    <td class="text-right">
+                    <td class="d-none d-md-table-cell">
+                        <!-- RATING -->
+                        <jhi-rating 
+                            [readonly]="true"
+                            [rating]="sequence.averageRating" 
+                            [userRating]="sequence.currentUserRating?.score" 
+                            [ratingNumber]="sequence.ratingNumber">
+                        </jhi-rating>
+                    </td>
+                    <td class="d-none d-md-table-cell">{{ sequence.lastModifiedDate | timeago }}</td>
+                    <td class="d-none d-md-table-cell text-right">
                         <div class="btn-group">
 
                             <button type="submit"
@@ -74,6 +126,71 @@
                                 <fa-icon icon="times"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                             </button>
+                        </div>
+                    </td>
+                    <!-- MOBILE SINGLE CELL -->
+                    <td class="d-md-none pl-3 pr-3 pt-1 pb-3">
+                        
+                        <div class="row mt-3">
+                            <div class="col-9">
+                                {{ sequence.name | truncate:150 }}
+                            </div>
+                            <div class="col-3  text-right">
+                                <jhi-rating 
+                                    mode="IN_PLACE"
+                                    [readonly]="true"
+                                    [rating]="sequence.averageRating" 
+                                    [userRating]="sequence.currentUserRating?.score" 
+                                    [ratingNumber]="sequence.ratingNumber">
+                                </jhi-rating>
+                            </div>
+                        </div>
+                        <!--
+                        <div class="row mt-3" *ngIf="sequence.description">
+                            <div class="col-12">
+                                <small>
+                                    {{ sequence.description | truncate:150 }}
+                                </small>
+                            </div>
+                        </div>
+                        -->
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <small>
+                                    <span *ngIf="sequence.visibility === 'PUBLIC'" title="Public - everyone can use it!">
+                                        <fa-icon icon="user-friends"></fa-icon> shared
+                                    </span>
+                                    <span *ngIf="sequence.visibility === 'PRIVATE'" title="Private - visible only to you">
+                                        <fa-icon icon="eye-slash"></fa-icon> private
+                                    </span>
+                                </small>
+                            </div>
+                            <div class="col-6 text-right">
+                                <div ngbDropdown class="">
+                                    <button type="button" class="btn btn-sm no-arrow p-0" ngbDropdownToggle>
+                                        <fa-icon icon="ellipsis-h" size="2x"></fa-icon>
+                                    </button>
+                                    <ul class="dropdown-menu" ngbDropdownMenu>
+                                        <li *ngIf="sequence.authorizations.WRITE">
+                                            <a class="dropdown-item" 
+                                                    [routerLink]="['/sequence', sequence.id, 'edit']">
+                                                <fa-icon icon="pencil-alt" fixedWidth="true"></fa-icon> &nbsp; edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a (click)="clone(sequence.id)" class="dropdown-item mt-3">
+                                                <fa-icon icon="clone" fixedWidth="true"></fa-icon> &nbsp; clone
+                                            </a>
+                                        </li>
+                                        <li *ngIf="sequence.authorizations.OWNER">
+                                            <a (click)="delete(sequence)" class="dropdown-item mt-3">
+                                                <fa-icon icon="times" fixedWidth="true"></fa-icon> &nbsp; delete
+                                            </a>
+                                        </li>
+                                    </ul>
+                                   
+                                </div>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -101,7 +218,7 @@
             </div>
         </div>
         
-        <div class="alert alert-warning text-center" id="no-result" *ngIf="sharedSequences?.length === 0">
+        <div class="alert alert-warning text-center" id="no-result" *ngIf="sharedSequences?.length === 0 && !loading">
             No community sequences found.
         </div>
 
@@ -109,36 +226,93 @@
             <table class="table table-striped" aria-describedby="page-heading">
                 <thead>
                     <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="resetShared.bind(this)">
-                        <th scope="col"></th>
-                        <th scope="col" jhiSortBy="name"><span jhiTranslate="leloHubApp.sequence.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-                        <th scope="col" jhiSortBy="lastModifiedDate">Last updated <fa-icon icon="sort"></fa-icon></th>
-                        <th scope="col" jhiSortBy="userLogin"><span>Shared by</span> <fa-icon icon="sort"></fa-icon></th>
-                        <th scope="col"></th>
+                        <th class="d-none d-md-table-cell" scope="col"></th>
+                        <th class="d-none d-md-table-cell clickable" scope="col" (click)="toggleSort('name')">
+                            <span *ngIf="predicate === 'name'">
+                                <fa-icon [icon]="ascending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                            </span>
+                            Name
+                        </th>
+                        <th class="d-none d-md-table-cell clickable" scope="col" (click)="toggleSort('averageRating')">
+                            <span *ngIf="predicate === 'averageRating'">
+                                <fa-icon [icon]="ascending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                            </span>
+                            Ratings
+                        </th>
+                        <th class="d-none d-md-table-cell clickable" scope="col" (click)="toggleSort('userLogin')">
+                            <span *ngIf="predicate === 'userLogin'">
+                                <fa-icon [icon]="ascending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                            </span>
+                            Shared by
+                        </th>
+                        <th class="d-none d-md-table-cell clickable" scope="col" (click)="toggleSort('lastModifiedDate')">
+                            <span *ngIf="predicate === 'lastModifiedDate'">
+                                <fa-icon [icon]="ascending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                            </span>
+                            Last updated
+                        </th>
+                        <th class="d-none d-md-table-cell" scope="col"></th>
+                        <th class="d-md-none pl-3 pr-3 pt-3 pb-3" scope="col">
+                            <div class="row">
+                                <div class="col-9">
+                                    Community sequences
+                                </div>
+                                <div class="col-3 text-right">
+                                    <div ngbDropdown class="">
+                                        <button type="button" class="btn btn-sm no-arrow p-0" ngbDropdownToggle>
+                                            <fa-icon [icon]="ascending ? 'sort-amount-down-alt' : 'sort-amount-up'" size="2x"></fa-icon>
+                                        </button>
+                                        <ul class="dropdown-menu" ngbDropdownMenu>
+                                            <ng-container *ngFor="let opt of availableCommunitySorting">
+                                            <li *ngIf="opt.mobile">
+                                                <a (click)="toggleSort(opt.field)" class="dropdown-item mt-3">
+                                                    <span *ngIf="predicate === opt.field">
+                                                        <fa-icon [icon]="ascending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                                                    </span>
+                                                    {{ opt.label }}
+                                                </a>
+                                            </li>
+                                            </ng-container>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
                     <tr *ngFor="let sequence of sharedSequences ;trackBy: trackId">
-                        <td>
+                        <!-- WIDE ROW -->
+                        <td class="d-none d-md-table-cell">
                             <span *ngIf="sequence.visibility === 'PUBLIC'" title="Public - everyone can use it!">
                                 <fa-icon icon="user-friends"></fa-icon>
                             </span>
-                            <span *ngIf="sequence.visibility === 'PRIVATE'" title="Private - visible only to you">
-                                <fa-icon icon="eye-slash"></fa-icon>
-                            </span>
                         </td>
-                        <td>
-                            {{ sequence.name }}
+                        <td class="d-none d-md-table-cell">
+                            {{ sequence.name | truncate:150 }}
                             <div *ngIf="sequence.description">
                                 <small>
-                                    {{ sequence.description }}
+                                    {{ sequence.description | truncate:300 }}
                                 </small>
                             </div>
+                            <div *ngIf="sequence.visibility === 'PRIVATE'" title="Private - visible only to you">
+                                <small><fa-icon icon="eye-slash"></fa-icon> private</small>
+                            </div>
                         </td>
-                        <td>{{ sequence.lastModifiedDate | date:'medium' }}</td>
-                        <td>
+                        <td class="d-none d-md-table-cell">
+                            <!-- RATING -->
+                            <jhi-rating 
+                                [rating]="sequence.averageRating" 
+                                [userRating]="sequence.currentUserRating?.score" 
+                                [ratingNumber]="sequence.ratingNumber"
+                                (rated)="rate(sequence, $event)">
+                            </jhi-rating>
+                        </td>
+                        <td class="d-none d-md-table-cell">
                             {{ sequence.userLogin }}
                         </td>
-                        <td class="text-right">
+                        <td class="d-none d-md-table-cell">{{ sequence.lastModifiedDate | timeago }}</td>
+                        <td class="d-none d-md-table-cell text-right">
                             <div class="btn-group">
                                 <button type="submit"
                                         [routerLink]="['/sequence', sequence.id, 'view']"
@@ -153,6 +327,63 @@
                                     <fa-icon icon="clone"></fa-icon>
                                     <span class="d-none d-md-inline">Clone</span>
                                 </button>
+                            </div>
+                        </td>
+                        <!-- MOBILE SINGLE CELL -->
+                        <td class="d-md-none pl-3 pr-3 pt-1 pb-3">
+                            
+                            <div class="row mt-3">
+                                <div class="col-9">
+                                    {{ sequence.name | truncate:150 }}
+                                </div>
+                                <div class="col-3  text-right">
+                                    <jhi-rating 
+                                        mode="IN_PLACE"
+                                        [rating]="sequence.averageRating" 
+                                        [userRating]="sequence.currentUserRating?.score" 
+                                        [ratingNumber]="sequence.ratingNumber"
+                                        (rated)="rate(sequence, $event)">
+                                    </jhi-rating>
+                                </div>
+                            </div>
+                            <div class="row mt-3" *ngIf="sequence.description">
+                                <div class="col-12">
+                                    <small>
+                                        {{ sequence.description | truncate:150 }}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <small>
+                                        <span *ngIf="sequence.visibility === 'PUBLIC'" title="Public - everyone can use it!">
+                                            <fa-icon icon="user-friends"></fa-icon> by {{ sequence.userLogin }}
+                                        </span>
+                                        <span *ngIf="sequence.visibility === 'PRIVATE'" title="Private - visible only to you">
+                                            <fa-icon icon="eye-slash"></fa-icon> ({{ sequence.userLogin }})
+                                        </span>
+                                    </small>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <div ngbDropdown class="">
+                                        <button type="button" class="btn btn-sm no-arrow p-0" ngbDropdownToggle>
+                                            <fa-icon icon="ellipsis-h" size="2x"></fa-icon>
+                                        </button>
+                                        <ul class="dropdown-menu" ngbDropdownMenu>
+                                            <li>
+                                                <a class="dropdown-item" 
+                                                    [routerLink]="['/sequence', sequence.id, 'view']">
+                                                    <fa-icon icon="eye" fixedWidth="true"></fa-icon> &nbsp; view
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a (click)="clone(sequence.id)" class="dropdown-item mt-3">
+                                                    <fa-icon icon="clone" fixedWidth="true"></fa-icon> &nbsp; clone
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>

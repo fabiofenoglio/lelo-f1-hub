@@ -41,6 +41,12 @@ public abstract class SequenceRootDTO extends AbstractAuditingDTO implements Ser
 
 	protected String userLogin;
 
+	protected Integer ratingNumber;
+
+	protected Double averageRating;
+
+	protected SequenceUserRatingDTO currentUserRating;
+
 	protected Map<ObjectAccessAuthorization, Boolean> authorizations = new HashMap<>();
 
 	public Map<ObjectAccessAuthorization, Boolean> getAuthorizations() {
@@ -126,6 +132,30 @@ public abstract class SequenceRootDTO extends AbstractAuditingDTO implements Ser
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Integer getRatingNumber() {
+		return ratingNumber;
+	}
+
+	public void setRatingNumber(Integer ratingNumber) {
+		this.ratingNumber = ratingNumber;
+	}
+
+	public Double getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(Double averageRating) {
+		this.averageRating = averageRating;
+	}
+
+	public SequenceUserRatingDTO getCurrentUserRating() {
+		return currentUserRating;
+	}
+
+	public void setCurrentUserRating(SequenceUserRatingDTO currentUserRating) {
+		this.currentUserRating = currentUserRating;
 	}
 
 }

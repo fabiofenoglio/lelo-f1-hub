@@ -72,7 +72,12 @@ import {
   faExclamationCircle,
   faBug,
   faStop,
-  faGift
+  faGift,
+  faEllipsisV,
+  faSortAmountDown,
+  faSortAmountUp,
+  faSortAmountDownAlt,
+  faCaretRight
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -147,12 +152,17 @@ export const fontAwesomeIcons = [
   faPlay,
   faPause,
   faEllipsisH,
+  faEllipsisV,
   faCheck,
   faCommentDots,
   faExclamationTriangle,
   faExclamationCircle,
   faBug,
   faStop,
-  faGift
+  faGift,
+  faSortAmountDown,
+  faSortAmountUp,
+  faSortAmountDownAlt,
+  faCaretRight,
   // jhipster-needle-add-icon-import
 ];

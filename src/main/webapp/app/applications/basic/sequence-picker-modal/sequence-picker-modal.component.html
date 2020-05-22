@@ -12,6 +12,23 @@
                         <fa-icon icon="search"></fa-icon>
                     </button>
                 </div>
+                <div class="input-group-append" ngbDropdown>
+                    <button type="button" class="btn btn-secondary no-arrow" ngbDropdownToggle>
+                        <fa-icon [icon]="ascending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                    </button>
+                    <ul class="dropdown-menu" ngbDropdownMenu>
+                        <ng-container *ngFor="let opt of availableSorting">
+                        <li *ngIf="opt.mobile">
+                            <a (click)="toggleSort(opt.field)" class="dropdown-item mt-3">
+                                <span *ngIf="predicate === opt.field">
+                                    <fa-icon [icon]="ascending ? 'sort-amount-down-alt' : 'sort-amount-up'"></fa-icon>
+                                </span>
+                                {{ opt.label }}
+                            </a>
+                        </li>
+                        </ng-container>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -20,71 +37,94 @@
         No sequences found.
     </div>
 
-    <div class="row">
+    <div class="row mt-3">
         <div class="col-12">
 
-            <div class="table-responsive" id="sharedSequences" *ngIf="sharedSequences?.length > 0 || sequences?.length > 0">
-                <table class="table table-sm table-hover" aria-describedby="page-heading">
-                    <thead>
-                        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-                            <th scope="col" jhiSortBy="name"><span jhiTranslate="leloHubApp.sequence.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-                            <th scope="col" jhiSortBy="userLogin"><span>Made by</span> <fa-icon icon="sort"></fa-icon></th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
+            <div class="" id="sharedSequences" *ngIf="sharedSequences?.length > 0 || sequences?.length > 0">
+                <table class="table table-sm table-striped table-hover" aria-describedby="page-heading">
                     <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
                         <tr class="table-info">
-                            <th colspan="3">
-                                Your sequences
+                            <th colspan="1" class="py-4"> 
+                                <div class="row">
+                                    <div class="col-2 col-md-1">
+                                    </div>
+                                    <div class="col-8 col-md-9">
+                                        Your sequences
+                                    </div>
+                                </div>
                             </th>
                         </tr>
                         <tr class="clickable" *ngFor="let sequence of sequences ;trackBy: trackId" (click)="pick(sequence)">
                             <td>
-                                {{ sequence.name }}
-                                <div *ngIf="sequence.description">
-                                    <small>
-                                        {{ sequence.description }}
-                                    </small>
+                                <div class="row">
+                                    <div class="col-2 col-md-1 pl-4">
+                                        <fa-icon icon="caret-right"></fa-icon>
+                                    </div>
+                                    <div class="col-8 col-md-9">
+                                        <div>
+                                            {{ sequence.name | truncate:150 }}
+                                        </div>
+                                    </div>
+                                    <div class="col-2 col-md-2 text-right">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" (click)="pick(sequence)">
+                                            <fa-icon icon="play"></fa-icon>
+                                        </button>
+                                    </div>
                                 </div>
-                            </td>
-                            <td>
-                                you
-                            </td>
-                            <td class="text-right">
-                                <button type="button" class="btn btn-sm btn-outline-primary" (click)="pick(sequence)">
-                                    <fa-icon icon="play"></fa-icon>
-                                </button>
                             </td>
                         </tr>
                         <tr class="table-warning">
-                            <th colspan="3">
-                                Community sequences
+                            <th colspan="1" class="py-4">
+                                <div class="row">
+                                    <div class="col-2 col-md-1">
+                                    </div>
+                                    <div class="col-8 col-md-9">
+                                        Community sequences
+                                    </div>
+                                </div>
                             </th>
                         </tr>
                         <tr class="clickable" *ngFor="let sequence of sharedSequences ;trackBy: trackId" (click)="pick(sequence)">
                             <td>
-                                {{ sequence.name }}
-                                <div *ngIf="sequence.description">
-                                    <small>
-                                        {{ sequence.description }}
-                                    </small>
+                                <div class="row">
+                                    <div class="col-2 col-md-1">
+                                        <jhi-rating 
+                                            mode="IN_PLACE"
+                                            [readonly]="true"
+                                            [rating]="sequence.averageRating" 
+                                            [userRating]="sequence.currentUserRating?.score" 
+                                            [ratingNumber]="sequence.ratingNumber">
+                                        </jhi-rating>
+                                    </div>
+                                    <div class="col-8 col-md-9">
+                                        <div>
+                                            {{ sequence.name | truncate:150 }}
+                                        </div>
+                                    </div>
+                                    <div class="col-2 col-md-2 text-right">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" (click)="pick(sequence)">
+                                            <fa-icon icon="play"></fa-icon>
+                                        </button>
+                                    </div>
                                 </div>
-                            </td>
-                            <td>
-                                <fa-icon icon="user-friends"></fa-icon>
-                                {{ sequence.userLogin }}
-                            </td>
-                            <td class="text-right">
-                                <button type="button" class="btn btn-sm btn-outline-primary" (click)="pick(sequence)">
-                                    <fa-icon icon="play"></fa-icon>
-                                </button>
+                                <div class="row">
+                                    <div class="col-2 col-md-1">
+                                        <!-- EMPTY -->
+                                    </div>
+                                    <div class="col-10 col-md-11">
+                                        <small class="mb-3" *ngIf="sequence.description">{{ sequence.description | truncate:250 }}</small>
+                                        <div>
+                                            <small><fa-icon icon="user-friends"></fa-icon> by {{ sequence.userLogin }}</small>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-    </duv>
+    </div>
 </div>
 <div class="modal-footer">
     <div class="row">

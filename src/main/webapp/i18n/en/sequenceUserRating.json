@@ -1,0 +1,28 @@
+{
+  "leloHubApp": {
+    "sequenceUserRating": {
+      "home": {
+        "title": "Sequence User Ratings",
+        "createLabel": "Create a new Sequence User Rating",
+        "createOrEditLabel": "Create or edit a Sequence User Rating",
+        "notFound": "No Sequence User Ratings found"
+      },
+      "created": "A new Sequence User Rating is created with identifier {{ param }}",
+      "updated": "A Sequence User Rating is updated with identifier {{ param }}",
+      "deleted": "A Sequence User Rating is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Sequence User Rating {{ id }}?"
+      },
+      "detail": {
+        "title": "Sequence User Rating"
+      },
+      "createdDate": "Created Date",
+      "createdBy": "Created By",
+      "lastModifiedDate": "Last Modified Date",
+      "lastModifiedBy": "Last Modified By",
+      "score": "Score",
+      "user": "User",
+      "sequence": "Sequence"
+    }
+  }
+}

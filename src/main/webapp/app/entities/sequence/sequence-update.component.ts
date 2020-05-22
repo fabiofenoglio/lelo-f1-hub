@@ -103,7 +103,7 @@ export class SequenceUpdateComponent implements OnInit {
     const patchValue = {
       id: sequence.id,
       generation: sequence.generation,
-      name: sequence.name || 'New sequence',
+      name: sequence.name || '',
       description: sequence.description,
       visibility: sequence.visibility || SequenceVisibility.PUBLIC,
       createdDate: sequence.createdDate ? sequence.createdDate.format(DATE_TIME_FORMAT) : null,

@@ -17,6 +17,7 @@
         "sequenceStepActionDefinitionParameter": "Sequence Step Action Definition Parameter",
         "sequenceStepAction": "Sequence Step Action",
         "sequenceStepActionParameter": "Sequence Step Action Parameter",
+        "sequenceUserRating": "Sequence User Rating",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "applications": {
@@ -148,7 +149,8 @@
     "file": {
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
-    }
+    },
+    "forbidden": "Not allowed"
   },
   "footer": "This is your footer"
 }

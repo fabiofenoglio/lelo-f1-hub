@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Formula;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -35,168 +36,205 @@ import it.fabiofenoglio.lelohub.domain.proto.HasID;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Sequence extends AbstractAuditingEntity<Sequence> implements Serializable, HasID {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "generation", nullable = false)
-    private SequenceGeneration generation = SequenceGeneration.GEN1;
-
-    @NotNull
-    @Size(max = 250)
-    @Column(name = "name", length = 250, nullable = false)
-    private String name;
-
-    @Size(max = 2000)
-    @Column(name = "description", length = 2000)
-    private String description;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "visibility", nullable = false)
-    private SequenceVisibility visibility;
-
-    @OneToMany(mappedBy = "sequence", cascade = CascadeType.ALL, orphanRemoval=true)
-//    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SequenceStep> steps = new HashSet<>();
-
-    @ManyToOne(optional = false)
-    @NotNull
-    @JsonIgnoreProperties("sequences")
-    private User user;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-    public Long getId() {
-        return id;
+    public static Sequence referenceById(Long id) {
+    	Sequence output = new Sequence();
+    	output.setId(id);
+    	return output;
     }
+    
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column(name = "generation", nullable = false)
+	private SequenceGeneration generation = SequenceGeneration.GEN1;
 
-    public SequenceGeneration getGeneration() {
-        return generation;
-    }
+	@NotNull
+	@Size(max = 250)
+	@Column(name = "name", length = 250, nullable = false)
+	private String name;
 
-    public Sequence generation(SequenceGeneration generation) {
-        this.generation = generation;
-        return this;
-    }
+	@Size(max = 2000)
+	@Column(name = "description", length = 2000)
+	private String description;
 
-    public void setGeneration(SequenceGeneration generation) {
-        this.generation = generation;
-    }
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column(name = "visibility", nullable = false)
+	private SequenceVisibility visibility;
 
-    public String getName() {
-        return name;
-    }
+	@OneToMany(mappedBy = "sequence", cascade = CascadeType.ALL, orphanRemoval = true)
+//  @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	private Set<SequenceStep> steps = new HashSet<>();
 
-    public Sequence name(String name) {
-        this.name = name;
-        return this;
-    }
+	@ManyToOne(optional = false)
+	@NotNull
+	@JsonIgnoreProperties("sequences")
+	private User user;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@OneToMany(mappedBy = "sequence", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private Set<SequenceUserRating> userRatings = new HashSet<>();
 
-    public String getDescription() {
-        return description;
-    }
+	@Formula("(SELECT count(*) from sequence_user_rating ur where ur.sequence_id = id)")
+	private Integer ratingNumber;
 
-    public Sequence description(String description) {
-        this.description = description;
-        return this;
-    }
+	@Formula("(SELECT avg(ur.score) from sequence_user_rating ur where ur.sequence_id = id)")
+	private Double averageRating;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	// jhipster-needle-entity-add-field - JHipster will add fields here, do not
+	// remove
 
-    public SequenceVisibility getVisibility() {
-        return visibility;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Sequence visibility(SequenceVisibility visibility) {
-        this.visibility = visibility;
-        return this;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setVisibility(SequenceVisibility visibility) {
-        this.visibility = visibility;
-    }
+	public SequenceGeneration getGeneration() {
+		return generation;
+	}
 
-    public Set<SequenceStep> getSteps() {
-        return steps;
-    }
+	public Sequence generation(SequenceGeneration generation) {
+		this.generation = generation;
+		return this;
+	}
 
-    public Sequence steps(Set<SequenceStep> sequenceSteps) {
-        this.steps = sequenceSteps;
-        return this;
-    }
+	public void setGeneration(SequenceGeneration generation) {
+		this.generation = generation;
+	}
 
-    public Sequence addSteps(SequenceStep sequenceStep) {
-        this.steps.add(sequenceStep);
-        sequenceStep.setSequence(this);
-        return this;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Sequence removeSteps(SequenceStep sequenceStep) {
-        this.steps.remove(sequenceStep);
-        sequenceStep.setSequence(null);
-        return this;
-    }
+	public Sequence name(String name) {
+		this.name = name;
+		return this;
+	}
 
-    public void setSteps(Set<SequenceStep> sequenceSteps) {
-        this.steps = sequenceSteps;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public Sequence user(User user) {
-        this.user = user;
-        return this;
-    }
+	public Sequence description(String description) {
+		this.description = description;
+		return this;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Sequence)) {
-            return false;
-        }
-        return id != null && id.equals(((Sequence) o).id);
-    }
+	public SequenceVisibility getVisibility() {
+		return visibility;
+	}
 
-    @Override
-    public int hashCode() {
-        return 31;
-    }
+	public Sequence visibility(SequenceVisibility visibility) {
+		this.visibility = visibility;
+		return this;
+	}
 
-    @Override
-    public String toString() {
-        return "Sequence{" +
-            "id=" + getId() +
-            ", generation='" + getGeneration() + "'" +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", visibility='" + getVisibility() + "'" +
-            ", createdDate='" + getCreatedDate() + "'" +
-            ", createdBy='" + getCreatedBy() + "'" +
-            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
-            ", lastModifiedBy='" + getLastModifiedBy() + "'" +
-            "}";
-    }
+	public void setVisibility(SequenceVisibility visibility) {
+		this.visibility = visibility;
+	}
+
+	public Set<SequenceStep> getSteps() {
+		return steps;
+	}
+
+	public Sequence steps(Set<SequenceStep> sequenceSteps) {
+		this.steps = sequenceSteps;
+		return this;
+	}
+
+	public Sequence addSteps(SequenceStep sequenceStep) {
+		this.steps.add(sequenceStep);
+		sequenceStep.setSequence(this);
+		return this;
+	}
+
+	public Sequence removeSteps(SequenceStep sequenceStep) {
+		this.steps.remove(sequenceStep);
+		sequenceStep.setSequence(null);
+		return this;
+	}
+
+	public void setSteps(Set<SequenceStep> sequenceSteps) {
+		this.steps = sequenceSteps;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public Sequence user(User user) {
+		this.user = user;
+		return this;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Integer getRatingNumber() {
+		return ratingNumber;
+	}
+
+	public void setRatingNumber(Integer ratingNumber) {
+		this.ratingNumber = ratingNumber;
+	}
+
+	// jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+	// setters here, do not remove
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Sequence)) {
+			return false;
+		}
+		return id != null && id.equals(((Sequence) o).id);
+	}
+
+	@Override
+	public int hashCode() {
+		return 31;
+	}
+
+	@Override
+	public String toString() {
+		return "Sequence{" + "id=" + getId() + ", generation='" + getGeneration() + "'" + ", name='" + getName() + "'"
+				+ ", description='" + getDescription() + "'" + ", visibility='" + getVisibility() + "'"
+				+ ", createdDate='" + getCreatedDate() + "'" + ", createdBy='" + getCreatedBy() + "'"
+				+ ", lastModifiedDate='" + getLastModifiedDate() + "'" + ", lastModifiedBy='" + getLastModifiedBy()
+				+ "'" + "}";
+	}
+
+	public Double getAverageRating() {
+		return averageRating;
+	}
+
+	public Set<SequenceUserRating> getUserRatings() {
+		return userRatings;
+	}
+
+	public void setUserRatings(Set<SequenceUserRating> userRatings) {
+		this.userRatings = userRatings;
+	}
+
+	public void setAverageRating(Double averageRating) {
+		this.averageRating = averageRating;
+	}
 }

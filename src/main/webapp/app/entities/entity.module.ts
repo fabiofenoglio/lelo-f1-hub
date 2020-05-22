@@ -62,6 +62,10 @@ import { RouterModule } from '@angular/router';
           import('./sequence-step-action-parameter/sequence-step-action-parameter.module').then(
             m => m.LeloHubSequenceStepActionParameterModule
           )
+      },
+      {
+        path: 'sequence-user-rating',
+        loadChildren: () => import('./sequence-user-rating/sequence-user-rating.module').then(m => m.LeloHubSequenceUserRatingModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

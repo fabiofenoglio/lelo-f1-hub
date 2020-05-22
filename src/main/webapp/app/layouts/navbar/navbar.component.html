@@ -120,6 +120,12 @@
                             <span jhiTranslate="global.menu.entities.sequenceStepActionParameter">Sequence Step Action Parameter</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="sequence-user-rating" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.sequenceUserRating">Sequence User Rating</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>

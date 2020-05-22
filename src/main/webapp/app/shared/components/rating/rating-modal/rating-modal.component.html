@@ -1,0 +1,15 @@
+<div class="modal-body text-center p-5" *ngIf="parentComponent">
+    <p class="mb-3">
+        Tap to vote.
+    </p>
+
+    <jhi-rating 
+        [containerClasses]="['xl']"
+        [readonly]="parentComponent?.readonly"
+        [rating]="parentComponent?.rating" 
+        [userRating]="parentComponent?.userRating" 
+        [ratingNumber]="parentComponent?.ratingNumber"
+        (rated)="changed($event)"
+    >
+    </jhi-rating>
+</div>
