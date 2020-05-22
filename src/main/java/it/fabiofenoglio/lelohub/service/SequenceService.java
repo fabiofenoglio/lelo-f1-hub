@@ -1,7 +1,8 @@
 package it.fabiofenoglio.lelohub.service;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,12 +43,14 @@ import it.fabiofenoglio.lelohub.security.SecurityUtils;
 import it.fabiofenoglio.lelohub.service.dto.SequenceCriteria;
 import it.fabiofenoglio.lelohub.service.dto.SequenceDTO;
 import it.fabiofenoglio.lelohub.service.dto.SequenceListDTO;
+import it.fabiofenoglio.lelohub.service.dto.SequenceRootDTO;
 import it.fabiofenoglio.lelohub.service.dto.SequenceStepActionParameterUpdateDTO;
 import it.fabiofenoglio.lelohub.service.dto.SequenceStepActionUpdateDTO;
 import it.fabiofenoglio.lelohub.service.dto.SequenceStepConditionParameterUpdateDTO;
 import it.fabiofenoglio.lelohub.service.dto.SequenceStepConditionUpdateDTO;
 import it.fabiofenoglio.lelohub.service.dto.SequenceStepUpdateDTO;
 import it.fabiofenoglio.lelohub.service.dto.SequenceUpdateDTO;
+import it.fabiofenoglio.lelohub.service.dto.SequenceUserRatingDTO;
 import it.fabiofenoglio.lelohub.service.helper.NestedEntityComparator;
 import it.fabiofenoglio.lelohub.service.mapper.SequenceMapper;
 import it.fabiofenoglio.lelohub.web.rest.errors.ForbiddenException;
@@ -68,13 +71,19 @@ public class SequenceService extends QueryService<Sequence>  {
 
     private final SequenceMapper sequenceMapper;
     
+    private final SequenceUserRatingService sequenceUserRatingService;
+    
     @PersistenceContext
     private EntityManager entityManager;
 
-    public SequenceService(SequenceRepository sequenceRepository, SequenceMapper sequenceMapper, UserRepository userRepository) {
+    public SequenceService(
+    		SequenceRepository sequenceRepository, SequenceMapper sequenceMapper, 
+    		UserRepository userRepository,
+    		SequenceUserRatingService sequenceUserRatingService ) {
         this.sequenceRepository = sequenceRepository;
         this.sequenceMapper = sequenceMapper;
         this.userRepository = userRepository;
+        this.sequenceUserRatingService = sequenceUserRatingService;
     }
 
     public Set<ObjectAccessAuthorization> getUserAuthorizations(Sequence sequence, String user) {
@@ -113,7 +122,8 @@ public class SequenceService extends QueryService<Sequence>  {
     }
     
     public void assertAuthorization(Sequence sequence, ObjectAccessAuthorization authorization) {
-    	if (!this.checkAuthorization(sequence, authorization, SecurityUtils.getCurrentUserLogin().orElse(null))) {
+    	if (!this.checkAuthorization(sequence, authorization, SecurityUtils.getCurrentUserLogin().orElse(null))
+    			&& !SecurityUtils.isAdmin() ) {
     		throw new ForbiddenException();
     	}
     }
@@ -323,7 +333,7 @@ public class SequenceService extends QueryService<Sequence>  {
         cloned.setName(existing.getName());
         cloned.setUser(currentUser);
         cloned.setVisibility(existing.getVisibility());
-        
+        cloned.setUserRatings(new HashSet<>());
         cloned.setSteps(existing.getSteps().stream()
         		.map(o -> SequenceStepService.clone(o, cloned, entityManager))
         		.collect(Collectors.toSet()) );
@@ -339,22 +349,6 @@ public class SequenceService extends QueryService<Sequence>  {
     }
 
     /**
-     * Return a {@link List} of {@link SequenceDTO} which matches the criteria from the database.
-     * @param criteria The object which holds all the filters, which the entities should match.
-     * @return the matching entities.
-     */
-    @Transactional(readOnly = true)
-    public List<SequenceListDTO> findByCriteria(SequenceCriteria criteria) {
-        log.debug("find by criteria : {}", criteria);
-        String login = SecurityUtils.requireCurrentLogin();
-        
-        final Specification<Sequence> specification = createSpecification(criteria, buildVisibilityCriteria());
-        return sequenceRepository.findAll(specification).stream()
-        		.map(o -> this.toListDto(o, login))
-				.collect(Collectors.toList());
-    }
-
-    /**
      * Return a {@link Page} of {@link SequenceDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
@@ -364,10 +358,14 @@ public class SequenceService extends QueryService<Sequence>  {
     public Page<SequenceListDTO> findByCriteria(SequenceCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         String login = SecurityUtils.requireCurrentLogin();
-        final Specification<Sequence> specification = createSpecification(criteria, buildVisibilityCriteria());
+        Specification<Sequence> specification = createSpecification(criteria, buildVisibilityCriteria());
         
-        return sequenceRepository.findAll(specification, page)
-            .map(o -> this.toListDto(o, login));
+        Page<SequenceListDTO> pageResponse = sequenceRepository.findAll(specification, page)
+            .map(o -> toListDto(o, login));
+        
+        enrichDTO(pageResponse.getContent());
+        
+        return pageResponse;
     }
 
     /**
@@ -399,7 +397,9 @@ public class SequenceService extends QueryService<Sequence>  {
     private SequenceCriteria buildVisibilityCriteria() {
     	String userLogin = SecurityUtils.requireCurrentLogin();
     	SequenceCriteria output = new SequenceCriteria();
-		output.setVisibleToUser(userLogin);
+    	if (!SecurityUtils.isAdmin()) {
+    		output.setVisibleToUser(userLogin);
+    	}
     	return output;
     }
 
@@ -467,9 +467,31 @@ public class SequenceService extends QueryService<Sequence>  {
             				);
 	            	});
 	            }
+	            if (criteria.getAverageRating() != null) {
+	            	specification = specification.and(buildRangeSpecification(criteria.getAverageRating(), Sequence_.averageRating));
+	            }
+	            if (criteria.getRatingNumber() != null) {
+	            	specification = specification.and(buildRangeSpecification(criteria.getRatingNumber(), Sequence_.ratingNumber));
+	            }
 	        }
         }
         return specification;
     }
 
+    private void enrichDTO(Collection<? extends SequenceRootDTO> dtoCollection) {
+    	if (dtoCollection == null || dtoCollection.isEmpty()) {
+    		return;
+    	}
+    	
+    	// get IDs
+    	Collection<Long> idList = dtoCollection.stream()
+    			.map(SequenceRootDTO::getId)
+    			.collect(Collectors.toList());
+    	
+    	// get user rating by IDs
+    	Map<Long, SequenceUserRatingDTO> mapped = sequenceUserRatingService.findBySequencesForCurrentUser(idList);
+    	for (SequenceRootDTO entry: dtoCollection) {
+    		entry.setCurrentUserRating(mapped.getOrDefault(entry.getId(), null));
+    	}
+    }
 }

@@ -1,11 +1,21 @@
 <div class="row justify-content-center">
     <div class="col-12 col-sm-10 col-md-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-sequence-heading" jhiTranslate="leloHubApp.sequence.home.createOrEditLabel">Create or edit a Sequence</h2>
+            <h2 id="jhi-sequence-heading">
+                <span *ngIf="readOnly">
+                    View sequence
+                </span>
+                <span *ngIf="!readOnly && !!id">
+                    Edit sequence
+                </span>
+                <span *ngIf="!readOnly && !id">
+                    Create sequence
+                </span>
+            </h2>
 
             <jhi-alert-error></jhi-alert-error>
 
-            <p *ngIf="isMobile" class="alert alert-warning">
+            <p *ngIf="isMobile && !readOnly" class="alert alert-warning">
                 Warning! This page is UI-intensive and has not been optimized for mobile use.
                 <br/>
                 Please try to work on this page on a desktop device.
@@ -471,7 +481,7 @@
                 
                 <button type="button" id="clone-entity" (click)="clone()" *ngIf="!!id && !readOnly"
                     [disabled]="!readOnly && (editForm.invalid || isSaving)" class="btn btn-primary float-right ml-2">
-                    <fa-icon icon="clone"></fa-icon> Save as copy</span>
+                    <fa-icon icon="clone"></fa-icon> Save as copy
                 </button>
                 
                 <button type="button" (click)="delete()" *ngIf="!!id && !readOnly"
@@ -486,7 +496,7 @@
 
                 <button type="button" id="clone-entity" (click)="clone()" *ngIf="!!id && readOnly"
                     [disabled]="!readOnly && (editForm.invalid || isSaving)" class="btn btn-primary float-right">
-                    <fa-icon icon="clone"></fa-icon> Clone</span>
+                    <fa-icon icon="clone"></fa-icon> Clone
                 </button>
                 
             </div>

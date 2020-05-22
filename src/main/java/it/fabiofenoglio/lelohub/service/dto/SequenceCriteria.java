@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import io.github.jhipster.service.Criteria;
+import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
+import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
-import io.github.jhipster.service.filter.ZonedDateTimeFilter;
 import it.fabiofenoglio.lelohub.domain.enumeration.SequenceGeneration;
 import it.fabiofenoglio.lelohub.domain.enumeration.SequenceVisibility;
 
@@ -35,6 +36,11 @@ public class SequenceCriteria implements Serializable, Criteria {
 	 */
 	public static class SequenceGenerationFilter extends Filter<SequenceGeneration> {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public SequenceGenerationFilter() {
 		}
 
@@ -53,6 +59,11 @@ public class SequenceCriteria implements Serializable, Criteria {
 	 * Class for filtering SequenceVisibility
 	 */
 	public static class SequenceVisibilityFilter extends Filter<SequenceVisibility> {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public SequenceVisibilityFilter() {
 		}
@@ -86,6 +97,10 @@ public class SequenceCriteria implements Serializable, Criteria {
 
 	private StringFilter userLogin;
 
+	private IntegerFilter ratingNumber;
+
+	private DoubleFilter averageRating;
+
 	private Boolean own;
 
 	private Boolean shared;
@@ -106,6 +121,8 @@ public class SequenceCriteria implements Serializable, Criteria {
 		this.stepsId = other.stepsId == null ? null : other.stepsId.copy();
 		this.userId = other.userId == null ? null : other.userId.copy();
 		this.userLogin = other.userLogin == null ? null : other.userLogin.copy();
+		this.ratingNumber = other.ratingNumber == null ? null : other.ratingNumber.copy();
+		this.averageRating = other.averageRating == null ? null : other.averageRating.copy();
 		this.own = other.own;
 		this.shared = other.shared;
 		this.visibleToUser = other.visibleToUser;
@@ -234,6 +251,22 @@ public class SequenceCriteria implements Serializable, Criteria {
 				+ (visibility != null ? "visibility=" + visibility + ", " : "")
 				+ (stepsId != null ? "stepsId=" + stepsId + ", " : "")
 				+ (userId != null ? "userId=" + userId + ", " : "") + "}";
+	}
+
+	public IntegerFilter getRatingNumber() {
+		return ratingNumber;
+	}
+
+	public void setRatingNumber(IntegerFilter ratingNumber) {
+		this.ratingNumber = ratingNumber;
+	}
+
+	public DoubleFilter getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(DoubleFilter averageRating) {
+		this.averageRating = averageRating;
 	}
 
 }

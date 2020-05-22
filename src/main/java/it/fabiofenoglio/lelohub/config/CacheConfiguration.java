@@ -61,6 +61,7 @@ public class CacheConfiguration {
             createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepAction.class.getName());
             // createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepAction.class.getName() + ".parameters");
             createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceStepActionParameter.class.getName());
+            createCache(cm, it.fabiofenoglio.lelohub.domain.SequenceUserRating.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -69,6 +69,10 @@ public final class SecurityUtils {
             getAuthorities(authentication).noneMatch(AuthoritiesConstants.ANONYMOUS::equals);
     }
 
+    public static boolean isAdmin() {
+        return isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+    }
+
     /**
      * If the current user has a specific authority (security role).
      * <p>

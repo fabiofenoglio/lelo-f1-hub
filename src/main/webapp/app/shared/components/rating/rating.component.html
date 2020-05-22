@@ -1,0 +1,78 @@
+<div class="rating-container {{ containerClasses ? containerClasses.concat(' ') : ''}}" *ngIf="standardMode">
+    <ng-container *ngIf="!ready">
+        <!-- empty -->
+    </ng-container>
+    <ng-container *ngIf="ready">
+        <ng-template #t let-fill="fill">
+            <span class="star" 
+            [ngClass]="{
+                userrating: hasUserRating,
+                communityrating: !hasUserRating && hasRating,
+                norating: !hasUserRating && !hasRating,
+                full: fill === 100
+            }">
+                <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
+            </span>
+        </ng-template>
+        
+        <ng-container *ngIf="hasUserRating">
+            <ngb-rating [resettable]="true" [starTemplate]="t" [readonly]="isReadonly" [max]="5"
+                [rate]="userRatingOrZero" 
+                (rateChange)="changed($event, false)"></ngb-rating>
+        </ng-container>
+    
+        <ng-container *ngIf="!hasUserRating">
+            <ngb-rating [resettable]="true" [starTemplate]="t" [readonly]="isReadonly" [max]="5"
+                [rate]="ratingOrZero" 
+                (rateChange)="changed($event, true)"></ngb-rating>
+        </ng-container>
+    
+        <small class="rating-caption">
+            <span *ngIf="hasUserRating">
+                you voted {{ userRating }}
+            </span>
+            <span *ngIf="!hasUserRating">
+                <span *ngIf="ratingNumber">
+                    {{ rating | number:'1.1-1' }} over {{ ratingNumber }} votes
+                </span>
+                <span *ngIf="!ratingNumber">
+                    no votes
+                </span>
+            </span>
+        </small>
+    </ng-container>
+</div>
+
+<div class="rating-container-inplace {{ containerClasses ? containerClasses.concat(' ') : ''}}" *ngIf="inPlaceMode">
+    <ng-container *ngIf="!ready">
+        <span class="star norating" >
+            <span class="half" [style.width.%]="100">&hearts;</span>&hearts;
+        </span>
+    </ng-container>
+    <ng-container *ngIf="ready">
+        <span 
+            (click)="clickOnInPlaceRating()"
+            class="star" 
+            [ngClass]="{
+            userrating: hasUserRating,
+            communityrating: !hasUserRating && hasRating,
+            norating: !hasUserRating && !hasRating,
+            full: hasUserRating || hasRating
+        }">
+            <span class="half" [style.width.%]="100">&hearts;</span>&hearts;
+        </span>
+        <small class="rating-caption" (click)="clickOnInPlaceRating()">
+            <span *ngIf="hasUserRating">
+                {{ rating | number:'1.1-1' }}
+            </span>
+            <span *ngIf="!hasUserRating">
+                <span *ngIf="ratingNumber">
+                    {{ rating | number:'1.1-1' }}
+                </span>
+                <span *ngIf="!ratingNumber">
+                </span>
+            </span>
+        </small>
+    </ng-container>
+    
+</div>

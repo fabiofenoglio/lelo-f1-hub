@@ -104,6 +104,7 @@ Custom alerts for notification
     }
   }
   .jhi-toast {
+    z-index: 999999;
     position: fixed;
     width: 100%;
     &.left {
@@ -167,3 +168,11 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+.no-arrow.dropdown-toggle::after {
+  display:none;
+}
+
+.clickable {
+  cursor: pointer;
+}

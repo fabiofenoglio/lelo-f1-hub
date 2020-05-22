@@ -1,0 +1,79 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="leloHubApp.sequenceUserRating.home.title">Sequence User Ratings</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-sequence-user-rating" [routerLink]="['/sequence-user-rating/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="leloHubApp.sequenceUserRating.home.createLabel">
+            Create a new Sequence User Rating
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="sequenceUserRatings?.length === 0">
+        <span jhiTranslate="leloHubApp.sequenceUserRating.home.notFound">No sequenceUserRatings found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="sequenceUserRatings?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createdDate"><span jhiTranslate="leloHubApp.sequenceUserRating.createdDate">Created Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createdBy"><span jhiTranslate="leloHubApp.sequenceUserRating.createdBy">Created By</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastModifiedDate"><span jhiTranslate="leloHubApp.sequenceUserRating.lastModifiedDate">Last Modified Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastModifiedBy"><span jhiTranslate="leloHubApp.sequenceUserRating.lastModifiedBy">Last Modified By</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="score"><span jhiTranslate="leloHubApp.sequenceUserRating.score">Score</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="userLogin"><span jhiTranslate="leloHubApp.sequenceUserRating.user">User</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="sequenceName"><span jhiTranslate="leloHubApp.sequenceUserRating.sequence">Sequence</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let sequenceUserRating of sequenceUserRatings ;trackBy: trackId">
+                    <td><a [routerLink]="['/sequence-user-rating', sequenceUserRating.id, 'view']">{{ sequenceUserRating.id }}</a></td>
+                    <td>{{ sequenceUserRating.createdDate | date:'medium' }}</td>
+                    <td>{{ sequenceUserRating.createdBy }}</td>
+                    <td>{{ sequenceUserRating.lastModifiedDate | date:'medium' }}</td>
+                    <td>{{ sequenceUserRating.lastModifiedBy }}</td>
+                    <td>{{ sequenceUserRating.score }}</td>
+                    <td>
+                        {{ sequenceUserRating.userLogin }}
+                    </td>
+                    <td>
+                        <div *ngIf="sequenceUserRating.sequenceId">
+                            <a [routerLink]="['/sequence', sequenceUserRating.sequenceId , 'view']" >{{ sequenceUserRating.sequenceName }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/sequence-user-rating', sequenceUserRating.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/sequence-user-rating', sequenceUserRating.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(sequenceUserRating)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

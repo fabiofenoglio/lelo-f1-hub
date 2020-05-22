@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sequenceUserRating">
+            <h2><span jhiTranslate="leloHubApp.sequenceUserRating.detail.title">Sequence User Rating</span> {{ sequenceUserRating.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="leloHubApp.sequenceUserRating.createdDate">Created Date</span></dt>
+                <dd>
+                    <span>{{ sequenceUserRating.createdDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceUserRating.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{ sequenceUserRating.createdBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceUserRating.lastModifiedDate">Last Modified Date</span></dt>
+                <dd>
+                    <span>{{ sequenceUserRating.lastModifiedDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceUserRating.lastModifiedBy">Last Modified By</span></dt>
+                <dd>
+                    <span>{{ sequenceUserRating.lastModifiedBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceUserRating.score">Score</span></dt>
+                <dd>
+                    <span>{{ sequenceUserRating.score }}</span>
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceUserRating.user">User</span></dt>
+                <dd>
+                    {{ sequenceUserRating.userLogin }}
+                </dd>
+                <dt><span jhiTranslate="leloHubApp.sequenceUserRating.sequence">Sequence</span></dt>
+                <dd>
+                    <div *ngIf="sequenceUserRating.sequenceId">
+                        <a [routerLink]="['/sequence', sequenceUserRating.sequenceId, 'view']">{{ sequenceUserRating.sequenceName }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sequence-user-rating', sequenceUserRating.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

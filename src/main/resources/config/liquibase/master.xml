@@ -24,6 +24,7 @@
     <include file="config/liquibase/changelog/20200505101900_added_entity_SequenceStepActionDefinitionParameter.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200505102000_added_entity_SequenceStepAction.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200505102100_added_entity_SequenceStepActionParameter.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200521101200_added_entity_SequenceUserRating.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20200505101200_added_entity_constraints_Sequence.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200505101300_added_entity_constraints_SequenceStep.xml" relativeToChangelogFile="false"/>
@@ -33,5 +34,6 @@
     <include file="config/liquibase/changelog/20200505101900_added_entity_constraints_SequenceStepActionDefinitionParameter.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200505102000_added_entity_constraints_SequenceStepAction.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200505102100_added_entity_constraints_SequenceStepActionParameter.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200521101200_added_entity_constraints_SequenceUserRating.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

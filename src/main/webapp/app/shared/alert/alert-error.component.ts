@@ -59,7 +59,10 @@ export class AlertErrorComponent implements OnDestroy {
               }
               // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
               const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
-              const fieldName = translateService.instant('leloHubApp.' + fieldError.objectName + '.' + convertedField);
+              let fieldName = translateService.instant('leloHubApp.' + fieldError.objectName + '.' + convertedField);
+              if (fieldName.startsWith('translation-not-found')) {
+                fieldName = convertedField;
+              }
               this.addErrorAlert('Error on field "' + fieldName + '"', 'error.' + fieldError.message, { fieldName });
             }
           } else if (httpErrorResponse.error !== '' && httpErrorResponse.error.message) {
@@ -69,6 +72,10 @@ export class AlertErrorComponent implements OnDestroy {
           }
           break;
         }
+
+        case 403:
+          this.addErrorAlert('Not allowed', 'error.forbidden');
+          break;
 
         case 404:
           this.addErrorAlert('Not found', 'error.url.not.found');

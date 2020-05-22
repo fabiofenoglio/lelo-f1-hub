@@ -16,7 +16,9 @@ export interface ISequence {
   steps?: ISequenceStep[];
   userLogin?: string;
   userId?: number;
-  authorizations?: {[authorization: string] : boolean}
+  authorizations?: {[authorization: string] : boolean};
+  ratingNumber?: number;
+  averageRating?: number;
 }
 
 export class Sequence implements ISequence {
@@ -32,6 +34,8 @@ export class Sequence implements ISequence {
     public lastModifiedBy?: string,
     public steps?: ISequenceStep[],
     public userLogin?: string,
-    public userId?: number
+    public userId?: number,
+    public ratingNumber?: number,
+    public averageRating?: number,
   ) {}
 }

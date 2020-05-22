@@ -29,6 +29,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static User referenceById(Long id) {
+    	User output = new User();
+    	output.setId(id);
+    	return output;
+    }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
