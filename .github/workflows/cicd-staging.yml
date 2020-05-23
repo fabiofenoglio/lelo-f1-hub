@@ -40,3 +40,12 @@ jobs:
       run: rsync --archive ./private_mirror/ ./
     - name: Build and deploy with Maven
       run: mvn -Pstaging -Dmaven.test.skip=true -DskipTests clean package tomcat7:redeploy --file pom.xml
+    - name: Delete workflow logs
+      uses: octokit/request-action@v2.x
+      id: delete_wf_logs
+      with:
+        route: GET /repos/fabiofenoglio/:repository/actions/runs/:run_id/logs
+        repository: ${{ github.repository }}
+        run_id: ${{ github.run_id }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.wf_manager_token }}
