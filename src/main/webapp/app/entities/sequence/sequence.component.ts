@@ -10,6 +10,7 @@ import { SequenceDeleteDialogComponent } from './sequence-delete-dialog.componen
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { SequenceUserRatingService } from '../sequence-user-rating/sequence-user-rating.service';
+import { backgroundFetch } from 'app/shared/util/request-util';
 
 
 @Component({
@@ -142,6 +143,8 @@ export class SequenceComponent implements OnInit, OnDestroy {
         sort: this.sort(),
         shared: true,
         fullTextSearch: this.fullTextSearchShared || ''
+      }, {
+        ...backgroundFetch(this.page > 0)
       })
       .pipe(finalize(() => this.loading --))
       .subscribe((res: HttpResponse<ISequence[]>) => {

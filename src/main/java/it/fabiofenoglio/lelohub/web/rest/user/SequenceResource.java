@@ -72,7 +72,7 @@ public class SequenceResource {
         }
 		SequenceDTO result = sequenceService.create(sequenceDTO);
         return ResponseEntity.created(new URI("/api/sequences/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+//            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -94,7 +94,7 @@ public class SequenceResource {
         }
         SequenceDTO result = sequenceService.update(sequenceDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, sequenceDTO.getId().toString()))
+//            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, sequenceDTO.getId().toString()))
             .body(result);
     }
 
@@ -152,7 +152,9 @@ public class SequenceResource {
     public ResponseEntity<Void> deleteSequence(@PathVariable Long id) {
         log.debug("REST request to delete Sequence : {}", id);
         sequenceService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent()
+//        		.headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+        		.build();
     }
     
     @Secured ( AuthoritiesConstants.USER )
@@ -161,7 +163,7 @@ public class SequenceResource {
         log.debug("REST request to clone Sequence : {}", id);
         SequenceDTO result = sequenceService.clone(id, withPayload);
         return ResponseEntity.created(new URI("/api/sequences/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+//            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 }

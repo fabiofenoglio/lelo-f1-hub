@@ -31,3 +31,15 @@ export const createRequestOption = (req?: any): HttpParams => {
 
   return options;
 };
+
+export const BACKGROUND_FETCH_HEADERS = 'X-Background-Fetch';
+
+export function backgroundFetch(condition = true): any {
+  if (condition) {
+    const o = {};
+    o[BACKGROUND_FETCH_HEADERS] = '1';
+    return o;
+  } else {
+    return {};
+  }
+}

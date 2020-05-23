@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { ISequence } from 'app/shared/model/sequence.model';
 import { HttpResponse, HttpHeaders } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { backgroundFetch } from 'app/shared/util/request-util';
 
 
 @Component({
@@ -93,6 +94,8 @@ export class SequencePickerModalComponent implements OnInit, OnDestroy {
         sort: this.sortShared(),
         shared: true,
         fullTextSearch: this.fullTextSearchShared || ''
+      }, {
+        ...backgroundFetch(this.page > 0)
       })
       .subscribe((res: HttpResponse<ISequence[]>) => this.paginateSequences(res.body, res.headers, false));
   }

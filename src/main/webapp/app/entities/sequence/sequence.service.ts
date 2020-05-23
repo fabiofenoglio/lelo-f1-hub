@@ -37,10 +37,10 @@ export class SequenceService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any, headers = {}): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
-      .get<ISequence[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .get<ISequence[]>(this.resourceUrl, { params: options, observe: 'response', headers })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
