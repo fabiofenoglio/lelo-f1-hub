@@ -65,7 +65,12 @@ export class RatingComponent implements OnInit, AfterViewInit {
   changed(event: any, firstVote: boolean): void {
     // eslint-disable-next-line no-console
     console.log('firstVote', firstVote);
-    this.rated.emit(event);
+
+    if (firstVote && event === 0) {
+      this.rated.emit(this.ratingOrZero);
+    } else {
+      this.rated.emit(event);
+    }
   }
 
   clickOnInPlaceRating(): void {
