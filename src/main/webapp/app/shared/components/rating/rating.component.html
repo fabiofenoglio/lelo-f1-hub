@@ -15,12 +15,6 @@
             </span>
         </ng-template>
         
-        <ng-container *ngIf="hasUserRating">
-            <ngb-rating [resettable]="true" [starTemplate]="t" [readonly]="isReadonly" [max]="5"
-                [rate]="userRatingOrZero" 
-                (rateChange)="changed($event, false)"></ngb-rating>
-        </ng-container>
-    
         <ng-container *ngIf="!hasUserRating">
             <ngb-rating [resettable]="true" [starTemplate]="t" [readonly]="isReadonly" [max]="5"
                 [rate]="ratingOrZero" 
