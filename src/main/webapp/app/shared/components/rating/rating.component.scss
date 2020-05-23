@@ -5,13 +5,6 @@
     margin-bottom: 0;
 }
 
-.rating-container-inplace {
-    display: block;
-    padding: 0;
-    margin-bottom: 0;
-    margin-top: -0.5em;
-}
-
 .star {
     position: relative;
     display: inline-block;
@@ -52,6 +45,17 @@
     display: block;
 }
 
+.rating-container-inplace {
+    display: block;
+    padding: 0;
+    margin-bottom: 0;
+    margin-top: -0.5em;
+}
+
 .rating-container-inplace .rating-caption {
     margin-top: -0.5em;
+}
+
+.rating-container-inplace .star {
+    font-size: 1.5rem;
 }

@@ -11,7 +11,7 @@
                 norating: !hasUserRating && !hasRating,
                 full: fill === 100
             }">
-                <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
+                <span class="half" [style.width.%]="fill">&#9825;</span>&#9825;
             </span>
         </ng-template>
         
@@ -46,7 +46,7 @@
 <div class="rating-container-inplace {{ containerClasses ? containerClasses.concat(' ') : ''}}" *ngIf="inPlaceMode">
     <ng-container *ngIf="!ready">
         <span class="star norating" >
-            <span class="half" [style.width.%]="100">&hearts;</span>&hearts;
+            <span class="half" [style.width.%]="100">&#9825;</span>&#9825;
         </span>
     </ng-container>
     <ng-container *ngIf="ready">
@@ -59,7 +59,7 @@
             norating: !hasUserRating && !hasRating,
             full: hasUserRating || hasRating
         }">
-            <span class="half" [style.width.%]="100">&hearts;</span>&hearts;
+            <span class="half" [style.width.%]="100">&#9825;</span>&#9825;
         </span>
         <small class="rating-caption" (click)="clickOnInPlaceRating()">
             <span *ngIf="hasUserRating">

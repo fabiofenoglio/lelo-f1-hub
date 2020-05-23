@@ -3,6 +3,12 @@
         <span class="hipster img-fluid rounded"></span>
     </div>
 
+    <jhi-rating mode="IN_PLACE"
+        [rating]="3" 
+        [userRating]="3" 
+        [ratingNumber]="2">
+    </jhi-rating>
+
     <div class="col-md-10 pl-5" [ngSwitch]="isAuthenticated()">
         <h1 class="display-5 mb-5" jhiTranslate="home.title">Welcome!</h1>
 
