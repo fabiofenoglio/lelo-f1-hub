@@ -1,6 +1,6 @@
 {
   "name": "lelohub",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Client application for LELO F1 SDK",
   "private": true,
   "license": "MIT",
