@@ -44,8 +44,6 @@ jobs:
       uses: octokit/request-action@v2.x
       id: delete_wf_logs
       with:
-        route: GET /repos/fabiofenoglio/:repository/actions/runs/:run_id/logs
-        repository: ${{ github.repository }}
-        run_id: ${{ github.run_id }}
+        route: DELETE /repos/fabiofenoglio/${{ github.repository }}/actions/runs/${{ github.run_id }}/logs
       env:
         GITHUB_TOKEN: ${{ secrets.wf_manager_token }}

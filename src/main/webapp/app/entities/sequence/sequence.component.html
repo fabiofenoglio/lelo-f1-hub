@@ -93,13 +93,18 @@
                         </div>
                     </td>
                     <td class="d-none d-md-table-cell">
-                        <!-- RATING -->
-                        <jhi-rating 
-                            [readonly]="true"
-                            [rating]="sequence.averageRating" 
-                            [userRating]="sequence.currentUserRating?.score" 
-                            [ratingNumber]="sequence.ratingNumber">
-                        </jhi-rating>
+                        <ng-container *ngIf="sequence.visibility === 'PUBLIC'">
+                             <!-- RATING -->
+                            <jhi-rating 
+                                [readonly]="true"
+                                [rating]="sequence.averageRating" 
+                                [userRating]="sequence.currentUserRating?.score" 
+                                [ratingNumber]="sequence.ratingNumber">
+                            </jhi-rating>
+                        </ng-container>
+                        <ng-container *ngIf="sequence.visibility !== 'PUBLIC'">
+                            <small>n/a</small>
+                        </ng-container>
                     </td>
                     <td class="d-none d-md-table-cell">{{ sequence.lastModifiedDate | timeago }}</td>
                     <td class="d-none d-md-table-cell text-right">
@@ -136,13 +141,15 @@
                                 {{ sequence.name | truncate:150 }}
                             </div>
                             <div class="col-3  text-right">
-                                <jhi-rating 
-                                    mode="IN_PLACE"
-                                    [readonly]="true"
-                                    [rating]="sequence.averageRating" 
-                                    [userRating]="sequence.currentUserRating?.score" 
-                                    [ratingNumber]="sequence.ratingNumber">
-                                </jhi-rating>
+                                <ng-container *ngIf="sequence.visibility === 'PUBLIC'">
+                                    <jhi-rating 
+                                        mode="IN_PLACE"
+                                        [readonly]="true"
+                                        [rating]="sequence.averageRating" 
+                                        [userRating]="sequence.currentUserRating?.score" 
+                                        [ratingNumber]="sequence.ratingNumber">
+                                    </jhi-rating>
+                                </ng-container>
                             </div>
                         </div>
                         <!--
