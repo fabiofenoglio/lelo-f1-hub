@@ -5,7 +5,7 @@ name: CI-CD staging environment
 
 on:
   push:
-    branches: [ develoment ]
+    branches: [ development ]
 
 jobs:
   build:
