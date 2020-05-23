@@ -1,13 +1,13 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: CI-CD production environment
+name: CI-CD staging environment
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develoment ]
   pull_request:
-    branches: [ master ]
+    branches: [ develoment ]
 
 jobs:
   build:
@@ -41,4 +41,4 @@ jobs:
     - name: Merge content of private repository
       run: rsync --archive ./private_mirror/ ./
     - name: Build and deploy with Maven
-      run: mvn -Pprod -Dmaven.test.skip=true -DskipTests clean package tomcat7:redeploy --file pom.xml
+      run: mvn -Pstaging -Dmaven.test.skip=true -DskipTests clean package tomcat7:redeploy --file pom.xml
