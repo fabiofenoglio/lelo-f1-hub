@@ -2,11 +2,11 @@
 
 ![CI-CD production environment](https://github.com/fabiofenoglio/lelo-f1-hub/workflows/CI-CD%20production%20environment/badge.svg)
 
-This repository hosts the partial source code for the LeloHUB project.
+This repository hosts the documentation for the LeloHUB project.
 
 BETA Version of the site is available at [lelo-hub.fabiofenoglio.it](https://lelo-hub.fabiofenoglio.it/)
 
-This application was generated using JHipster 6.8.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.8.0](https://www.jhipster.tech/documentation-archive/v6.8.0).
+Source code is currently private due to privacy reasons. It may however be published again once things are sorted out.
 
 ## Features
 
@@ -25,6 +25,8 @@ The HUB features:
 ![community sequences](docs/images/screenshots/sequences.JPG)
 
 ## Development
+
+This application was generated using JHipster 6.8.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.8.0](https://www.jhipster.tech/documentation-archive/v6.8.0).
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
 
