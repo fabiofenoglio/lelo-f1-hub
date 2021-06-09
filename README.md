@@ -1,11 +1,14 @@
 # LeloHUB
 
-![CI-CD production environment](https://github.com/fabiofenoglio/lelo-f1-hub/workflows/CI-CD%20production%20environment/badge.svg)
+The Hub is an unofficial project built around LELO's F1s (and F1S V2) devices.
 
-This repository hosts the documentation for the LeloHUB project.
+It offers an alternative control panel with many features not available in the original app and works both on mobile and on desktop, like programmable patterns, sequences and remote control !
 
 BETA Version of the site is available at [lelo-hub.fabiofenoglio.it](https://lelo-hub.fabiofenoglio.it/)
 
+![CI-CD production environment](https://github.com/fabiofenoglio/lelo-f1-hub/workflows/CI-CD%20production%20environment/badge.svg)
+
+This repository hosts the documentation for the LeloHUB project.
 Source code is currently private due to privacy reasons. It may however be published again once things are sorted out.
 
 ## Features
@@ -13,16 +16,22 @@ Source code is currently private due to privacy reasons. It may however be publi
 The HUB features:
 
 - Basic control panel for the F1 SDK optimized for both desktop and mobile usage (on Chrome browser)
+- Should work out-of-the-box with the new F1S V2
 - Programmable custom sequences and patterns
 - Community-shared, ready-to-use custom sequences and patterns
-- (WORK IN PROGRESS) remote control to play with long-distance partners
+- Remote control to play with long-distance partners
 
-## Screenshots
+## Screenshots (mobile)
 
-![homepage](docs/images/screenshots/home.JPG)
-![custom sequence actions](docs/images/screenshots/sequence-action.JPG)
-![custom sequence conditions](docs/images/screenshots/sequence-condition.JPG)
-![community sequences](docs/images/screenshots/sequences.JPG)
+<img src="docs/images/screenshots/connect.JPG" title="control panel" width="30%"></img> <img src="docs/images/screenshots/controls1.JPG" title="control panel" width="30%"></img> <img src="docs/images/screenshots/controls2.JPG" title="control panel" width="30%"></img> 
+
+<img src="docs/images/screenshots/m-sequences.JPG" title="community sequences" width="30%"> </img>  <img src="docs/images/screenshots/m-sequence-action.JPG" title="sequence actions" width="30%"></img> <img src="docs/images/screenshots/controls3.JPG" title="control panel" width="30%"> </img>
+
+## Screenshots (desktop)
+
+<img src="docs/images/screenshots/home.JPG" title="homepage" width="40%"></img> <img src="docs/images/screenshots/sequences.JPG" title="community sequences" width="40%"></img>
+
+<img src="docs/images/screenshots/sequence-action.JPG" title="sequence actions" width="40%"></img> <img src="docs/images/screenshots/sequence-condition.JPG" title="sequence conditions" width="40%"></img>
 
 ## Development
 
