@@ -1,5 +1,7 @@
 # LeloHUB
 
+### WARNING: THIS PROJECT IS STILL NOT COMPATIBLE WITH THE NEWER VERSION OF THE DEVICE (F1S V2) AS BLE SPECIFICATIONS HAVE NOT YET BEEN RELEASED FROM THE PRODUCER.
+
 The Hub is an unofficial project built around LELO's F1s (and F1S V2) devices.
 
 It offers an alternative control panel with many features not available in the original app and works both on mobile and on desktop, like programmable patterns, sequences and remote control !
@@ -7,9 +9,9 @@ It offers an alternative control panel with many features not available in the o
 BETA Version of the site is available at [lelo-hub.fabiofenoglio.it](https://lelo-hub.fabiofenoglio.it/). 
 
 Please note that it works using Web Bluetooth which is an emerging technology, currently supported by Chrome (both on desktop and on mobile) and Microsoft Edge browsers.
-For more information on current and planned Web Bluetooth support refer to [caniuse.com](https://caniuse.com/web-bluetooth)
+For more information on current and planned Web Bluetooth support refer to [caniuse.com](https://caniuse.com/web-bluetooth).
 
-![CI-CD production environment](https://github.com/fabiofenoglio/lelo-f1-hub/workflows/CI-CD%20production%20environment/badge.svg).
+![CI-CD production environment](https://github.com/fabiofenoglio/lelo-f1-hub/workflows/CI-CD%20production%20environment/badge.svg)
 
 This repository hosts the documentation for the LeloHUB project.
 Source code is currently private due to privacy reasons. It may however be published again once things are sorted out.
