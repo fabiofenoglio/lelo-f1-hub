@@ -21,7 +21,7 @@ Source code is currently private due to privacy reasons. It may however be publi
 The HUB features:
 
 - Basic control panel for the F1 SDK optimized for both desktop and mobile usage (on Chrome browser)
-- Should work out-of-the-box with the new F1S V2
+- ~~Should work out-of-the-box with the new F1S V2~~ Will be updated to work with the new F1S V2 as soon as possible
 - Programmable custom sequences and patterns
 - Community-shared, ready-to-use custom sequences and patterns
 - Remote control to play with long-distance partners
